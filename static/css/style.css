@@ -1,0 +1,432 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:'Poppins',sans-serif;
+    background:#F8FAFC;
+    color:#1F2937;
+
+}
+
+/* NAVBAR */
+
+.custom-navbar{
+
+    background:white;
+    padding:18px 0;
+    box-shadow:0 2px 15px rgba(0,0,0,.08);
+
+}
+
+.navbar-brand{
+
+    font-size:30px;
+    font-weight:700;
+
+}
+
+.nav-link{
+
+    font-weight:500;
+    margin:0 12px;
+
+}
+
+.btn-login{
+
+    border:2px solid #16A34A;
+    color:#16A34A;
+    border-radius:10px;
+    padding:8px 24px;
+
+}
+
+.btn-register{
+
+    background:#16A34A;
+    color:white;
+    border-radius:10px;
+    padding:8px 24px;
+
+}
+
+.btn-register:hover{
+
+    background:#15803D;
+    color:white;
+
+}
+
+/* HERO */
+
+.hero{
+
+    padding:150px 0 90px;
+
+}
+
+.hero h1{
+
+    font-size:64px;
+    font-weight:800;
+    line-height:1.2;
+
+}
+
+.hero h1 span{
+
+    color:#16A34A;
+
+}
+
+.hero p{
+
+    margin:30px 0;
+    color:#6B7280;
+    font-size:18px;
+
+}
+
+.hero-features{
+
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:35px;
+
+}
+
+.hero-features span{
+
+    color:#15803D;
+    font-weight:600;
+
+}
+
+.hero-btn{
+
+    background:#16A34A;
+    color:white;
+    padding:15px 35px;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:600;
+
+}
+
+.hero-btn:hover{
+
+    background:#15803D;
+    color:white;
+
+}
+
+.hero-image{
+
+    width:95%;
+}
+/* =====================================
+   WHY CHOOSE STAYNEAR
+===================================== */
+
+.why-section{
+    padding:100px 0;
+    background:#ffffff;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:60px;
+}
+
+.section-title h2{
+    font-size:42px;
+    font-weight:700;
+    color:#1F2937;
+}
+
+.section-title p{
+    margin-top:15px;
+    color:#6B7280;
+    font-size:18px;
+}
+
+.feature-card{
+
+    background:#fff;
+
+    padding:40px 30px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    transition:.35s;
+
+    border:1px solid #E5E7EB;
+
+    height:100%;
+
+}
+
+.feature-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+    border-color:#16A34A;
+
+}
+
+.feature-icon{
+
+    width:75px;
+
+    height:75px;
+
+    background:#DCFCE7;
+
+    border-radius:50%;
+
+    margin:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin-bottom:25px;
+
+}
+
+.feature-icon i{
+
+    font-size:34px;
+
+    color:#16A34A;
+
+}
+
+.feature-card h4{
+
+    font-weight:700;
+
+    margin-bottom:15px;
+
+}
+
+.feature-card p{
+
+    color:#6B7280;
+
+    line-height:1.7;
+
+}
+/* =====================================
+        HOW STAYNEAR WORKS
+===================================== */
+
+.how-section{
+
+    padding:100px 0;
+
+    background:#F8FAFC;
+
+}
+
+.step-box{
+
+    position:relative;
+
+    padding:35px 20px;
+
+    transition:.3s;
+
+}
+
+.step-box:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.step-icon{
+
+    width:85px;
+
+    height:85px;
+
+    background:#16A34A;
+
+    color:white;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin:auto;
+
+    margin-bottom:25px;
+
+    font-size:34px;
+
+    box-shadow:0 10px 25px rgba(22,163,74,.25);
+
+}
+
+.step-box h4{
+
+    font-weight:700;
+
+    margin-bottom:15px;
+
+}
+
+.step-box p{
+
+    color:#6B7280;
+
+    line-height:1.7;
+
+}
+/* =====================================
+                FOOTER
+===================================== */
+
+.footer{
+
+    background:#1F2937;
+
+    color:#F9FAFB;
+
+    padding:70px 0 20px;
+
+}
+
+.footer-logo{
+
+    font-size:30px;
+
+    font-weight:700;
+
+    color:#16A34A;
+
+    margin-bottom:20px;
+
+}
+
+.footer p{
+
+    color:#D1D5DB;
+
+    line-height:1.8;
+
+}
+
+.footer h5{
+
+    margin-bottom:20px;
+
+    font-weight:600;
+
+    color:white;
+
+}
+
+.footer-links{
+
+    list-style:none;
+
+    padding:0;
+
+}
+
+.footer-links li{
+
+    margin-bottom:12px;
+
+}
+
+.footer-links a{
+
+    color:#D1D5DB;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+}
+
+.footer-links a:hover{
+
+    color:#22C55E;
+
+}
+
+.social-icons{
+
+    margin-top:20px;
+
+}
+
+.social-icons a{
+
+    display:inline-flex;
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:#374151;
+
+    color:white;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin-right:10px;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+}
+
+.social-icons a:hover{
+
+    background:#16A34A;
+
+    transform:translateY(-4px);
+
+}
+
+.footer hr{
+
+    margin:50px 0 20px;
+
+    border-color:#374151;
+
+}
+
+.footer-bottom{
+
+    text-align:center;
+
+    color:#9CA3AF;
+
+    font-size:15px;
+
+}
