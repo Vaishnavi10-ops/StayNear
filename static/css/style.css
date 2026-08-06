@@ -430,3 +430,92 @@ body{
     font-size:15px;
 
 }
+/* =====================================
+        AUTHENTICATION
+===================================== */
+
+.auth-section{
+
+    padding:120px 0 80px;
+
+    min-height:100vh;
+
+    background:#F8FAFC;
+
+}
+
+.auth-image{
+
+    width:90%;
+
+}
+
+.auth-card{
+    align-content: center;
+    align-items: center;
+
+    background:white;
+
+    padding:70px;
+
+    border-radius:20px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+
+
+}
+
+.auth-card h2{
+
+    font-size:2rem;
+
+    font-weight:700;
+
+    color:#111827;
+
+    text-align:center;
+
+}
+
+.auth-card p{
+
+    color:#6B7280;
+
+    margin-bottom:30px;
+
+    text-align:center;
+    
+
+}
+
+.form-control,
+.form-select{
+
+    height:50px;
+
+    border-radius:10px;
+
+}
+
+.auth-btn{
+
+    background:#16A34A;
+
+    color:white;
+
+    font-weight:600;
+
+    padding:12px;
+
+    border-radius:10px;
+
+}
+
+.auth-btn:hover{
+
+    background:#15803D;
+
+    color:white;
+
+}

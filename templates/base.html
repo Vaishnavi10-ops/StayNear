@@ -25,13 +25,15 @@
 
 <body>
 
-    {% include 'shared/navbar.html' %}
+    {% if not hide_navbar %}
+        {% include 'shared/navbar.html' %}
+    {% endif %}
 
     {% block content %}
     {% endblock %}
 
     {% include 'shared/footer.html' %}
-
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>

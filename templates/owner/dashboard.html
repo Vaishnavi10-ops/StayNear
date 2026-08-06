@@ -1,0 +1,69 @@
+{% extends "layouts/owner_layout.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="welcome-section">
+
+    <h2>Welcome Back 👋</h2>
+
+    <p>Manage your properties efficiently.</p>
+
+</div>
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-icon green">
+            <i class="fa-solid fa-building"></i>
+        </div>
+
+        <h3>{{ total_properties }}</h3>
+
+        <p>Total Properties</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-icon blue">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+
+        <h3>{{ approved_properties }}</h3>
+
+        <p>Approved Properties</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-icon orange">
+            <i class="fa-solid fa-clock"></i>
+        </div>
+
+        <h3>{{ pending_properties }}</h3>
+
+        <p>Pending Approval</p>
+
+    </div>
+
+    <div class="stat-card">
+
+        <div class="stat-icon purple">
+            <i class="fa-solid fa-calendar-check"></i>
+        </div>
+
+        <h3>{{ total_bookings }}</h3>
+
+        <p>Total Bookings</p>
+
+    </div>
+
+</div>
+
+{% endblock %}

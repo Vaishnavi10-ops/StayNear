@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Login | StayNear{% endblock %}
+
+{% block content %}
+
+<section class="auth-section">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <!-- Left Side -->
+
+
+            <!-- Right Side -->
+
+            <div class="col-lg-6 col-xl-5">
+
+                <div class="auth-card">
+
+                    <h2>Welcome Back!</h2>
+
+                    <p>
+                        Login to continue exploring verified accommodations.
+                    </p>
+
+                    <form method="POST" action="{{ url_for('auth.login') }}">
+
+    <div class="mb-3">
+        <label>Email Address</label>
+
+        <input type="email"
+               name="email"
+               class="form-control"
+               placeholder="Enter your email"
+               required>
+    </div>
+
+    <div class="mb-3">
+        <label>Password</label>
+
+        <input type="password"
+               name="password"
+               class="form-control"
+               placeholder="Enter your password"
+               required>
+    </div>
+
+    <div class="mb-4">
+        <label>Login As</label>
+
+        <select class="form-select" name="role">
+
+            <option>User</option>
+            <option>Owner</option>
+            <option>Admin</option>
+
+        </select>
+    </div>
+
+    <button type="submit" class="btn auth-btn w-100">
+        Login
+    </button>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-danger mt-3">
+            {{ messages[0] }}
+        </div>
+    {% endif %}
+    {% endwith %}
+
+</form>
+
+                    <div class="text-center mt-4">
+
+                        Don't have an account?
+
+                        <a href="{{ url_for('auth.register') }}">
+
+                            Register
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

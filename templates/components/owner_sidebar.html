@@ -1,0 +1,97 @@
+<div class="sidebar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+
+            <i class="fa-solid fa-house"></i>
+
+        </div>
+
+        <div>
+
+            <h2>StayNear</h2>
+
+            <span>Owner Panel</span>
+
+        </div>
+
+    </div>
+
+    <ul class="menu">
+
+        <li class="active">
+
+            <a href="{{ url_for('owner.dashboard') }}">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                <span>Dashboard</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="fa-solid fa-plus"></i>
+
+                <span>Add Property</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="fa-solid fa-building"></i>
+
+                <span>My Properties</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+                <span>Bookings</span>
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a href="#">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span>Profile</span>
+
+            </a>
+
+        </li>
+
+    </ul>
+
+    <div class="logout">
+
+        <a href="{{ url_for('auth.logout') }}">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</div>
