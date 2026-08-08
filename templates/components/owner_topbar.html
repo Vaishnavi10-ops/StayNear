@@ -25,16 +25,13 @@
 
         <div class="owner-profile">
 
-            <img src="https://ui-avatars.com/api/?name=Owner&background=16A34A&color=fff"
-                 alt="Owner">
+            <img src="https://ui-avatars.com/api/?name={{ session['name']|replace(' ', '+') }}&background=16A34A&color=fff"
+            alt="Owner">
 
-            <div>
-
-                <h6>Owner</h6>
-
-                <small>Property Owner</small>
-
-            </div>
+        <div>
+            <h6>{{ session["name"] }}</h6>
+            <small>Property Owner</small>
+        </div>
 
         </div>
 

@@ -1,0 +1,179 @@
+{% extends "owner/base_owner.html" %}
+
+{% block title %}Profile | StayNear{% endblock %}
+
+{% block owner_content %}
+
+<!-- ================= HEADER ================= -->
+
+<div class="properties-header">
+
+    <div>
+
+        <h2>👤 My Profile</h2>
+
+        <p>
+            Manage your owner account information.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ================= PROFILE ================= -->
+
+<div class="profile-page">
+
+    <form
+        method="POST"
+        action="{{ url_for('owner.profile') }}"
+    >
+
+        <!-- Personal Information -->
+
+        <div class="form-card">
+
+            <div class="form-card-header">
+
+                <h5 class="mb-0">
+                    <i class="fa-solid fa-user"></i>
+                    Personal Information
+                </h5>
+
+            </div>
+
+
+            <div class="form-card-body">
+
+                <div class="row g-4">
+
+                    <!-- Full Name -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="full_name"
+                            class="form-control"
+                            value="{{ owner.full_name }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            class="form-control"
+                            value="{{ owner.email }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- Phone -->
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            name="phone"
+                            class="form-control"
+                            value="{{ owner.phone }}"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= PASSWORD ================= -->
+
+        <div class="form-card profile-password-card">
+
+            <div class="form-card-header">
+
+                <h5 class="mb-0">
+                    <i class="fa-solid fa-lock"></i>
+                    Change Password
+                </h5>
+
+            </div>
+
+
+            <div class="form-card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            New Password
+                        </label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Leave blank to keep current password"
+                        >
+
+                        <small class="text-muted">
+                            Leave this field blank if you don't want to
+                            change your password.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= ACTION ================= -->
+
+        <div class="profile-actions">
+
+            <button
+                type="submit"
+                class="save-profile-btn">
+
+                <i class="fa-solid fa-floppy-disk"></i>
+
+                Save Changes
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

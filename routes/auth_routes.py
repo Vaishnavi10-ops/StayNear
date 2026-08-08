@@ -1,3 +1,5 @@
+from unittest import result
+
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 
 from models.user import User
@@ -32,15 +34,15 @@ def login():
             session["name"] = result["name"]
 
             if result["role"] == "Admin":
-                return redirect(url_for("admin.admin_dashboard"))
+                return redirect(url_for("admin.dashboard"))
 
             elif result["role"] == "Owner":
-                return redirect(url_for("owner.owner_dashboard"))
+                return redirect(url_for("owner.dashboard"))
 
             else:
-                return redirect(url_for("user.user_dashboard"))
+                return redirect(url_for("user.dashboard"))
 
-            flash(result)
+        flash(result, "danger")
 
     return render_template("auth/login.html")
 

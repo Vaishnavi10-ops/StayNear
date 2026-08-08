@@ -10,10 +10,16 @@ from routes.owner_routes import owner
 from models.property import Property
 from models.property_image import PropertyImage
 from routes.admin_routes import admin
-
+import os
 
 app = Flask(__name__)
 app.config.from_object(Config)
+app.config["UPLOAD_FOLDER"] = os.path.join(
+    app.root_path,
+    "static",
+    "uploads",
+    "properties"
+)
 
 db.init_app(app)
 

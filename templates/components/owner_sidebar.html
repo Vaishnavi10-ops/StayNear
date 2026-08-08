@@ -20,7 +20,7 @@
 
     <ul class="menu">
 
-        <li class="active">
+        <li class="{% if request.endpoint == 'owner.dashboard' %}active{% endif %}">
 
             <a href="{{ url_for('owner.dashboard') }}">
 
@@ -32,10 +32,8 @@
 
         </li>
 
-        <li>
-
-            <a href="#">
-
+        <li class="{% if request.endpoint == 'owner.add_property' %}active{% endif %}">
+            <a href="{{ url_for('owner.add_property') }}">
                 <i class="fa-solid fa-plus"></i>
 
                 <span>Add Property</span>
@@ -44,41 +42,48 @@
 
         </li>
 
-        <li>
-
-            <a href="#">
-
+        <li class="{% if request.endpoint == 'owner.my_properties' %}active{% endif %}">
+            <a href="{{ url_for('owner.my_properties') }}">
                 <i class="fa-solid fa-building"></i>
-
-                <span>My Properties</span>
-
+            <span>My Properties</span>
             </a>
+            </li>
 
-        </li>
+            <li class="{% if request.endpoint == 'owner.bookings' %}active{% endif %}">
 
-        <li>
+        <a href="{{ url_for('owner.bookings') }}">
 
-            <a href="#">
+            <i class="fa-solid fa-calendar-check"></i>
 
-                <i class="fa-solid fa-calendar-check"></i>
+            <span>Bookings</span>
 
-                <span>Bookings</span>
+        </a>
 
-            </a>
+    </li>
 
-        </li>
+    <li class="{% if request.endpoint == 'owner.reviews' %}active{% endif %}">
 
-        <li>
+    <a href="{{ url_for('owner.reviews') }}">
 
-            <a href="#">
+        <i class="fa-solid fa-star"></i>
 
-                <i class="fa-solid fa-user"></i>
+        <span>Reviews & Ratings</span>
 
-                <span>Profile</span>
+    </a>
 
-            </a>
+</li>
 
-        </li>
+         <li class="{% if request.endpoint == 'owner.profile' %}active{% endif %}">
+
+        <a href="{{ url_for('owner.profile') }}">
+
+            <i class="fa-solid fa-user"></i>
+
+            <span>Profile</span>
+
+        </a>
+
+    </li>
 
     </ul>
 

@@ -15,7 +15,7 @@ class Property(db.Model):
     property_name = db.Column(db.String(150), nullable=False)
 
     property_type = db.Column(
-        db.Enum("Hostel", "PG", "Flat", "Room"),
+        db.Enum("Hostel", "PG", "Flat", "Room", "Apartment"),
         nullable=False
     )
 
@@ -54,3 +54,8 @@ class Property(db.Model):
         backref="property",
         cascade="all, delete-orphan"
     )
+    gender_preference = db.Column(
+    db.Enum("Boys", "Girls", "Co-ed"),
+    nullable=False
+    )
+    area = db.Column(db.String(100), nullable=False)

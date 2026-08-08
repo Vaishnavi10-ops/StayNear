@@ -1,0 +1,174 @@
+{% extends "owner/base_owner.html" %}
+
+{% block title %}{{ property.property_name }} | StayNear{% endblock %}
+
+{% block owner_content %}
+
+<div class="property-view-page">
+
+    <!-- HEADER -->
+    <div class="property-view-header">
+
+        <div>
+            <h2>{{ property.property_name }}</h2>
+
+            <p>
+                <i class="fa-solid fa-location-dot"></i>
+                {{ property.area }}, {{ property.city }}
+            </p>
+        </div>
+
+        <span class="status-badge
+            {% if property.property_status == 'Approved' %}
+                approved
+            {% elif property.property_status == 'Pending' %}
+                pending
+            {% else %}
+                rejected
+            {% endif %}">
+            {{ property.property_status }}
+        </span>
+
+    </div>
+
+
+    <!-- IMAGES -->
+    <div class="property-gallery">
+
+        {% if property.images and property.images|length > 0 %}
+
+            {% for image in property.images %}
+
+                <img
+                    src="{{ url_for('static', filename=image.image_path) }}"
+                    alt="{{ property.property_name }}">
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="no-property-image">
+
+                <i class="fa-solid fa-house"></i>
+
+                <p>No property images available</p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- PROPERTY INFORMATION -->
+    <div class="property-view-card">
+
+        <h3>Property Information</h3>
+
+        <div class="property-view-grid">
+
+            <div>
+                <span>Property Type</span>
+                <strong>{{ property.property_type }}</strong>
+            </div>
+
+            <div>
+                <span>Gender Preference</span>
+                <strong>{{ property.gender_preference }}</strong>
+            </div>
+
+            <div>
+                <span>Monthly Rent</span>
+                <strong class="property-price">
+                    ₹{{ "{:,.0f}".format(property.monthly_rent|float) }}
+                </strong>
+            </div>
+
+            <div>
+                <span>Security Deposit</span>
+                <strong>
+                    ₹{{ "{:,.0f}".format(property.security_deposit|float) }}
+                </strong>
+            </div>
+
+            <div>
+                <span>Available Rooms</span>
+                <strong>{{ property.available_rooms }}</strong>
+            </div>
+
+            <div>
+                <span>Pincode</span>
+                <strong>{{ property.pincode }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- LOCATION -->
+    <div class="property-view-card">
+
+        <h3>Location</h3>
+
+        <p class="property-address">
+
+            <i class="fa-solid fa-location-dot"></i>
+
+            {{ property.address }},
+            {{ property.area }},
+            {{ property.city }}
+            - {{ property.pincode }}
+
+        </p>
+
+    </div>
+
+
+    <!-- DESCRIPTION -->
+    <div class="property-view-card">
+
+        <h3>Description</h3>
+
+        {% if property.description %}
+
+            <p>{{ property.description }}</p>
+
+        {% else %}
+
+            <p class="text-muted">
+                No description has been added.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ACTIONS -->
+    <div class="property-view-actions">
+
+        <a
+            href="{{ url_for('owner.edit_property',
+                             property_id=property.property_id) }}"
+            class="edit-btn">
+
+            <i class="fa-solid fa-pen"></i>
+            Edit Property
+
+        </a>
+
+        <a
+            href="{{ url_for('owner.my_properties') }}"
+            class="view-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to My Properties
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

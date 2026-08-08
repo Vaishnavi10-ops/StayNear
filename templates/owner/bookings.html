@@ -1,0 +1,250 @@
+{% extends "owner/base_owner.html" %}
+
+{% block title %}Bookings | StayNear{% endblock %}
+
+{% block owner_content %}
+
+<div class="properties-header">
+
+    <div>
+
+        <h2>
+            <i class="fa-solid fa-calendar-check"></i>
+            Bookings
+        </h2>
+
+        <p>
+            Manage booking requests for your properties.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- Search & Filter -->
+
+<form method="GET"
+      action="{{ url_for('owner.bookings') }}"
+      class="properties-toolbar">
+
+    <div class="search-box-property">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            name="search"
+            value="{{ search }}"
+            placeholder="Search property...">
+
+    </div>
+
+
+    <select
+        name="status"
+        class="status-filter">
+
+        <option value="All"
+            {% if not status or status == "All" %}
+                selected
+            {% endif %}>
+            All Status
+        </option>
+
+        <option value="Pending"
+            {% if status == "Pending" %}
+                selected
+            {% endif %}>
+            Pending
+        </option>
+
+        <option value="Approved"
+            {% if status == "Approved" %}
+                selected
+            {% endif %}>
+            Approved
+        </option>
+
+        <option value="Rejected"
+            {% if status == "Rejected" %}
+                selected
+            {% endif %}>
+            Rejected
+        </option>
+
+    </select>
+
+
+    <button type="submit"
+            class="add-property-btn">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        Search
+
+    </button>
+
+</form>
+
+
+<!-- Bookings -->
+
+{% if bookings %}
+
+<div class="property-list">
+
+    {% for booking in bookings %}
+
+    <div class="property-card">
+
+        <div class="property-details">
+
+            <div class="property-top">
+
+                <div>
+
+                    <h3>
+                        {{ booking.property.property_name }}
+                    </h3>
+
+                    <p class="property-location">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        {{ booking.property.city }}
+
+                    </p>
+
+                </div>
+
+
+                <span class="status-badge
+                    {% if booking.booking_status == 'Approved' %}
+                        approved
+                    {% elif booking.booking_status == 'Pending' %}
+                        pending
+                    {% else %}
+                        rejected
+                    {% endif %}">
+
+                    {{ booking.booking_status }}
+
+                </span>
+
+            </div>
+
+
+            <div class="property-info">
+
+                <span>
+
+                    <i class="fa-solid fa-calendar"></i>
+
+                    {{ booking.visit_date }}
+
+                </span>
+
+
+                <span>
+
+                    <i class="fa-solid fa-clock"></i>
+
+                    {{ booking.visit_time }}
+
+                </span>
+
+
+                <span>
+
+    <i class="fa-solid fa-user"></i>
+
+    {{ booking.user.full_name }}
+
+</span>
+
+            </div>
+
+            <div class="booking-contact">
+
+    <span>
+        <i class="fa-solid fa-envelope"></i>
+        {{ booking.user.email }}
+    </span>
+
+    <span>
+        <i class="fa-solid fa-phone"></i>
+        {{ booking.user.phone }}
+    </span>
+
+</div>
+
+
+            {% if booking.message %}
+
+            <p class="booking-message">
+
+                <strong>Message:</strong>
+
+                {{ booking.message }}
+
+            </p>
+
+            {% endif %}
+
+
+            <div class="property-bottom">
+
+                <small>
+
+                    Requested on
+                    {{ booking.created_at.strftime('%d %b %Y') }}
+
+                </small>
+
+
+                <div class="property-actions">
+
+                    {% if booking.booking_status == "Pending" %}
+
+                    <button class="edit-btn">
+                        <i class="fa-solid fa-check"></i>
+                        Approve
+                    </button>
+
+                    <button class="delete-btn">
+                        <i class="fa-solid fa-xmark"></i>
+                        Reject
+                    </button>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty-state">
+
+    <i class="fa-solid fa-calendar-xmark"></i>
+
+    <h3>No Bookings Found</h3>
+
+    <p>
+        There are no booking requests for your properties yet.
+    </p>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

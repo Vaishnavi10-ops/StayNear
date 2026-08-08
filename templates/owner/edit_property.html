@@ -1,0 +1,292 @@
+{% extends "owner/base_owner.html" %}
+
+{% block title %}
+Edit Property | StayNear
+{% endblock %}
+
+{% block owner_content %}
+
+<div class="properties-page">
+
+    <div class="properties-header">
+
+        <div>
+            <h2>✏️ Edit Property</h2>
+            <p>Update your property information.</p>
+        </div>
+
+        <a href="{{ url_for('owner.my_properties') }}"
+           class="add-property-btn">
+
+            ← Back to My Properties
+
+        </a>
+
+    </div>
+
+
+    <div class="form-card">
+
+        <div class="form-card-header">
+            <h5>Edit Property Details</h5>
+        </div>
+
+
+        <div class="form-card-body">
+
+            <form method="POST">
+
+                <!-- Property Name -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Property Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="property_name"
+                        class="form-control"
+                        value="{{ property.property_name }}"
+                        required>
+
+                </div>
+
+
+                <!-- Property Type -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Property Type
+                    </label>
+
+                    <select
+                        name="property_type"
+                        class="form-select"
+                        required>
+
+                        {% for type in ["Hostel", "PG", "Flat", "Room", "Apartment"] %}
+
+                        <option
+                            value="{{ type }}"
+                            {% if property.property_type == type %}
+                            selected
+                            {% endif %}>
+
+                            {{ type }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Gender -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Gender Preference
+                    </label>
+
+                    <select
+                        name="gender_preference"
+                        class="form-select"
+                        required>
+
+                        {% for gender in ["Boys", "Girls", "Co-ed"] %}
+
+                        <option
+                            value="{{ gender }}"
+                            {% if property.gender_preference == gender %}
+                            selected
+                            {% endif %}>
+
+                            {{ gender }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Rent -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Monthly Rent
+                    </label>
+
+                    <input
+                        type="number"
+                        name="monthly_rent"
+                        class="form-control"
+                        value="{{ property.monthly_rent }}"
+                        required>
+
+                </div>
+
+
+                <!-- Security Deposit -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Security Deposit
+                    </label>
+
+                    <input
+                        type="number"
+                        name="security_deposit"
+                        class="form-control"
+                        value="{{ property.security_deposit or 0 }}">
+
+                </div>
+
+
+                <!-- Available Rooms -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Available Rooms
+                    </label>
+
+                    <input
+                        type="number"
+                        name="available_rooms"
+                        class="form-control"
+                        value="{{ property.available_rooms }}">
+
+                </div>
+
+
+                <!-- City -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        City
+                    </label>
+
+                    <input
+                        type="text"
+                        name="city"
+                        class="form-control"
+                        value="{{ property.city }}"
+                        required>
+
+                </div>
+
+
+                <!-- Area -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Area
+                    </label>
+
+                    <input
+                        type="text"
+                        name="area"
+                        class="form-control"
+                        value="{{ property.area }}"
+                        required>
+
+                </div>
+
+
+                <!-- Address -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Full Address
+                    </label>
+
+                    <textarea
+                        name="address"
+                        class="form-control"
+                        rows="4"
+                        required>{{ property.address }}</textarea>
+
+                </div>
+
+
+                <!-- Pincode -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Pincode
+                    </label>
+
+                    <input
+                        type="text"
+                        name="pincode"
+                        class="form-control"
+                        value="{{ property.pincode }}"
+                        required>
+
+                </div>
+
+
+                <!-- Description -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Description
+                    </label>
+
+                    <textarea
+                        name="description"
+                        class="form-control"
+                        rows="5">{{ property.description or "" }}</textarea>
+
+                </div>
+
+
+                <!-- Buttons -->
+
+                <div class="property-view-actions">
+
+                    <a
+                        href="{{ url_for('owner.my_properties') }}"
+                        class="view-btn">
+
+                        Cancel
+
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="edit-btn">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Save Changes
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

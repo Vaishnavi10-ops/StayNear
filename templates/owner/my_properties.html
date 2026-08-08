@@ -1,0 +1,393 @@
+{% extends "owner/base_owner.html" %}
+
+{% block title %}My Properties | StayNear{% endblock %}
+
+{% block owner_content %}
+
+<!-- ================= HEADER ================= -->
+
+<div class="properties-header">
+
+    <div>
+
+        <h2>🏠 My Properties</h2>
+
+        <p>
+            Manage and update all your listed properties.
+        </p>
+
+    </div>
+
+    <a href="{{ url_for('owner.add_property') }}"
+       class="add-property-btn">
+
+        <i class="fa-solid fa-plus"></i>
+
+        Add New Property
+
+    </a>
+
+</div>
+
+
+<!-- ================= SEARCH & FILTER ================= -->
+
+<form method="GET"
+      action="{{ url_for('owner.my_properties') }}"
+      class="properties-toolbar">
+
+    <!-- Search -->
+
+    <div class="search-box-property">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            name="search"
+            value="{{ search or '' }}"
+            placeholder="Search property, city, area..."
+            autocomplete="off">
+
+    </div>
+
+
+    <!-- Status Filter -->
+
+    <select
+        name="status"
+        class="status-filter">
+
+        <option value="All"
+            {% if not status or status == "All" %}
+                selected
+            {% endif %}>
+            All Status
+        </option>
+
+        <option value="Approved"
+            {% if status == "Approved" %}
+                selected
+            {% endif %}>
+            Approved
+        </option>
+
+        <option value="Pending"
+            {% if status == "Pending" %}
+                selected
+            {% endif %}>
+            Pending
+        </option>
+
+        <option value="Rejected"
+            {% if status == "Rejected" %}
+                selected
+            {% endif %}>
+            Rejected
+        </option>
+
+    </select>
+
+
+    <!-- Search Button -->
+
+    <button type="submit" class="property-search-btn">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        Search
+
+    </button>
+
+
+    <!-- Clear Button -->
+
+    {% if search or (status and status != "All") %}
+
+        <a href="{{ url_for('owner.my_properties') }}"
+           class="property-clear-btn">
+
+            <i class="fa-solid fa-xmark"></i>
+
+            Clear
+
+        </a>
+
+    {% endif %}
+
+</form>
+
+
+<!-- ================= PROPERTY LIST ================= -->
+
+{% if properties %}
+
+<div class="property-list">
+
+    {% for property in properties %}
+
+    <!-- ================= PROPERTY CARD ================= -->
+
+    <div class="property-card">
+
+
+        <!-- PROPERTY IMAGE -->
+
+        <div class="property-image">
+
+            {% if property.images and property.images|length > 0 %}
+
+                <img
+                    src="{{ url_for('static',
+                                    filename=property.images[0].image_path) }}"
+                    alt="{{ property.property_name }}">
+
+            {% else %}
+
+                <div class="no-property-image">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>No Image</span>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- PROPERTY DETAILS -->
+
+        <div class="property-details">
+
+
+            <!-- TOP SECTION -->
+
+            <div class="property-top">
+
+                <div>
+
+                    <h3>
+                        {{ property.property_name }}
+                    </h3>
+
+                    <p class="property-location">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        {{ property.address }},
+                        {{ property.city }}
+
+                    </p>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <span class="status-badge
+
+                    {% if property.property_status == 'Approved' %}
+
+                        approved
+
+                    {% elif property.property_status == 'Pending' %}
+
+                        pending
+
+                    {% else %}
+
+                        rejected
+
+                    {% endif %}">
+
+                    {{ property.property_status }}
+
+                </span>
+
+            </div>
+
+
+            <!-- PROPERTY INFORMATION -->
+
+            <div class="property-info">
+
+                <span>
+
+                    <i class="fa-solid fa-building"></i>
+
+                    {{ property.property_type }}
+
+                </span>
+
+
+                <span>
+
+                    <i class="fa-solid fa-users"></i>
+
+                    {{ property.gender_preference }}
+
+                </span>
+
+
+                <span>
+
+                    <i class="fa-solid fa-bed"></i>
+
+                    {{ property.available_rooms }} Rooms
+
+                </span>
+
+            </div>
+
+
+            <!-- BOTTOM SECTION -->
+
+            <div class="property-bottom">
+
+
+                <!-- RENT -->
+
+                <div class="rent">
+
+                    ₹{{ "{:,.0f}".format(property.monthly_rent|float) }}
+
+                    <small>
+                        / month
+                    </small>
+
+                </div>
+
+
+                <!-- ACTION BUTTONS -->
+
+                <div class="property-actions">
+
+
+                    <!-- VIEW -->
+
+                    <a
+                        href="{{ url_for(
+                            'owner.view_property',
+                            property_id=property.property_id
+                        ) }}"
+                        class="view-btn">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                        View
+
+                    </a>
+
+
+                    <!-- EDIT -->
+
+                    <a
+                        href="{{ url_for(
+                            'owner.edit_property',
+                            property_id=property.property_id
+                        ) }}"
+                        class="edit-btn">
+
+                        <i class="fa-solid fa-pen"></i>
+
+                        Edit
+
+                    </a>
+
+
+                    <!-- DELETE -->
+
+                    <form
+                        action="{{ url_for(
+                            'owner.delete_property',
+                            property_id=property.property_id
+                        ) }}"
+                        method="POST"
+                        onsubmit="return confirm(
+                            'Are you sure you want to delete this property?'
+                        );">
+
+                        <button
+                            type="submit"
+                            class="delete-btn">
+
+                            <i class="fa-solid fa-trash"></i>
+
+                            Delete
+
+                        </button>
+
+                    </form>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+<!-- ================= NO RESULTS ================= -->
+
+{% else %}
+
+<div class="no-properties">
+
+    <i class="fa-solid fa-house-circle-xmark"></i>
+
+    {% if search or (status and status != "All") %}
+
+        <h3>
+            No Properties Found
+        </h3>
+
+        <p>
+            No properties match your search or selected status.
+        </p>
+
+        <a
+            href="{{ url_for('owner.my_properties') }}"
+            class="add-property-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Clear Search
+
+        </a>
+
+    {% else %}
+
+        <h3>
+            No Properties Added Yet
+        </h3>
+
+        <p>
+            Start by adding your first property.
+        </p>
+
+        <a
+            href="{{ url_for('owner.add_property') }}"
+            class="add-property-btn">
+
+            <i class="fa-solid fa-plus"></i>
+
+            Add Property
+
+        </a>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+
+{% endblock %}

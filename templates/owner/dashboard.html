@@ -6,7 +6,7 @@ Dashboard
 
 {% block content %}
 
-<div class="welcome-section">
+<div class="dashboard-header">
 
     <h2>Welcome Back 👋</h2>
 
@@ -14,56 +14,156 @@ Dashboard
 
 </div>
 
-<div class="stats-grid">
 
+<!-- ==============================
+     DASHBOARD STATISTICS
+============================== -->
+
+<div class="dashboard-stats">
+
+    <!-- Total Properties -->
     <div class="stat-card">
 
         <div class="stat-icon green">
             <i class="fa-solid fa-building"></i>
         </div>
 
-        <h3>{{ total_properties }}</h3>
+        <div class="stat-content">
 
-        <p>Total Properties</p>
+            <h3>{{ total_properties }}</h3>
+
+            <p>Total Properties</p>
+
+        </div>
 
     </div>
 
+
+    <!-- Active Properties -->
     <div class="stat-card">
 
         <div class="stat-icon blue">
             <i class="fa-solid fa-circle-check"></i>
         </div>
 
-        <h3>{{ approved_properties }}</h3>
+        <div class="stat-content">
 
-        <p>Approved Properties</p>
+            <h3>{{ active_properties }}</h3>
 
-    </div>
+            <p>Active Properties</p>
 
-    <div class="stat-card">
-
-        <div class="stat-icon orange">
-            <i class="fa-solid fa-clock"></i>
         </div>
 
-        <h3>{{ pending_properties }}</h3>
-
-        <p>Pending Approval</p>
-
     </div>
 
+
+    <!-- Total Bookings -->
     <div class="stat-card">
 
         <div class="stat-icon purple">
             <i class="fa-solid fa-calendar-check"></i>
         </div>
 
-        <h3>{{ total_bookings }}</h3>
+        <div class="stat-content">
 
-        <p>Total Bookings</p>
+            <h3>{{ total_bookings }}</h3>
+
+            <p>Total Bookings</p>
+
+        </div>
 
     </div>
 
 </div>
+
+
+<!-- ==============================
+     BOOKING TRENDS
+============================== -->
+
+<div class="dashboard-chart-card">
+
+    <div class="chart-header">
+
+        <h3>Booking Trends</h3>
+
+        <p>Monthly booking activity for your properties</p>
+
+    </div>
+
+
+    <div class="chart-container">
+
+        <canvas id="bookingChart"></canvas>
+
+    </div>
+
+</div>
+
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    const bookingCounts = {{ booking_trends | tojson }};
+
+    const bookingMonths = [
+        "Jan", "Feb", "Mar", "Apr",
+        "May", "Jun", "Jul", "Aug",
+        "Sep", "Oct", "Nov", "Dec"
+    ];
+
+    const ctx = document.getElementById("bookingChart");
+
+    new Chart(ctx, {
+
+        type: "line",
+
+        data: {
+
+            labels: bookingMonths,
+
+            datasets: [{
+                label: "Bookings",
+                data: bookingCounts,
+                borderWidth: 3,
+                tension: 0.4,
+                fill: false,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+
+            scales: {
+
+                y: {
+                    beginAtZero: true,
+
+                    ticks: {
+                        precision: 0
+                    }
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
 
 {% endblock %}
