@@ -59,3 +59,5 @@ class Property(db.Model):
     nullable=False
     )
     area = db.Column(db.String(100), nullable=False)
+
+    

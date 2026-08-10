@@ -1,0 +1,296 @@
+{% extends "layouts/user_layout.html" %}
+
+{% block title %}
+My Bookings | StayNear
+{% endblock %}
+
+{% block content %}
+
+<div class="my-bookings-page">
+
+    <!-- Header -->
+    <div class="bookings-header">
+
+        <span class="bookings-label">
+            <i class="fa-solid fa-calendar-check"></i>
+            MY BOOKINGS
+        </span>
+
+        <h1>My Visit Requests</h1>
+
+        <p>
+            Track your property visit requests and booking status.
+        </p>
+
+    </div>
+
+
+    {% if bookings %}
+
+        <div class="bookings-list">
+
+            {% for booking in bookings %}
+
+                <div class="booking-card">
+
+                    <!-- Property -->
+                    <div class="booking-property">
+
+                        <div class="booking-property-icon">
+                            <i class="fa-solid fa-building"></i>
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                {{ booking.property.property_name }}
+                            </h3>
+
+                            <p>
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                {{ booking.property.area }},
+                                {{ booking.property.city }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Visit Details -->
+                    <div class="booking-info">
+
+                        <div class="booking-info-item">
+
+                            <span>
+                                <i class="fa-regular fa-calendar"></i>
+                                Visit Date
+                            </span>
+
+                            <strong>
+                                {{ booking.visit_date.strftime('%d %b %Y') }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="booking-info-item">
+
+                            <span>
+                                <i class="fa-regular fa-clock"></i>
+                                Visit Time
+                            </span>
+
+                            <strong>
+                                {{ booking.visit_time.strftime('%I:%M %p') }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Status -->
+                    <!-- Status -->
+<div class="booking-status-area">
+
+    {% if booking.booking_status == "Approved" %}
+
+        <span class="booking-status approved">
+            <i class="fa-solid fa-circle-check"></i>
+            Approved
+        </span>
+
+    {% elif booking.booking_status == "Rejected" %}
+
+        <span class="booking-status rejected">
+            <i class="fa-solid fa-circle-xmark"></i>
+            Rejected
+        </span>
+
+    {% elif booking.booking_status == "Cancelled" %}
+
+        <span class="booking-status cancelled">
+            <i class="fa-solid fa-ban"></i>
+            Cancelled
+        </span>
+
+    {% elif booking.booking_status == "Completed" %}
+
+        <span class="booking-status completed">
+            <i class="fa-solid fa-circle-check"></i>
+            Completed
+        </span>
+
+    {% else %}
+
+        <span class="booking-status pending">
+            <i class="fa-solid fa-clock"></i>
+            Pending
+        </span>
+
+        <form
+            method="POST"
+            action="{{ url_for(
+                'user.cancel_booking',
+                booking_id=booking.booking_id
+            ) }}"
+            class="cancel-booking-form"
+            onsubmit="return confirm('Are you sure you want to cancel this visit request?');"
+        >
+
+            <button
+                type="submit"
+                class="cancel-booking-btn"
+            >
+                <i class="fa-solid fa-xmark"></i>
+                Cancel Request
+            </button>
+
+        </form>
+
+    {% endif %}
+
+    {% if booking.booking_status == "Completed" %}
+
+    {% set existing_rating = booking.property.reviews
+        |selectattr("user_id", "equalto", session["user_id"])
+        |list
+        |first
+    %}
+
+    {% if existing_rating %}
+
+        <div class="rating-submitted">
+
+            <span class="rating-label">
+                Your Rating
+            </span>
+
+            <div class="submitted-stars">
+    {% for star in range(existing_rating.rating) %}
+        <span class="star-filled">★</span>
+    {% endfor %}
+</div>
+
+            <span class="rating-success">
+                <i class="fa-solid fa-circle-check"></i>
+                Rating submitted successfully
+            </span>
+
+        </div>
+
+    {% else %}
+
+        <form
+            method="POST"
+            action="{{ url_for(
+                'user.rate_property',
+                property_id=booking.property.property_id
+            ) }}"
+            class="rating-form"
+        >
+
+            <span class="rating-label">
+                Rate Property
+            </span>
+
+            <div class="rating-stars">
+
+    {% for star in range(1, 6) %}
+
+        <input
+            type="radio"
+            id="star-{{ booking.booking_id }}-{{ star }}"
+            name="rating"
+            value="{{ star }}"
+            required
+        >
+
+        <label
+            for="star-{{ booking.booking_id }}-{{ star }}"
+            title="{{ star }} star"
+        >
+            ★
+        </label>
+
+    {% endfor %}
+
+</div>
+
+            <button
+                type="submit"
+                class="rate-property-btn"
+            >
+                Submit Rating
+            </button>
+
+        </form>
+
+    {% endif %}
+
+{% endif %}
+
+</div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <!-- Empty State -->
+
+        <div class="no-bookings">
+
+            <div class="no-bookings-icon">
+                <i class="fa-regular fa-calendar-xmark"></i>
+            </div>
+
+            <h2>No bookings yet</h2>
+
+            <p>
+                You haven't requested a property visit yet.
+            </p>
+
+            <a href="{{ url_for('user.properties') }}">
+                <i class="fa-solid fa-building"></i>
+                Explore Properties
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+<script>
+document.querySelectorAll(".rating-stars").forEach(function(starsContainer) {
+
+    const labels = starsContainer.querySelectorAll("label");
+
+    labels.forEach(function(label, index) {
+
+        label.addEventListener("click", function() {
+
+            labels.forEach(function(item, i) {
+
+                if (i <= index) {
+                    item.style.color = "#f59e0b";
+                } else {
+                    item.style.color = "#d1d5db";
+                }
+
+            });
+
+        });
+
+    });
+
+});
+</script>
+
+{% endblock %}

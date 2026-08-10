@@ -1,0 +1,426 @@
+{% extends "layouts/user_layout.html" %}
+
+{% block title %}Home | StayNear{% endblock %}
+
+{% block content %}
+
+<div class="user-home">
+
+    <!-- ============================= -->
+    <!-- HERO -->
+    <!-- ============================= -->
+
+    <section class="home-hero">
+
+        <div class="hero-content">
+
+            <span class="hero-badge">
+                <i class="fa-solid fa-house"></i>
+                Find your perfect stay
+            </span>
+
+            <h1>
+                Find a Place That
+                <span>Feels Like Home.</span>
+            </h1>
+
+            <p>
+                Discover hostels, PGs and rooms that match
+                your location, budget and preferences.
+            </p>
+
+            <!-- Search -->
+
+            <form
+                action="{{ url_for('user.search_properties') }}"
+                method="GET"
+                class="home-search">
+
+                <div class="search-field">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    <div>
+                        <label>Location</label>
+
+                        <input
+                            type="text"
+                            name="location"
+                            placeholder="City or area">
+                    </div>
+
+                </div>
+
+
+                <div class="search-field">
+
+                    <i class="fa-solid fa-building"></i>
+
+                    <div>
+                        <label>Property Type</label>
+
+                        <div class="custom-select" id="propertyTypeSelect">
+
+    <div class="custom-select-trigger">
+        <span>Any type</span>
+        <i class="fa-solid fa-chevron-down"></i>
+    </div>
+
+    <div class="custom-options">
+
+        <div class="custom-option selected" data-value="">
+            Any type
+        </div>
+
+        <div class="custom-option" data-value="Hostel">
+            Hostel
+        </div>
+
+        <div class="custom-option" data-value="PG">
+            PG
+        </div>
+
+        <div class="custom-option" data-value="Room">
+            Room
+        </div>
+
+        <div class="custom-option" data-value="Flat">
+            Flat
+        </div>
+
+        <div class="custom-option" data-value="Apartment">
+            Apartment
+        </div>
+
+    </div>
+
+    <input
+        type="hidden"
+        name="property_type"
+        id="propertyTypeValue"
+        value=""
+    >
+
+</div>
+    </div>
+
+                </div>
+
+                            <div class="search-field">
+
+                <i class="fa-solid fa-users"></i>
+
+                <div>
+                    <label>Gender Preference</label>
+
+                    <div class="custom-select" id="genderSelect">
+
+                        <div class="custom-select-trigger">
+                            <span>Any</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+
+                        <div class="custom-options">
+
+                            <div class="custom-option selected" data-value="">
+                                Any
+                            </div>
+
+                            <div class="custom-option" data-value="Boys">
+                                Boys
+                            </div>
+
+                            <div class="custom-option" data-value="Girls">
+                                Girls
+                            </div>
+
+                            <div class="custom-option" data-value="Co-ed">
+                                Co-ed
+                            </div>
+
+                        </div>
+
+                        <input
+                            type="hidden"
+                            name="gender"
+                            id="genderValue"
+                            value=""
+                        >
+
+                    </div>
+                </div>
+
+            </div>
+
+
+                <div class="search-field">
+
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                    <div>
+                        <label>Max Budget</label>
+
+                        <input
+                            type="number"
+                            name="budget"
+                            placeholder="₹ Monthly">
+                    </div>
+
+                </div>
+
+
+                <button type="submit">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    Search
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- WHY STAYNEAR -->
+    <!-- ============================= -->
+
+    <section class="why-staynear">
+
+        <div class="section-heading">
+
+            <span>Why StayNear?</span>
+
+            <h2>
+                Everything you need to find your stay
+            </h2>
+
+            <p>
+                Search smarter, compare easily and find
+                properties that suit you.
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+                <h3>Easy Search</h3>
+
+                <p>
+                    Search properties using location,
+                    property type and budget.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon ai-icon">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+
+                <h3>Smart Recommendations</h3>
+
+                <p>
+                    Get personalized property suggestions
+                    based on your selected preferences.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <h3>Organized Listings</h3>
+
+                <p>
+                    View property details, rent,
+                    rooms and availability in one place.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- CTA -->
+    <!-- ============================= -->
+
+    <section class="home-cta">
+
+        <div>
+
+            <h2>
+                Ready to find your stay?
+            </h2>
+
+            <p>
+                Explore properties and find the one
+                that fits your needs.
+            </p>
+
+        </div>
+
+        <a
+            href="{{ url_for('user.search_properties') }}"
+            class="cta-btn">
+
+            Explore Properties
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+    </section>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const select = document.getElementById("propertyTypeSelect");
+
+    if (!select) return;
+
+    const trigger = select.querySelector(".custom-select-trigger");
+    const triggerText = trigger.querySelector("span");
+
+    const options = select.querySelectorAll(".custom-option");
+
+    const hiddenInput =
+        document.getElementById("propertyTypeValue");
+
+
+    /* Open / close dropdown */
+
+    trigger.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        select.classList.toggle("open");
+
+    });
+
+
+    /* Select option */
+
+    options.forEach(function (option) {
+
+        option.addEventListener("click", function () {
+
+            const value = this.dataset.value;
+
+            const text = this.textContent.trim();
+
+            triggerText.textContent = text;
+
+            hiddenInput.value = value;
+
+
+            options.forEach(function (item) {
+
+                item.classList.remove("selected");
+
+            });
+
+            this.classList.add("selected");
+
+            select.classList.remove("open");
+
+        });
+
+    });
+
+
+    /* Close when clicking outside */
+
+    document.addEventListener("click", function () {
+
+        select.classList.remove("open");
+
+    });
+
+});
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const genderSelect = document.getElementById("genderSelect");
+
+    if (!genderSelect) return;
+
+    const trigger = genderSelect.querySelector(".custom-select-trigger");
+    const triggerText = trigger.querySelector("span");
+    const options = genderSelect.querySelectorAll(".custom-option");
+    const hiddenInput = document.getElementById("genderValue");
+
+
+    // Open / close Gender dropdown
+    trigger.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        genderSelect.classList.toggle("open");
+
+    });
+
+
+    // Select Gender
+    options.forEach(function (option) {
+
+        option.addEventListener("click", function (event) {
+
+            event.stopPropagation();
+
+            const value = option.getAttribute("data-value");
+            const text = option.textContent.trim();
+
+            triggerText.textContent = text;
+
+            hiddenInput.value = value;
+
+            options.forEach(function (item) {
+                item.classList.remove("selected");
+            });
+
+            option.classList.add("selected");
+
+            genderSelect.classList.remove("open");
+
+        });
+
+    });
+
+
+    // Close when clicking outside
+    document.addEventListener("click", function () {
+
+        genderSelect.classList.remove("open");
+
+    });
+
+});
+</script>
+
+{% endblock %}

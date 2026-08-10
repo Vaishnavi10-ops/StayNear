@@ -1,0 +1,159 @@
+{% extends "layouts/user_layout.html" %}
+
+{% block title %}Search Results | StayNear{% endblock %}
+
+{% block content %}
+
+<div class="search-results-page">
+
+    <div class="results-header">
+
+        <div>
+            <h2>Available Properties 🏠</h2>
+
+            <p>
+                {% if properties %}
+                    {{ properties|length }} properties found
+                {% else %}
+                    No properties found
+                {% endif %}
+            </p>
+        </div>
+
+        <a href="{{ url_for('user.home') }}" class="back-search-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            Modify Search
+        </a>
+
+    </div>
+
+
+    {% if properties %}
+
+    <div class="property-results">
+
+        {% for property in properties %}
+
+        <div class="user-property-card">
+
+            <!-- Image -->
+
+            <div class="user-property-image">
+
+                {% if property.images and property.images|length > 0 %}
+
+                    <img
+                        src="{{ url_for('static', filename=property.images[0].image_path) }}"
+                        alt="{{ property.property_name }}">
+
+                {% else %}
+
+                    <div class="no-property-image">
+                        <i class="fa-solid fa-house"></i>
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Details -->
+
+            <div class="user-property-details">
+
+                <div class="user-property-title">
+
+                    <h3>{{ property.property_name }}</h3>
+
+                    <span class="property-status">
+                        {{ property.property_status }}
+                    </span>
+
+                </div>
+
+
+                <p class="user-property-location">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    {{ property.area }}, {{ property.city }}
+
+                </p>
+
+
+                <div class="user-property-info">
+
+                    <span>
+                        <i class="fa-solid fa-building"></i>
+                        {{ property.property_type }}
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-users"></i>
+                        {{ property.gender_preference }}
+                    </span>
+
+                    <span>
+                        <i class="fa-solid fa-bed"></i>
+                        {{ property.available_rooms }} Rooms
+                    </span>
+
+                </div>
+
+
+                <div class="user-property-bottom">
+
+                    <div class="user-rent">
+
+                        ₹{{ "{:,.0f}".format(property.monthly_rent|float) }}
+
+                        <small>/ month</small>
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for(
+                            'user.view_property',
+                            property_id=property.property_id
+                        ) }}"
+                        class="view-property-btn">
+
+                        <i class="fa-solid fa-eye"></i>
+                        View Property
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="no-results">
+
+        <i class="fa-solid fa-house-circle-xmark"></i>
+
+        <h3>No Properties Found</h3>
+
+        <p>
+            Try changing your location, budget or other filters.
+        </p>
+
+        <a href="{{ url_for('user.home') }}">
+            Search Again
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

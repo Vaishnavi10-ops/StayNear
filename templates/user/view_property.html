@@ -1,0 +1,396 @@
+{% extends "layouts/user_layout.html" %}
+
+{% block title %}
+{{ property.property_name }} - StayNear
+{% endblock %}
+
+{% block content %}
+
+<!-- ==========================================
+     BACK TO SEARCH
+========================================== -->
+
+<div class="property-back">
+
+    <a href="{{ url_for('user.search_properties') }}">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back to Search
+
+    </a>
+
+</div>
+
+
+<!-- ==========================================
+     MAIN PROPERTY CARD
+========================================== -->
+
+<div class="property-details-card">
+
+
+    <!-- ======================================
+         PROPERTY IMAGE GALLERY
+    ======================================= -->
+
+    {% if property.images and property.images|length > 0 %}
+
+        <div class="property-details-gallery">
+
+            {% for image in property.images %}
+
+                <div class="property-details-image">
+
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename=image.image_path
+                        ) }}"
+                        alt="{{ property.property_name }}"
+                    >
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <!-- No image available -->
+
+        <div class="property-details-no-image">
+
+            <div class="no-image-icon">
+
+                <i class="fa-solid fa-building"></i>
+
+            </div>
+
+            <h3>No Images Available</h3>
+
+            <p>
+                The owner has not uploaded images for this property yet.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+
+    <!-- ======================================
+         HEADER
+    ======================================= -->
+
+    <div class="property-details-header">
+
+        <div class="property-title-area">
+
+            <span class="property-type-badge">
+
+                {{ property.property_type }}
+
+            </span>
+
+
+            <h1>
+                {{ property.property_name }}
+            </h1>
+
+            {% if property.reviews %}
+    <div class="property-rating">
+        <i class="fa-solid fa-star"></i>
+
+        <strong>
+            {{ "%.1f"|format(
+                (property.reviews | map(attribute="rating") | sum)
+                / (property.reviews | length)
+            ) }}
+        </strong>
+
+        <span>
+            ({{ property.reviews | length }} ratings)
+        </span>
+    </div>
+{% endif %}
+
+
+            <p class="property-location">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                {{ property.area }}, {{ property.city }}
+
+            </p>
+
+        </div>
+
+
+        <div class="property-price">
+
+            <strong>
+
+                ₹{{ "{:,.0f}".format(
+                    property.monthly_rent|float
+                ) }}
+
+            </strong>
+
+            <span>
+                / month
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================
+         PROPERTY INFORMATION
+    ======================================= -->
+
+    <div class="property-info-grid">
+
+
+        <!-- Available Rooms -->
+
+        <div class="property-info-item">
+
+            <div class="property-info-icon">
+
+                <i class="fa-solid fa-door-open"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Available Rooms
+                </span>
+
+                <strong>
+                    {{ property.available_rooms }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Gender -->
+
+        <div class="property-info-item">
+
+            <div class="property-info-icon">
+
+                <i class="fa-solid fa-users"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Gender Preference
+                </span>
+
+                <strong>
+                    {{ property.gender_preference }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Security Deposit -->
+
+        <div class="property-info-item">
+
+            <div class="property-info-icon">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Security Deposit
+                </span>
+
+                <strong>
+
+                    ₹{{ "{:,.0f}".format(
+                        property.security_deposit|float
+                    ) }}
+
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Area -->
+
+        <div class="property-info-item">
+
+            <div class="property-info-icon">
+
+                <i class="fa-solid fa-ruler-combined"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    Area
+                </span>
+
+                <strong>
+
+                    {{ property.area or "Not specified" }}
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================
+         DESCRIPTION
+    ======================================= -->
+
+    <div class="property-section">
+
+        <h2>
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            About this property
+
+        </h2>
+
+
+        <p>
+
+            {{ property.description or
+            "No description has been provided for this property." }}
+
+        </p>
+
+    </div>
+
+
+
+    <!-- ======================================
+         ADDRESS
+    ======================================= -->
+
+    <div class="property-section">
+
+        <h2>
+
+            <i class="fa-solid fa-location-dot"></i>
+
+            Property Address
+
+        </h2>
+
+
+        <p>
+            {{ property.address }}
+        </p>
+
+
+        <p>
+
+            {{ property.city }}
+
+            {% if property.pincode %}
+
+                - {{ property.pincode }}
+
+            {% endif %}
+
+        </p>
+
+    </div>
+
+
+
+    <!-- ======================================
+         AI RECOMMENDATION
+    ======================================= -->
+
+    <div class="ai-property-box">
+
+        <div class="ai-property-icon">
+
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                StayNear AI Recommendation
+            </h3>
+
+            <p>
+                This section will show why this property
+                matches the user's selected preferences.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================
+         ACTIONS
+    ======================================= -->
+
+    <div class="property-actions">
+
+
+        <a
+            href="{{ url_for('user.search_properties') }}"
+            class="property-back-btn"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back
+
+        </a>
+
+
+        <a
+    href="{{ url_for(
+        'user.book_visit',
+        property_id=property.property_id
+    ) }}"
+    class="property-book-btn"
+>
+
+    <i class="fa-solid fa-calendar-check"></i>
+    Book a Visit
+
+</a>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

@@ -40,7 +40,7 @@ def login():
                 return redirect(url_for("owner.dashboard"))
 
             else:
-                return redirect(url_for("user.dashboard"))
+                return redirect(url_for("user.home"))
 
         flash(result, "danger")
 

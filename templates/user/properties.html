@@ -1,0 +1,341 @@
+{% extends "layouts/user_layout.html" %}
+
+{% block title %}Properties | StayNear{% endblock %}
+
+{% block content %}
+
+<div class="properties-page">
+
+    <!-- ============================= -->
+    <!-- PAGE HEADER -->
+    <!-- ============================= -->
+
+    <section class="properties-header">
+
+        <div class="properties-header-content">
+
+            <span class="properties-label">
+                <i class="fa-solid fa-building"></i>
+                STAYNEAR PROPERTIES
+            </span>
+
+            <h1>Find Your Perfect Stay</h1>
+
+            <p>
+                Explore verified hostels, PGs, rooms and apartments
+                that match your needs.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- RESULTS HEADER -->
+    <!-- ============================= -->
+
+    <section class="results-header">
+
+        <div class="results-title">
+
+            <h2>
+                Available Properties
+                <span class="home-emoji">🏠</span>
+            </h2>
+
+            <p>
+                {{ properties|length }} properties found
+            </p>
+
+        </div>
+
+
+        <!-- Modify Search -->
+
+        <a
+            href="{{ url_for('user.home') }}"
+            class="modify-search-btn"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Modify Search
+
+        </a>
+
+    </section>
+
+
+    <!-- ============================= -->
+    <!-- PROPERTY GRID -->
+    <!-- ============================= -->
+
+    <section class="property-grid">
+
+        {% for property in properties %}
+
+        <article class="property-card">
+
+
+            <!-- ============================= -->
+            <!-- PROPERTY IMAGE -->
+            <!-- ============================= -->
+
+            <div class="property-image">
+
+                {% if property.images and property.images|length > 0 %}
+
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename=property.images[0].image_path
+                        ) }}"
+                        alt="{{ property.property_name }}"
+                    >
+
+                {% else %}
+
+                    <!-- Temporary placeholder -->
+                    <div class="property-image-placeholder">
+
+                        <div class="placeholder-icon">
+
+                            <i class="fa-solid fa-building"></i>
+
+                        </div>
+
+                        <span>
+                            Property Image
+                        </span>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- AI Recommendation -->
+
+                {% if loop.index <= 3 %}
+
+                    <span class="ai-recommended">
+
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                        AI Recommended
+
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- ============================= -->
+            <!-- PROPERTY BODY -->
+            <!-- ============================= -->
+
+            <div class="property-card-body">
+
+
+                <!-- Property Name -->
+
+                <h3 class="property-name">
+
+                    {{ property.property_name }}
+
+                </h3>
+
+                {% if property.reviews %}
+    <div class="property-rating">
+        <i class="fa-solid fa-star"></i>
+
+        <strong>
+            {{ "%.1f"|format(
+                (property.reviews | map(attribute="rating") | sum)
+                / (property.reviews | length)
+            ) }}
+        </strong>
+
+        <span>
+            ({{ property.reviews | length }} ratings)
+        </span>
+    </div>
+{% endif %}
+
+
+                <!-- Location -->
+
+                <p class="property-location">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    {% if property.area %}
+                        {{ property.area }},
+                    {% endif %}
+
+                    {{ property.city }}
+
+                </p>
+
+
+                <!-- ============================= -->
+                <!-- PROPERTY INFORMATION -->
+                <!-- ============================= -->
+
+                <div class="property-meta">
+
+
+                    <span class="property-meta-item">
+
+                        <i class="fa-solid fa-building"></i>
+
+                        {{ property.property_type }}
+
+                    </span>
+
+
+                    <span class="property-meta-item">
+
+                        <i class="fa-solid fa-users"></i>
+
+                        {{ property.gender_preference }}
+
+                    </span>
+
+
+                    <span class="property-meta-item">
+
+                        <i class="fa-solid fa-bed"></i>
+
+                        {{ property.available_rooms or 0 }}
+                        Rooms
+
+                    </span>
+
+
+                </div>
+
+
+                <!-- ============================= -->
+                <!-- CARD BOTTOM -->
+                <!-- ============================= -->
+
+                <div class="property-card-footer">
+
+
+                    <!-- Rent -->
+
+                    <div class="rent-section">
+
+                        <strong class="property-rent">
+
+                            ₹{{ "{:,.0f}".format(
+                                property.monthly_rent|float
+                            ) }}
+
+                        </strong>
+
+                        <span class="rent-label">
+                            / month
+                        </span>
+
+                    </div>
+
+
+                    <!-- Availability -->
+
+                    {% if property.available and property.available_rooms > 0 %}
+
+                        <span class="property-available">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            Available
+
+                        </span>
+
+                    {% else %}
+
+                        <span class="property-unavailable">
+
+                            <i class="fa-solid fa-circle-xmark"></i>
+
+                            Not Available
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- ============================= -->
+                <!-- VIEW PROPERTY -->
+                <!-- ============================= -->
+
+                <a
+                    href="{{ url_for(
+                        'user.view_property',
+                        property_id=property.property_id
+                    ) }}"
+                    class="view-property-btn"
+                >
+
+                    <span>
+                        View Details
+                    </span>
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+        </article>
+
+
+        {% else %}
+
+
+        <!-- ============================= -->
+        <!-- EMPTY STATE -->
+        <!-- ============================= -->
+
+        <div class="no-properties">
+
+            <div class="no-properties-icon">
+
+                <i class="fa-solid fa-building-circle-xmark"></i>
+
+            </div>
+
+            <h3>
+                No properties found
+            </h3>
+
+            <p>
+                We couldn't find any properties matching
+                your search.
+            </p>
+
+            <a
+                href="{{ url_for('user.home') }}"
+                class="search-again-btn"
+            >
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                Search Again
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+</div>
+
+{% endblock %}

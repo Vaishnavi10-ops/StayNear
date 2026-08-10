@@ -41,7 +41,9 @@ class Booking(db.Model):
         db.Enum(
             "Pending",
             "Approved",
-            "Rejected"
+            "Rejected",
+            "Completed",
+            "Cancelled"
         ),
         default="Pending"
     )

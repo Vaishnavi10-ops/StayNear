@@ -207,15 +207,43 @@
 
                     {% if booking.booking_status == "Pending" %}
 
-                    <button class="edit-btn">
-                        <i class="fa-solid fa-check"></i>
-                        Approve
-                    </button>
+                        <form
+                            method="POST"
+                            action="{{ url_for('owner.approve_booking', booking_id=booking.booking_id) }}"
+                            style="display:inline;"
+                        >
+                            <button type="submit" class="edit-btn">
+                                <i class="fa-solid fa-check"></i>
+                                Approve
+                            </button>
+                        </form>
 
-                    <button class="delete-btn">
-                        <i class="fa-solid fa-xmark"></i>
-                        Reject
-                    </button>
+                        <form
+                            method="POST"
+                            action="{{ url_for('owner.reject_booking', booking_id=booking.booking_id) }}"
+                            style="display:inline;"
+                        >
+                            <button type="submit" class="delete-btn">
+                                <i class="fa-solid fa-xmark"></i>
+                                Reject
+                            </button>
+                        </form>
+
+                    {% elif booking.booking_status == "Approved" %}
+
+                        <form
+                            method="POST"
+                            action="{{ url_for(
+                                'owner.complete_booking',
+                                booking_id=booking.booking_id
+                            ) }}"
+                            style="display:inline;"
+                        >
+                            <button type="submit" class="edit-btn">
+                                <i class="fa-solid fa-check-double"></i>
+                                Mark Completed
+                            </button>
+                        </form>
 
                     {% endif %}
 

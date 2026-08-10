@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}StayNear{% endblock %}
+    </title>
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- User CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/user.css') }}">
+
+    {% block extra_css %}{% endblock %}
+
+</head>
+
+<body>
+
+    <!-- ============================= -->
+    <!-- NAVBAR -->
+    <!-- ============================= -->
+
+    <header class="user-navbar">
+
+        <!-- Logo -->
+
+        <a href="{{ url_for('user.home') }}"
+           class="user-logo">
+
+            <div class="user-logo-icon">
+
+                <i class="fa-solid fa-house"></i>
+
+            </div>
+
+            <div class="user-logo-text">
+
+                <h2>StayNear</h2>
+
+                <span>Find Your Perfect Stay</span>
+
+            </div>
+
+        </a>
+
+
+        <!-- Navigation -->
+
+        <nav class="user-nav">
+
+            <a
+                href="{{ url_for('user.home') }}"
+                class="{% if request.endpoint == 'user.home' %}active{% endif %}">
+
+                <i class="fa-solid fa-house"></i>
+
+                Home
+
+            </a>
+
+
+            <a
+    href="{{ url_for('user.properties') }}"
+    class="{% if request.endpoint in ['user.properties', 'user.search_properties'] %}active{% endif %}">
+
+    <i class="fa-solid fa-building"></i>
+
+    Properties
+
+</a>
+
+
+            <a
+                href="{{ url_for('user.my_bookings') }}"
+                class="{% if request.endpoint == 'user.my_bookings' %}active{% endif %}">
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+                My Bookings
+
+            </a>
+
+        </nav>
+
+
+        <!-- User -->
+
+        <div class="user-navbar-right">
+
+            <a
+                href="{{ url_for('user.profile') }}"
+                class="user-profile-btn">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span>Profile</span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('auth.logout') }}"
+                class="user-logout-btn">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- ============================= -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================= -->
+
+    <main class="user-main">
+
+        {% with messages = get_flashed_messages(
+            with_categories=true
+        ) %}
+
+            {% if messages %}
+
+                <div class="flash-messages">
+
+                    {% for category, message in messages %}
+
+                        <div class="flash-message {{ category }}">
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+
+    <!-- ============================= -->
+    <!-- FOOTER -->
+    <!-- ============================= -->
+
+    <footer class="user-footer">
+
+        <div>
+
+            <h3>StayNear</h3>
+
+            <p>
+                Find a place that feels like home.
+            </p>
+
+        </div>
+
+        <div>
+
+            <p>
+                © 2026 StayNear. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    {% block extra_js %}{% endblock %}
+
+</body>
+
+</html>

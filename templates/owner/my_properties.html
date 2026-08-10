@@ -181,6 +181,25 @@
 
                     </p>
 
+                    {% if property.reviews %}
+    <div class="owner-property-rating">
+
+        <i class="fa-solid fa-star"></i>
+
+        <strong>
+            {{ "%.1f"|format(
+                (property.reviews | map(attribute="rating") | sum)
+                / (property.reviews | length)
+            ) }}
+        </strong>
+
+        <span>
+            ({{ property.reviews | length }} ratings)
+        </span>
+
+    </div>
+{% endif %}
+
                 </div>
 
 

@@ -1,0 +1,70 @@
+{% extends "layouts/user_layout.html" %}
+
+{% block title %}My Profile | StayNear{% endblock %}
+
+{% block content %}
+
+<div class="user-profile-page">
+
+    <div class="profile-header">
+
+        <h2>👤 My Profile</h2>
+
+        <p>Manage your StayNear account information.</p>
+
+    </div>
+
+
+    <div class="profile-card">
+
+        <div class="profile-avatar">
+
+            <i class="fa-solid fa-user"></i>
+
+        </div>
+
+
+        <div class="profile-info">
+
+            <div class="profile-row">
+
+                <span>Full Name</span>
+
+                <strong>{{ user.full_name }}</strong>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <span>Email</span>
+
+                <strong>{{ user.email }}</strong>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <span>Phone</span>
+
+                <strong>{{ user.phone }}</strong>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <span>Account Type</span>
+
+                <strong>User</strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

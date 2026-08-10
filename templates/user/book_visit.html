@@ -1,0 +1,214 @@
+{% extends "layouts/user_layout.html" %}
+
+{% block title %}
+Book a Visit - StayNear
+{% endblock %}
+
+{% block content %}
+
+<div class="booking-page">
+
+    <!-- Back -->
+    <div class="booking-back">
+        <a href="{{ url_for(
+            'user.view_property',
+            property_id=property.property_id
+        ) }}">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Property
+        </a>
+    </div>
+
+
+    <!-- Page Header -->
+    <div class="booking-header">
+
+        <span class="booking-label">
+            <i class="fa-solid fa-calendar-check"></i>
+            BOOK A VISIT
+        </span>
+
+        <h1>Schedule Your Visit</h1>
+
+        <p>
+            Choose a convenient date and time to visit
+            this property.
+        </p>
+
+    </div>
+
+
+    <!-- Booking Layout -->
+    <div class="booking-layout">
+
+
+        <!-- Property Summary -->
+        <div class="booking-property-card">
+
+            <div class="booking-property-icon">
+                <i class="fa-solid fa-building"></i>
+            </div>
+
+            <div>
+
+                <span>VISITING</span>
+
+                <h2>
+                    {{ property.property_name }}
+                </h2>
+
+                <p>
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{ property.area }}, {{ property.city }}
+                </p>
+
+            </div>
+
+            <div class="booking-property-rent">
+
+                <strong>
+                    ₹{{ "{:,.0f}".format(
+                        property.monthly_rent|float
+                    ) }}
+                </strong>
+
+                <span>/ month</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Booking Form -->
+        <div class="booking-form-card">
+
+            <h2>
+                <i class="fa-solid fa-calendar-plus"></i>
+                Visit Details
+            </h2>
+
+            <p class="booking-form-subtitle">
+                Select your preferred visit schedule.
+            </p>
+
+
+            <form
+                method="POST"
+                action="{{ url_for(
+                    'user.book_visit',
+                    property_id=property.property_id
+                ) }}"
+            >
+
+                <!-- Date -->
+                <div class="booking-form-group">
+
+                    <label for="visit_date">
+                        Visit Date
+                    </label>
+
+                    <div class="booking-input">
+
+                        <i class="fa-regular fa-calendar"></i>
+
+                        <input
+                            type="date"
+                            id="visit_date"
+                            name="visit_date"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Time -->
+                <div class="booking-form-group">
+
+                    <label for="visit_time">
+                        Visit Time
+                    </label>
+
+                    <div class="booking-input">
+
+                        <i class="fa-regular fa-clock"></i>
+
+                        <input
+                            type="time"
+                            id="visit_time"
+                            name="visit_time"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Message -->
+                <div class="booking-form-group">
+
+                    <label for="message">
+                        Message
+                        <span>(Optional)</span>
+                    </label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="4"
+                        placeholder="Anything you would like the owner to know?"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- Info -->
+                <div class="booking-info">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    <p>
+                        Your booking request will be sent to
+                        the property owner for approval.
+                    </p>
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="booking-actions">
+
+                    <a
+                        href="{{ url_for(
+                            'user.view_property',
+                            property_id=property.property_id
+                        ) }}"
+                        class="booking-cancel-btn"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="booking-submit-btn"
+                    >
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                        Request Visit
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

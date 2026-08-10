@@ -292,6 +292,24 @@ def confirm_booking(booking_id):
     return redirect(url_for("owner.bookings"))
 
 
+@owner.route("/owner/complete-booking/<int:booking_id>", methods=["POST"])
+def complete_booking(booking_id):
+
+    if "user_id" not in session or session["role"] != "Owner":
+        return redirect(url_for("auth.login"))
+
+    booking = Booking.query.get_or_404(booking_id)
+
+    # Only approved bookings can be completed
+    if booking.booking_status == "Approved":
+
+        booking.booking_status = "Completed"
+
+        db.session.commit()
+
+    return redirect(url_for("owner.bookings"))
+
+
 @owner.route("/owner/profile", methods=["GET", "POST"])
 def profile():
 
@@ -457,3 +475,35 @@ def reviews():
         average_rating=average_rating,
         total_reviews=len(reviews)
     )
+
+@owner.route("/owner/bookings/<int:booking_id>/approve", methods=["POST"])
+def approve_booking(booking_id):
+
+    if "user_id" not in session or session["role"] != "Owner":
+        return redirect(url_for("auth.login"))
+
+    booking = Booking.query.get_or_404(booking_id)
+
+    booking.booking_status = "Approved"
+
+    db.session.commit()
+
+    flash("Booking approved successfully.", "success")
+
+    return redirect(url_for("owner.bookings"))
+
+@owner.route("/owner/bookings/<int:booking_id>/reject", methods=["POST"])
+def reject_booking(booking_id):
+
+    if "user_id" not in session or session["role"] != "Owner":
+        return redirect(url_for("auth.login"))
+
+    booking = Booking.query.get_or_404(booking_id)
+
+    booking.booking_status = "Rejected"
+
+    db.session.commit()
+
+    flash("Booking rejected.", "success")
+
+    return redirect(url_for("owner.bookings"))

@@ -7,7 +7,8 @@ class Review(db.Model):
 
     review_id = db.Column(
         db.Integer,
-        primary_key=True
+        primary_key=True,
+        autoincrement=True
     )
 
     property_id = db.Column(
@@ -27,21 +28,17 @@ class Review(db.Model):
         nullable=False
     )
 
-    review = db.Column(
-        db.Text
-    )
-
     review_date = db.Column(
         db.DateTime,
         server_default=db.func.current_timestamp()
     )
 
-    property = db.relationship(
-        "Property",
-        backref="reviews"
-    )
-
     user = db.relationship(
         "User",
-        backref="reviews"
+        backref=db.backref("reviews", lazy=True)
+    )
+
+    property = db.relationship(
+        "Property",
+        backref=db.backref("reviews", lazy=True)
     )

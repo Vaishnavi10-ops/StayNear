@@ -2066,3 +2066,25 @@ input[type=file]{
     }
 
 }
+
+.owner-property-rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 7px;
+    font-size: 14px;
+}
+
+.owner-property-rating i {
+    color: #f59e0b;
+    font-size: 14px;
+}
+
+.owner-property-rating strong {
+    color: #111827;
+    font-weight: 700;
+}
+
+.owner-property-rating span {
+    color: #6b7280;
+}
