@@ -39,6 +39,11 @@ def login():
             elif result["role"] == "Owner":
                 return redirect(url_for("owner.dashboard"))
 
+
+
+
+
+
             else:
                 return redirect(url_for("user.home"))
 

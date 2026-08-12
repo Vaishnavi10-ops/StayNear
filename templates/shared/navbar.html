@@ -2,44 +2,73 @@
 
     <div class="container">
 
-        <a class="navbar-brand fw-bold" href="/">
-            <i class="bi bi-house-heart-fill text-success"></i>
+        <!-- Logo -->
+        <a class="navbar-brand" href="{{ url_for('main.home') }}">
+            <i class="bi bi-house-heart-fill"></i>
             StayNear
         </a>
 
-        <button class="navbar-toggler"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbar">
-
+        <!-- Mobile Toggle -->
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbar"
+            aria-controls="navbar"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
             <span class="navbar-toggler-icon"></span>
-
         </button>
 
+        <!-- Navigation -->
         <div class="collapse navbar-collapse" id="navbar">
 
             <ul class="navbar-nav mx-auto">
 
                 <li class="nav-item">
-                    <a class="nav-link active" href="/">Home</a>
+                    <a
+                        href="{{ url_for('main.home') }}"
+                        class="nav-link"
+                    >
+                        Home
+                    </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a
+                        href="{{ url_for('main.about') }}"
+                        class="nav-link"
+                    >
+                        About
+                    </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
+                    <a
+                        href="{{ url_for('main.contact') }}"
+                        class="nav-link"
+                    >
+                        Contact
+                    </a>
                 </li>
 
             </ul>
 
-            <div>
+            <!-- Authentication -->
+            <div class="navbar-buttons">
 
-                <a href="{{ url_for('auth.login') }}" class="btn btn-login me-2">
+                <a
+                    href="{{ url_for('auth.login') }}"
+                    class="btn btn-login me-2"
+                >
                     Login
                 </a>
 
-                <a href="{{ url_for('auth.register') }}" class="btn btn-register">
+                <a
+                    href="{{ url_for('auth.register') }}"
+                    class="btn btn-register"
+                >
                     Register
                 </a>
 

@@ -1,120 +1,424 @@
 {% extends "layouts/owner_layout.html" %}
 
 {% block title %}
-Dashboard
+Dashboard | StayNear
 {% endblock %}
 
 {% block content %}
 
-<div class="dashboard-header">
+<div class="dashboard-page">
 
-    <h2>Welcome Back 👋</h2>
+    <!-- ==========================================
+         WELCOME HERO
+    ========================================== -->
 
-    <p>Manage your properties efficiently.</p>
+    <section class="welcome-hero">
 
-</div>
+        <div class="welcome-content">
+
+            <div class="welcome-label">
+                <i class="fa-solid fa-house"></i>
+                <span>OWNER PANEL</span>
+            </div>
+
+            <h1>
+                Welcome Back 👋
+            </h1>
+
+            <p>
+                Manage your properties, track bookings and grow your
+                StayNear presence effortlessly.
+            </p>
+
+            <div class="welcome-line"></div>
+
+            <div class="welcome-mini-stats">
+
+                <div class="mini-stat">
+                    <span class="mini-icon">
+                        <i class="fa-solid fa-building"></i>
+                    </span>
+
+                    <strong>{{ total_properties }}</strong>
+                    <span>Properties</span>
+                </div>
 
 
-<!-- ==============================
-     DASHBOARD STATISTICS
-============================== -->
+                <div class="mini-stat">
+                    <span class="mini-icon">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </span>
 
-<div class="dashboard-stats">
+                    <strong>{{ active_properties }}</strong>
+                    <span>Active</span>
+                </div>
 
-    <!-- Total Properties -->
-    <div class="stat-card">
+            </div>
 
-        <div class="stat-icon green">
-            <i class="fa-solid fa-building"></i>
         </div>
 
-        <div class="stat-content">
 
-            <h3>{{ total_properties }}</h3>
+        <!-- Illustration -->
 
-            <p>Total Properties</p>
+        <div class="welcome-illustration">
+
+            <img
+                src="{{ url_for('static', filename='images/owner-dashboard.png') }}"
+                alt="StayNear neighborhood"
+            >
 
         </div>
 
+
+        <!-- Small floating card -->
+
+        <div class="welcome-floating-card">
+
+    <div class="floating-card-icon">
+        <i class="fa-solid fa-house"></i>
     </div>
 
-
-    <!-- Active Properties -->
-    <div class="stat-card">
-
-        <div class="stat-icon blue">
-            <i class="fa-solid fa-circle-check"></i>
-        </div>
-
-        <div class="stat-content">
-
-            <h3>{{ active_properties }}</h3>
-
-            <p>Active Properties</p>
-
-        </div>
-
-    </div>
-
-
-    <!-- Total Bookings -->
-    <div class="stat-card">
-
-        <div class="stat-icon purple">
-            <i class="fa-solid fa-calendar-check"></i>
-        </div>
-
-        <div class="stat-content">
-
-            <h3>{{ total_bookings }}</h3>
-
-            <p>Total Bookings</p>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- ==============================
-     BOOKING TRENDS
-============================== -->
-
-<div class="dashboard-chart-card">
-
-    <div class="chart-header">
-
-        <h3>Booking Trends</h3>
-
-        <p>Monthly booking activity for your properties</p>
-
-    </div>
-
-
-    <div class="chart-container">
-
-        <canvas id="bookingChart"></canvas>
-
+    <div>
+        <strong>StayNear</strong>
+        <small>Your properties, your success.</small>
     </div>
 
 </div>
 
+    </section>
 
-<!-- Chart.js -->
+
+    <!-- ==========================================
+         STATISTICS
+    ========================================== -->
+
+    <section class="dashboard-stats">
+
+
+        <!-- Total Properties -->
+
+        <div class="dashboard-stat-card">
+
+            <div class="dashboard-stat-icon">
+                <i class="fa-solid fa-building"></i>
+            </div>
+
+            <div class="dashboard-stat-content">
+
+                <span>Total Properties</span>
+
+                <h3>
+                    {{ total_properties }}
+                </h3>
+
+                <small>
+                    Properties listed
+                </small>
+
+            </div>
+
+            <div class="stat-arrow">
+                <i class="fa-solid fa-arrow-up"></i>
+            </div>
+
+        </div>
+
+
+        <!-- Active Properties -->
+
+        <div class="dashboard-stat-card">
+
+            <div class="dashboard-stat-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+
+            <div class="dashboard-stat-content">
+
+                <span>Active Properties</span>
+
+                <h3>
+                    {{ active_properties }}
+                </h3>
+
+                <small>
+                    Currently available
+                </small>
+
+            </div>
+
+            <div class="stat-arrow">
+                <i class="fa-solid fa-arrow-up"></i>
+            </div>
+
+        </div>
+
+
+        <!-- Total Bookings -->
+
+        <div class="dashboard-stat-card">
+
+            <div class="dashboard-stat-icon">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
+
+            <div class="dashboard-stat-content">
+
+                <span>Total Bookings</span>
+
+                <h3>
+                    {{ total_bookings }}
+                </h3>
+
+                <small>
+                    Bookings received
+                </small>
+
+            </div>
+
+            <div class="stat-arrow">
+                <i class="fa-solid fa-arrow-up"></i>
+            </div>
+
+        </div>
+
+
+        <!-- Average Rating -->
+
+        <div class="dashboard-stat-card rating-card">
+
+            <div class="dashboard-stat-icon">
+                <i class="fa-solid fa-star"></i>
+            </div>
+
+            <div class="dashboard-stat-content">
+
+                <span>Average Rating</span>
+
+                <h3>
+                    {{ average_rating|default('0.0') }}
+                </h3>
+
+                <small>
+                    From customer reviews
+                </small>
+
+            </div>
+
+            <div class="stat-arrow">
+                <i class="fa-solid fa-arrow-up"></i>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         BOOKING TRENDS
+    ========================================== -->
+
+    <section class="dashboard-chart-card">
+
+        <div class="chart-header">
+
+            <div>
+
+                <div class="chart-title">
+
+                    <span class="chart-title-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </span>
+
+                    <h3>Booking Trends</h3>
+
+                </div>
+
+                <p>
+                    Monthly booking activity for your properties
+                </p>
+
+            </div>
+
+            <div class="chart-filters">
+
+    <!-- Month -->
+    <div class="chart-filters">
+
+    <!-- Year Filter -->
+    <select
+        class="chart-filter"
+        id="yearFilter"
+        onchange="applyBookingFilter()"
+    >
+
+        {% for year in range(2024, 2031) %}
+
+            <option
+                value="{{ year }}"
+                {% if selected_year == year %}selected{% endif %}
+            >
+                {{ year }}
+            </option>
+
+        {% endfor %}
+
+    </select>
+
+
+    <!-- Month Filter -->
+    <select
+        class="chart-filter"
+        id="monthFilter"
+        onchange="applyBookingFilter()"
+    >
+
+        <option value="1"
+            {% if selected_month == 1 %}selected{% endif %}>
+            January
+        </option>
+
+        <option value="2"
+            {% if selected_month == 2 %}selected{% endif %}>
+            February
+        </option>
+
+        <option value="3"
+            {% if selected_month == 3 %}selected{% endif %}>
+            March
+        </option>
+
+        <option value="4"
+            {% if selected_month == 4 %}selected{% endif %}>
+            April
+        </option>
+
+        <option value="5"
+            {% if selected_month == 5 %}selected{% endif %}>
+            May
+        </option>
+
+        <option value="6"
+            {% if selected_month == 6 %}selected{% endif %}>
+            June
+        </option>
+
+        <option value="7"
+            {% if selected_month == 7 %}selected{% endif %}>
+            July
+        </option>
+
+        <option value="8"
+            {% if selected_month == 8 %}selected{% endif %}>
+            August
+        </option>
+
+        <option value="9"
+            {% if selected_month == 9 %}selected{% endif %}>
+            September
+        </option>
+
+        <option value="10"
+            {% if selected_month == 10 %}selected{% endif %}>
+            October
+        </option>
+
+        <option value="11"
+            {% if selected_month == 11 %}selected{% endif %}>
+            November
+        </option>
+
+        <option value="12"
+            {% if selected_month == 12 %}selected{% endif %}>
+            December
+        </option>
+
+    </select>
+
+</div>
+
+</div>
+
+        </div>
+
+
+        <div class="chart-container">
+
+            <canvas id="bookingChart"></canvas>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<!-- ==========================================
+     CHART.JS
+========================================== -->
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 
-    const bookingCounts = {{ booking_trends | tojson }};
+    const bookingCounts =
+        {{ booking_trends | tojson }};
 
-    const bookingMonths = [
-        "Jan", "Feb", "Mar", "Apr",
-        "May", "Jun", "Jul", "Aug",
-        "Sep", "Oct", "Nov", "Dec"
+    const bookingDays =
+        {{ booking_days | tojson }};
+
+    const selectedMonth =
+        {{ selected_month }};
+
+    const selectedYear =
+        {{ selected_year }};
+
+
+    // -----------------------------------------
+    // Month Names
+    // -----------------------------------------
+
+    const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
     ];
 
-    const ctx = document.getElementById("bookingChart");
+
+    // -----------------------------------------
+    // Apply Filter
+    // -----------------------------------------
+
+    function applyBookingFilter() {
+
+        const year =
+            document.getElementById("yearFilter").value;
+
+        const month =
+            document.getElementById("monthFilter").value;
+
+        window.location.href =
+            `/owner/dashboard?year=${year}&month=${month}`;
+
+    }
+
+
+    // -----------------------------------------
+    // Chart
+    // -----------------------------------------
+
+    const ctx =
+        document.getElementById("bookingChart");
+
 
     new Chart(ctx, {
 
@@ -122,19 +426,45 @@ Dashboard
 
         data: {
 
-            labels: bookingMonths,
+            labels: bookingDays,
 
-            datasets: [{
-                label: "Bookings",
-                data: bookingCounts,
-                borderWidth: 3,
-                tension: 0.4,
-                fill: false,
-                pointRadius: 4,
-                pointHoverRadius: 6
-            }]
+            datasets: [
+
+                {
+
+                    label: "Bookings",
+
+                    data: bookingCounts,
+
+                    borderColor: "#9A5D36",
+
+                    backgroundColor:
+                        "rgba(154, 93, 54, 0.10)",
+
+                    borderWidth: 3,
+
+                    tension: 0.4,
+
+                    fill: true,
+
+                    pointBackgroundColor:
+                        "#9A5D36",
+
+                    pointBorderColor:
+                        "#ffffff",
+
+                    pointBorderWidth: 2,
+
+                    pointRadius: 4,
+
+                    pointHoverRadius: 7
+
+                }
+
+            ]
 
         },
+
 
         options: {
 
@@ -142,20 +472,102 @@ Dashboard
 
             maintainAspectRatio: false,
 
+
             plugins: {
+
                 legend: {
+
                     display: false
+
+                },
+
+                tooltip: {
+
+                    callbacks: {
+
+                        title: function(context) {
+
+                            const day =
+                                context[0].label;
+
+                            return (
+                                monthNames[selectedMonth - 1]
+                                + " "
+                                + day
+                                + ", "
+                                + selectedYear
+                            );
+
+                        },
+
+                        label: function(context) {
+
+                            return (
+                                "Bookings: "
+                                + context.raw
+                            );
+
+                        }
+
+                    }
+
                 }
+
             },
+
 
             scales: {
 
+                x: {
+
+                    title: {
+
+                        display: true,
+
+                        text: "Day of Month"
+
+                    },
+
+                    grid: {
+
+                        display: false
+
+                    },
+
+                    ticks: {
+
+                        color: "#765B4A",
+
+                        font: {
+
+                            family: "Poppins"
+
+                        }
+
+                    }
+
+                },
+
+
                 y: {
+
                     beginAtZero: true,
 
                     ticks: {
-                        precision: 0
+
+                        precision: 0,
+
+                        color: "#765B4A"
+
+                    },
+
+                    grid: {
+
+                        color:
+                            "rgba(154, 93, 54, 0.10)"
+
                     }
+
                 }
 
             }
@@ -165,5 +577,4 @@ Dashboard
     });
 
 </script>
-
 {% endblock %}

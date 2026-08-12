@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us | StayNear{% endblock %}
+
+{% block content %}
+
+<section class="contact-page">
+
+    <div class="contact-header">
+        <span class="section-label">CONTACT US</span>
+
+        <h1>We'd love to hear from you.</h1>
+
+        <p>
+            Have a question, suggestion or need help?
+            Get in touch with the StayNear team.
+        </p>
+    </div>
+
+
+    <div class="contact-container">
+
+        <!-- Contact Information -->
+        <div class="contact-info">
+
+            <h2>Let's connect.</h2>
+
+            <p>
+                Whether you are looking for accommodation or want
+                to list your property, we're here to help.
+            </p>
+
+
+            <div class="contact-item">
+
+                <div class="contact-icon">
+                    <i class="bi bi-envelope"></i>
+                </div>
+
+                <div>
+                    <h4>Email</h4>
+                    <p>support@staynear.com</p>
+                </div>
+
+            </div>
+
+
+            <div class="contact-item">
+
+                <div class="contact-icon">
+                    <i class="bi bi-telephone"></i>
+                </div>
+
+                <div>
+                    <h4>Phone</h4>
+                    <p>+91 XXXXX XXXXX</p>
+                </div>
+
+            </div>
+
+
+            <div class="contact-item">
+
+                <div class="contact-icon">
+                    <i class="bi bi-geo-alt"></i>
+                </div>
+
+                <div>
+                    <h4>Location</h4>
+                    <p>Nashik, Maharashtra, India</p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Contact Form -->
+        <div class="contact-form-card">
+
+            <h2>Send us a message</h2>
+
+            <form method="POST">
+
+                <div class="form-group">
+                    <label for="name">Name</label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your name"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+
+                    <input
+                        type="text"
+                        id="subject"
+                        name="subject"
+                        placeholder="How can we help?"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+
+                    <textarea
+                        id="message"
+                        name="message"
+                        rows="5"
+                        placeholder="Write your message..."
+                        required
+                    ></textarea>
+                </div>
+
+
+                <button type="submit" class="contact-submit">
+                    Send Message
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

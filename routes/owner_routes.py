@@ -1,4 +1,5 @@
 from datetime import datetime
+import requests
 
 from flask import Blueprint, current_app, render_template, request, redirect, url_for, flash, session
 from models.property import Property
@@ -10,6 +11,8 @@ import os
 from werkzeug.utils import secure_filename
 from models.property_image import PropertyImage
 from sqlalchemy import extract, or_, func
+from utils.geocoder import get_coordinates
+
 
 
 owner = Blueprint("owner", __name__)
@@ -23,7 +26,25 @@ def dashboard():
     owner_id = session["user_id"]
 
     # --------------------------------
-    # Total properties
+    # Selected Month & Year
+    # --------------------------------
+
+    current_date = datetime.now()
+
+    selected_year = request.args.get(
+        "year",
+        default=current_date.year,
+        type=int
+    )
+
+    selected_month = request.args.get(
+        "month",
+        default=current_date.month,
+        type=int
+    )
+
+    # --------------------------------
+    # Total Properties
     # --------------------------------
 
     properties = Property.query.filter_by(
@@ -33,7 +54,7 @@ def dashboard():
     total_properties = len(properties)
 
     # --------------------------------
-    # Active properties
+    # Active Properties
     # --------------------------------
 
     active_properties = Property.query.filter_by(
@@ -51,7 +72,7 @@ def dashboard():
     ]
 
     # --------------------------------
-    # Total bookings
+    # Total Bookings
     # --------------------------------
 
     total_bookings = 0
@@ -63,28 +84,84 @@ def dashboard():
         ).count()
 
     # --------------------------------
-    # Booking trends
+    # Booking Trends
+    # Selected Month + Year
     # --------------------------------
 
-    booking_trends = [0] * 12
+    booking_trends = []
+
+    # Number of days in selected month
+    if selected_month == 12:
+        next_month = datetime(
+            selected_year + 1,
+            1,
+            1
+        )
+    else:
+        next_month = datetime(
+            selected_year,
+            selected_month + 1,
+            1
+        )
+
+    first_day = datetime(
+        selected_year,
+        selected_month,
+        1
+    )
+
+    last_day = next_month
+
+    # Number of days
+    number_of_days = (
+        last_day - first_day
+    ).days
+
+    # Create 0 for every day
+    booking_trends = [0] * number_of_days
 
     if property_ids:
 
         results = db.session.query(
-            extract("month", Booking.created_at).label("month"),
-            func.count(Booking.booking_id).label("count")
+            extract(
+                "day",
+                Booking.created_at
+            ).label("day"),
+            func.count(
+                Booking.booking_id
+            ).label("count")
         ).filter(
-            Booking.property_id.in_(property_ids)
+            Booking.property_id.in_(property_ids),
+
+            Booking.created_at >= first_day,
+
+            Booking.created_at < last_day
+
         ).group_by(
-            extract("month", Booking.created_at)
+            extract(
+                "day",
+                Booking.created_at
+            )
         ).all()
 
         for row in results:
 
-            month = int(row.month)
+            day = int(row.day)
             count = int(row.count)
 
-            booking_trends[month - 1] = count
+            booking_trends[day - 1] = count
+
+    # --------------------------------
+    # Chart Labels
+    # --------------------------------
+
+    booking_days = [
+        str(day)
+        for day in range(
+            1,
+            number_of_days + 1
+        )
+    ]
 
     # --------------------------------
     # Dashboard
@@ -92,10 +169,20 @@ def dashboard():
 
     return render_template(
         "owner/dashboard.html",
+
         total_properties=total_properties,
+
         active_properties=active_properties,
+
         total_bookings=total_bookings,
-        booking_trends=booking_trends
+
+        booking_trends=booking_trends,
+
+        booking_days=booking_days,
+
+        selected_year=selected_year,
+
+        selected_month=selected_month
     )
 
 @owner.route("/owner/add-property", methods=["GET", "POST"])
@@ -106,39 +193,169 @@ def add_property():
 
     if request.method == "POST":
 
-        property = Property(
+        # -----------------------------------------
+        # GET FORM DATA
+        # -----------------------------------------
 
-    owner_id=session["user_id"],
+        property_name = request.form["property_name"]
+        property_type = request.form["property_type"]
+        gender_preference = request.form["gender_preference"]
 
-    property_name=request.form["property_name"],
-    property_type=request.form["property_type"],
-    gender_preference=request.form["gender_preference"],
+        address = request.form["address"]
+        city = request.form["city"]
+        area = request.form["area"]
+        pincode = request.form["pincode"]
 
-    address=request.form["address"],
-    city=request.form["city"],
-    area=request.form["area"],
-    pincode=request.form["pincode"],
+        monthly_rent = request.form["monthly_rent"]
+        security_deposit = request.form["security_deposit"] or 0
+        available_rooms = request.form["available_rooms"]
 
-    monthly_rent=request.form["monthly_rent"],
-    security_deposit=request.form["security_deposit"] or 0,
-    available_rooms=request.form["available_rooms"],
+        description = request.form["description"]
 
-    description=request.form["description"],
-    images = request.files.getlist("property_images")
-)
+        # -----------------------------------------
+        # GET AUTOMATIC GPS LOCATION
+        # -----------------------------------------
+
+        latitude = request.form.get("latitude")
+        longitude = request.form.get("longitude")
 
         try:
+
+            if latitude and longitude:
+
+                latitude = float(latitude)
+                longitude = float(longitude)
+
+                print("====================================")
+                print("GPS LOCATION RECEIVED")
+                print("Latitude :", latitude)
+                print("Longitude:", longitude)
+                print("====================================")
+
+        except (ValueError, TypeError):
+
+            latitude = None
+            longitude = None
+
+        # -----------------------------------------
+        # FALLBACK TO ADDRESS GEOCODING
+        # -----------------------------------------
+
+        if latitude is None or longitude is None:
+
+            full_address = (
+                f"{address}, {area}, "
+                f"{city}, {pincode}, India"
+            )
+
+            print(
+                "GPS unavailable. "
+                "Trying address:",
+                full_address
+            )
+
+            try:
+
+                response = requests.get(
+                    "https://nominatim.openstreetmap.org/search",
+                    params={
+                        "q": full_address,
+                        "format": "json",
+                        "limit": 1
+                    },
+                    headers={
+                        "User-Agent": "StayNear/1.0"
+                    },
+                    timeout=10
+                )
+
+                if response.status_code == 200:
+
+                    location_data = response.json()
+
+                    if location_data:
+
+                        latitude = float(
+                            location_data[0]["lat"]
+                        )
+
+                        longitude = float(
+                            location_data[0]["lon"]
+                        )
+
+                        print("====================================")
+                        print("ADDRESS LOCATION FOUND")
+                        print("Latitude :", latitude)
+                        print("Longitude:", longitude)
+                        print("====================================")
+
+                    else:
+
+                        print(
+                            "No location found for address."
+                        )
+
+                else:
+
+                    print(
+                        "Nominatim error:",
+                        response.status_code
+                    )
+
+            except Exception as e:
+
+                print("Geocoding error:", e)
+
+        # -----------------------------------------
+        # CREATE PROPERTY
+        # -----------------------------------------
+
+        property = Property(
+
+            owner_id=session["user_id"],
+
+            property_name=property_name,
+            property_type=property_type,
+            gender_preference=gender_preference,
+
+            address=address,
+            city=city,
+            area=area,
+            pincode=pincode,
+
+            latitude=latitude,
+            longitude=longitude,
+
+            monthly_rent=monthly_rent,
+            security_deposit=security_deposit,
+            available_rooms=available_rooms,
+
+            description=description
+        )
+
+        try:
+
             db.session.add(property)
             db.session.commit()
+
+            # -----------------------------------------
+            # SAVE PROPERTY IMAGES
+            # -----------------------------------------
+
             images = request.files.getlist("images")
 
             for image in images:
 
-                if image.filename != "":
+                if image and image.filename != "":
 
-                    filename = secure_filename(image.filename)
+                    filename = secure_filename(
+                        image.filename
+                    )
 
-                    save_path = os.path.join(current_app.config["UPLOAD_FOLDER"],filename)
+                    save_path = os.path.join(
+                        current_app.config["UPLOAD_FOLDER"],
+                        filename
+                    )
 
                     image.save(save_path)
 
@@ -146,23 +363,54 @@ def add_property():
 
                         property_id=property.property_id,
 
-                        image_path=f"uploads/properties/{filename}"
-
+                        image_path=(
+                            f"uploads/properties/{filename}"
+                        )
                     )
 
                     db.session.add(property_image)
 
             db.session.commit()
-            
-            flash("Property added successfully!", "success")
-            return redirect(url_for("owner.add_property"))
+
+            # -----------------------------------------
+            # LOCATION MESSAGE
+            # -----------------------------------------
+
+            if (
+                latitude is not None
+                and longitude is not None
+            ):
+
+                flash(
+                    "Property added successfully! "
+                    "Exact location captured.",
+                    "success"
+                )
+
+            else:
+
+                flash(
+                    "Property added successfully, "
+                    "but location could not be detected.",
+                    "warning"
+                )
+
+            return redirect(
+                url_for("owner.add_property")
+            )
 
         except Exception as e:
+
             db.session.rollback()
-            flash(f"Error: {e}", "error")
 
-    return render_template("owner/add_property.html")
+            flash(
+                f"Error: {e}",
+                "error"
+            )
 
+    return render_template(
+        "owner/add_property.html"
+    )
 
 @owner.route("/owner/my-properties")
 def my_properties():

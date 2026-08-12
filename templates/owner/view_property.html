@@ -6,169 +6,580 @@
 
 <div class="property-view-page">
 
-    <!-- HEADER -->
-    <div class="property-view-header">
+<!-- =====================================================
+     PAGE HEADER
+====================================================== -->
 
-        <div>
-            <h2>{{ property.property_name }}</h2>
+<div class="property-view-header">
 
-            <p>
-                <i class="fa-solid fa-location-dot"></i>
-                {{ property.area }}, {{ property.city }}
-            </p>
-        </div>
-
-        <span class="status-badge
-            {% if property.property_status == 'Approved' %}
-                approved
-            {% elif property.property_status == 'Pending' %}
-                pending
-            {% else %}
-                rejected
-            {% endif %}">
-            {{ property.property_status }}
-        </span>
-
-    </div>
-
-
-    <!-- IMAGES -->
-    <div class="property-gallery">
-
-        {% if property.images and property.images|length > 0 %}
-
-            {% for image in property.images %}
-
-                <img
-                    src="{{ url_for('static', filename=image.image_path) }}"
-                    alt="{{ property.property_name }}">
-
-            {% endfor %}
-
-        {% else %}
-
-            <div class="no-property-image">
-
-                <i class="fa-solid fa-house"></i>
-
-                <p>No property images available</p>
-
-            </div>
-
-        {% endif %}
-
-    </div>
-
-
-    <!-- PROPERTY INFORMATION -->
-    <div class="property-view-card">
-
-        <h3>Property Information</h3>
-
-        <div class="property-view-grid">
-
-            <div>
-                <span>Property Type</span>
-                <strong>{{ property.property_type }}</strong>
-            </div>
-
-            <div>
-                <span>Gender Preference</span>
-                <strong>{{ property.gender_preference }}</strong>
-            </div>
-
-            <div>
-                <span>Monthly Rent</span>
-                <strong class="property-price">
-                    ₹{{ "{:,.0f}".format(property.monthly_rent|float) }}
-                </strong>
-            </div>
-
-            <div>
-                <span>Security Deposit</span>
-                <strong>
-                    ₹{{ "{:,.0f}".format(property.security_deposit|float) }}
-                </strong>
-            </div>
-
-            <div>
-                <span>Available Rooms</span>
-                <strong>{{ property.available_rooms }}</strong>
-            </div>
-
-            <div>
-                <span>Pincode</span>
-                <strong>{{ property.pincode }}</strong>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- LOCATION -->
-    <div class="property-view-card">
-
-        <h3>Location</h3>
-
-        <p class="property-address">
-
-            <i class="fa-solid fa-location-dot"></i>
-
-            {{ property.address }},
-            {{ property.area }},
-            {{ property.city }}
-            - {{ property.pincode }}
-
-        </p>
-
-    </div>
-
-
-    <!-- DESCRIPTION -->
-    <div class="property-view-card">
-
-        <h3>Description</h3>
-
-        {% if property.description %}
-
-            <p>{{ property.description }}</p>
-
-        {% else %}
-
-            <p class="text-muted">
-                No description has been added.
-            </p>
-
-        {% endif %}
-
-    </div>
-
-
-    <!-- ACTIONS -->
-    <div class="property-view-actions">
-
-        <a
-            href="{{ url_for('owner.edit_property',
-                             property_id=property.property_id) }}"
-            class="edit-btn">
-
-            <i class="fa-solid fa-pen"></i>
-            Edit Property
-
-        </a>
+    <div class="property-view-heading">
 
         <a
             href="{{ url_for('owner.my_properties') }}"
-            class="view-btn">
-
+            class="property-back-link"
+        >
             <i class="fa-solid fa-arrow-left"></i>
             Back to My Properties
-
         </a>
+
+        <div class="property-view-title-row">
+
+            <div>
+                <span class="property-view-eyebrow">
+                    PROPERTY DETAILS
+                </span>
+
+                <h1>{{ property.property_name }}</h1>
+
+                <p class="property-view-location">
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{ property.area }}, {{ property.city }}
+                </p>
+            </div>
+
+            <span class="status-badge
+                {% if property.property_status == 'Approved' %}
+                    approved
+                {% elif property.property_status == 'Pending' %}
+                    pending
+                {% else %}
+                    rejected
+                {% endif %}"
+            >
+                <i class="fa-solid
+                    {% if property.property_status == 'Approved' %}
+                        fa-circle-check
+                    {% elif property.property_status == 'Pending' %}
+                        fa-clock
+                    {% else %}
+                        fa-circle-xmark
+                    {% endif %}">
+                </i>
+
+                {{ property.property_status }}
+            </span>
+
+        </div>
 
     </div>
 
 </div>
+
+
+<!-- =====================================================
+     HERO / GALLERY + QUICK DETAILS
+====================================================== -->
+
+<div class="property-view-hero">
+
+    <!-- IMAGE GALLERY -->
+
+    <div class="property-view-gallery">
+
+        {% if property.images and property.images|length > 0 %}
+
+            <div class="property-main-image">
+
+                <img
+                    id="mainPropertyImage"
+                    src="{{ url_for('static', filename=property.images[0].image_path) }}"
+                    alt="{{ property.property_name }}"
+                >
+
+                <div class="gallery-image-count">
+                    <i class="fa-solid fa-images"></i>
+                    {{ property.images|length }}
+                    {% if property.images|length == 1 %}
+                        Image
+                    {% else %}
+                        Images
+                    {% endif %}
+                </div>
+
+            </div>
+
+
+            {% if property.images|length > 1 %}
+
+                <div class="property-image-thumbnails">
+
+                    {% for image in property.images %}
+
+                        <button
+                            type="button"
+                            class="property-thumbnail
+                            {% if loop.first %}active{% endif %}"
+                            onclick="changePropertyImage(
+                                '{{ url_for('static', filename=image.image_path) }}',
+                                this
+                            )"
+                        >
+
+                            <img
+                                src="{{ url_for('static', filename=image.image_path) }}"
+                                alt="{{ property.property_name }}"
+                            >
+
+                        </button>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% else %}
+
+            <div class="property-view-no-image">
+
+                <div class="property-no-image-icon">
+                    <i class="fa-solid fa-house"></i>
+                </div>
+
+                <h3>No Property Images</h3>
+
+                <p>
+                    No images have been uploaded for this property yet.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- QUICK DETAILS -->
+
+    <div class="property-quick-card">
+
+        <div class="property-quick-card-header">
+
+            <div>
+                <span>PROPERTY OVERVIEW</span>
+                <h2>Quick Details</h2>
+            </div>
+
+            <div class="property-type-icon">
+                <i class="fa-solid fa-building"></i>
+            </div>
+
+        </div>
+
+
+        <div class="property-quick-details">
+
+            <!-- PROPERTY TYPE -->
+
+            <div class="property-quick-item">
+
+                <div class="property-quick-icon">
+                    <i class="fa-solid fa-house"></i>
+                </div>
+
+                <div>
+                    <span>Property Type</span>
+                    <strong>{{ property.property_type }}</strong>
+                </div>
+
+            </div>
+
+
+            <!-- GENDER -->
+
+            <div class="property-quick-item">
+
+                <div class="property-quick-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+                <div>
+                    <span>Gender Preference</span>
+                    <strong>{{ property.gender_preference }}</strong>
+                </div>
+
+            </div>
+
+
+            <!-- RENT -->
+
+            <div class="property-quick-item rent-item">
+
+                <div class="property-quick-icon">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                </div>
+
+                <div>
+                    <span>Monthly Rent</span>
+
+                    <strong>
+                        ₹{{ "{:,.0f}".format(property.monthly_rent|float) }}
+                        <small>/ month</small>
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <!-- SECURITY DEPOSIT -->
+
+            <div class="property-quick-item">
+
+                <div class="property-quick-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div>
+                    <span>Security Deposit</span>
+
+                    <strong>
+                        ₹{{ "{:,.0f}".format(property.security_deposit|float) }}
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <!-- AVAILABLE ROOMS -->
+
+            <div class="property-quick-item">
+
+                <div class="property-quick-icon">
+                    <i class="fa-solid fa-bed"></i>
+                </div>
+
+                <div>
+                    <span>Available Rooms</span>
+                    <strong>{{ property.available_rooms }}</strong>
+                </div>
+
+            </div>
+
+
+            <!-- PINCODE -->
+
+            <div class="property-quick-item">
+
+                <div class="property-quick-icon">
+                    <i class="fa-solid fa-map-pin"></i>
+                </div>
+
+                <div>
+                    <span>Pincode</span>
+                    <strong>{{ property.pincode }}</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PROPERTY INFORMATION
+====================================================== -->
+
+<div class="property-view-card">
+
+    <div class="property-section-heading">
+
+        <div class="property-section-icon">
+            <i class="fa-solid fa-circle-info"></i>
+        </div>
+
+        <div>
+            <span>PROPERTY INFORMATION</span>
+            <h2>About This Property</h2>
+        </div>
+
+    </div>
+
+
+    <div class="property-information-grid">
+
+        <div class="property-information-item">
+            <span>Property Type</span>
+            <strong>{{ property.property_type }}</strong>
+        </div>
+
+        <div class="property-information-item">
+            <span>Gender Preference</span>
+            <strong>{{ property.gender_preference }}</strong>
+        </div>
+
+        <div class="property-information-item">
+            <span>Available Rooms</span>
+            <strong>{{ property.available_rooms }}</strong>
+        </div>
+
+        <div class="property-information-item">
+            <span>Pincode</span>
+            <strong>{{ property.pincode }}</strong>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LOCATION
+====================================================== -->
+
+<div class="property-view-card property-location-card">
+
+    <div class="property-section-heading">
+
+        <div class="property-section-icon location-icon">
+            <i class="fa-solid fa-location-dot"></i>
+        </div>
+
+        <div>
+            <span>PROPERTY LOCATION</span>
+            <h2>Location & Address</h2>
+        </div>
+
+    </div>
+
+
+    <div class="property-location-content">
+
+        <!-- ADDRESS -->
+
+        <div class="property-address-box">
+
+            <div class="property-address-icon">
+                <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+
+            <div>
+
+                <span>Complete Address</span>
+
+                <p>
+                    {{ property.address }},
+                    {{ property.area }},
+                    {{ property.city }}
+                    {% if property.pincode %}
+                        - {{ property.pincode }}
+                    {% endif %}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- COORDINATES -->
+
+        <div class="property-coordinates">
+
+            <div class="coordinate-item">
+
+                <div class="coordinate-icon">
+                    <i class="fa-solid fa-compass"></i>
+                </div>
+
+                <div>
+                    <span>Latitude</span>
+
+                    {% if property.latitude %}
+                        <strong>{{ property.latitude }}</strong>
+                    {% else %}
+                        <strong class="coordinate-missing">
+                            Not available
+                        </strong>
+                    {% endif %}
+                </div>
+
+            </div>
+
+
+            <div class="coordinate-item">
+
+                <div class="coordinate-icon">
+                    <i class="fa-solid fa-compass"></i>
+                </div>
+
+                <div>
+                    <span>Longitude</span>
+
+                    {% if property.longitude %}
+                        <strong>{{ property.longitude }}</strong>
+                    {% else %}
+                        <strong class="coordinate-missing">
+                            Not available
+                        </strong>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MAP -->
+
+        {% if property.latitude and property.longitude %}
+
+            <div class="property-map-wrapper">
+
+                <div class="property-map-header">
+
+                    <div>
+                        <i class="fa-solid fa-map"></i>
+                        Property Location
+                    </div>
+
+                    <a
+                        href="https://www.google.com/maps?q={{ property.latitude }},{{ property.longitude }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="open-map-btn"
+                    >
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        Open in Maps
+                    </a>
+
+                </div>
+
+                <iframe
+                    class="property-map"
+                    src="https://www.google.com/maps?q={{ property.latitude }},{{ property.longitude }}&z=15&output=embed"
+                    loading="lazy"
+                    allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade"
+                >
+                </iframe>
+
+            </div>
+
+        {% else %}
+
+            <div class="property-map-unavailable">
+
+                <div>
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                </div>
+
+                <h3>Location Coordinates Unavailable</h3>
+
+                <p>
+                    Latitude and longitude have not been saved
+                    for this property.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     DESCRIPTION
+====================================================== -->
+
+<div class="property-view-card">
+
+    <div class="property-section-heading">
+
+        <div class="property-section-icon description-icon">
+            <i class="fa-solid fa-align-left"></i>
+        </div>
+
+        <div>
+            <span>PROPERTY DESCRIPTION</span>
+            <h2>About the Property</h2>
+        </div>
+
+    </div>
+
+
+    {% if property.description %}
+
+        <div class="property-description-box">
+
+            <p>{{ property.description }}</p>
+
+        </div>
+
+    {% else %}
+
+        <div class="property-empty-description">
+
+            <i class="fa-regular fa-file-lines"></i>
+
+            <p>
+                No description has been added for this property.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =====================================================
+     ACTIONS
+====================================================== -->
+
+<div class="property-view-actions">
+
+    <a
+        href="{{ url_for(
+            'owner.edit_property',
+            property_id=property.property_id
+        ) }}"
+        class="property-edit-action"
+    >
+        <i class="fa-solid fa-pen"></i>
+        Edit Property
+    </a>
+
+
+    <a
+        href="{{ url_for('owner.my_properties') }}"
+        class="property-back-action"
+    >
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to My Properties
+    </a>
+
+</div>
+
+</div>
+
+<!-- =====================================================
+     IMAGE GALLERY SCRIPT
+====================================================== -->
+
+<script>
+
+function changePropertyImage(imageUrl, thumbnail) {
+
+    const mainImage =
+        document.getElementById("mainPropertyImage");
+
+    if (mainImage) {
+        mainImage.src = imageUrl;
+    }
+
+    document
+        .querySelectorAll(".property-thumbnail")
+        .forEach(function(item) {
+            item.classList.remove("active");
+        });
+
+    thumbnail.classList.add("active");
+}
+
+</script>
 
 {% endblock %}

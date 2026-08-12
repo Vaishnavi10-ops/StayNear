@@ -18,12 +18,16 @@
 
 </div>
 
-
 <!-- ================= SUMMARY ================= -->
 
 <div class="review-summary">
 
+    <!-- Average Rating -->
     <div class="rating-summary-card">
+
+        <div class="summary-icon">
+            <i class="fa-solid fa-star"></i>
+        </div>
 
         <div class="rating-number">
             {{ average_rating }}
@@ -48,14 +52,15 @@
     </div>
 
 
+    <!-- Total Reviews -->
     <div class="rating-summary-card">
+
+        <div class="summary-icon">
+            <i class="fa-solid fa-comments"></i>
+        </div>
 
         <div class="rating-number">
             {{ total_reviews }}
-        </div>
-
-        <div class="review-icon">
-            <i class="fa-solid fa-comments"></i>
         </div>
 
         <p>Total Reviews</p>

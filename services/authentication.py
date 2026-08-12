@@ -4,6 +4,7 @@ from database.db import db
 
 from werkzeug.security import generate_password_hash
 from werkzeug.security import check_password_hash
+from sqlalchemy import text
 
 
 def register_account(full_name, email, phone, password, confirm_password, role):
@@ -49,34 +50,93 @@ def register_account(full_name, email, phone, password, confirm_password, role):
 
 def login_account(email, password, role):
 
-    # Check role and find account
+    # =========================
+    # ADMIN LOGIN
+    # =========================
+
+    if role == "Admin":
+
+        result = db.session.execute(
+            text("""
+                SELECT admin_id, username, password
+                FROM admins
+                WHERE username = :username
+                LIMIT 1
+            """),
+            {
+                "username": email
+            }
+        ).fetchone()
+
+        if result is None:
+            return False, "Admin account does not exist."
+
+        if result.password != password:
+            return False, "Incorrect admin password."
+
+        return True, {
+            "id": result.admin_id,
+            "name": "Administrator",
+            "role": "Admin"
+        }
+
+
+    # =========================
+    # USER LOGIN
+    # =========================
+
     if role == "User":
-        account = User.query.filter_by(email=email).first()
+
+        account = User.query.filter_by(
+            email=email
+        ).first()
+
+
+    # =========================
+    # OWNER LOGIN
+    # =========================
 
     elif role == "Owner":
-        account = Owner.query.filter_by(email=email).first()
+
+        account = Owner.query.filter_by(
+            email=email
+        ).first()
+
 
     else:
-        # Temporary Admin Login
-        if email == "admin@staynear.com" and password == "admin123":
-            return True, {
-                "id": 1,
-                "name": "Administrator",
-                "role": "Admin"
-            }
 
-        return False, "Invalid Admin Credentials"
+        return False, "Invalid role."
 
-    # Account not found
+
+    # =========================
+    # ACCOUNT NOT FOUND
+    # =========================
+
     if account is None:
         return False, "Account does not exist."
 
-    # Verify password
-    if not check_password_hash(account.password, password):
+
+    # =========================
+    # PASSWORD CHECK
+    # =========================
+
+    if not check_password_hash(
+        account.password,
+        password
+    ):
         return False, "Incorrect password."
 
+
+    # =========================
+    # SUCCESS
+    # =========================
+
     return True, {
-        "id": account.user_id if role == "User" else account.owner_id,
+        "id": (
+            account.user_id
+            if role == "User"
+            else account.owner_id
+        ),
         "name": account.full_name,
         "role": role
     }

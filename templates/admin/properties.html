@@ -1,0 +1,519 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Manage Properties | StayNear
+{% endblock %}
+
+{% block admin_content %}
+
+<!-- ======================================
+     PAGE HEADER
+======================================= -->
+
+<div class="admin-page-header">
+
+    <span class="admin-page-label">
+
+        <i class="fa-solid fa-building"></i>
+
+        PROPERTY MANAGEMENT
+
+    </span>
+
+    <h1>
+        Manage Properties
+    </h1>
+
+    <p>
+        Review, approve and manage property listings.
+    </p>
+
+</div>
+
+
+<!-- ======================================
+     SEARCH & FILTERS
+======================================= -->
+
+<form
+    method="GET"
+    action="{{ url_for('admin.manage_properties') }}"
+    class="admin-property-filters"
+>
+
+
+    <!-- Search -->
+
+    <div class="admin-search-box">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            name="search"
+            value="{{ search }}"
+            placeholder="Search property, city or address..."
+        >
+
+    </div>
+
+
+    <!-- Status -->
+
+    <select
+        name="status"
+        class="admin-status-filter"
+    >
+
+        <option
+            value="All"
+            {% if status == "All" %}selected{% endif %}
+        >
+            All Status
+        </option>
+
+
+        <option
+            value="Pending"
+            {% if status == "Pending" %}selected{% endif %}
+        >
+            Pending
+        </option>
+
+
+        <option
+            value="Approved"
+            {% if status == "Approved" %}selected{% endif %}
+        >
+            Approved
+        </option>
+
+
+        <option
+            value="Rejected"
+            {% if status == "Rejected" %}selected{% endif %}
+        >
+            Rejected
+        </option>
+
+    </select>
+
+
+    <!-- Search Button -->
+
+    <button
+        type="submit"
+        class="admin-search-btn"
+    >
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        Search
+
+    </button>
+
+
+    <!-- Clear -->
+
+    {% if search or status != "All" %}
+
+        <a
+            href="{{ url_for('admin.manage_properties') }}"
+            class="admin-clear-btn"
+        >
+
+            <i class="fa-solid fa-xmark"></i>
+
+            Clear
+
+        </a>
+
+    {% endif %}
+
+
+</form>
+
+
+<!-- ======================================
+     PROPERTY LIST
+======================================= -->
+
+{% if properties %}
+
+
+<div class="admin-properties-list">
+
+
+    {% for property in properties %}
+
+
+    <!-- ==================================
+         PROPERTY CARD
+    =================================== -->
+
+    <div class="admin-property-card">
+
+
+        <!-- PROPERTY IMAGE -->
+
+        <!-- ==================================
+     PROPERTY IMAGE
+=================================== -->
+
+<div class="admin-property-image">
+
+    {% if property.images and property.images|length > 0 %}
+
+        <img
+    src="{{ url_for(
+        'static',
+        filename=property.images[0].image_path
+    ) }}"
+    alt="{{ property.property_name }}"
+>
+
+        <div
+            class="admin-no-image"
+            style="display: none;"
+        >
+
+            <i class="fa-solid fa-image"></i>
+
+            <span>
+                Image not found
+            </span>
+
+        </div>
+
+    {% else %}
+
+        <div class="admin-no-image">
+
+            <i class="fa-solid fa-image"></i>
+
+            <span>
+                No image available
+            </span>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+        <!-- PROPERTY DETAILS -->
+
+        <div class="admin-property-details">
+
+
+            <!-- Top -->
+
+            <div class="admin-property-top">
+
+
+                <div>
+
+                    <h2>
+                        {{ property.property_name }}
+                    </h2>
+
+
+                    <p class="admin-property-location">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        {{ property.address }},
+                        {{ property.city }}
+
+                    </p>
+
+                </div>
+
+
+                <!-- Status -->
+
+                <span
+                    class="admin-property-status
+                    {{ property.property_status|lower }}"
+                >
+
+                    {% if property.property_status == "Approved" %}
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    {% elif property.property_status == "Pending" %}
+
+                        <i class="fa-solid fa-clock"></i>
+
+                    {% else %}
+
+                        <i class="fa-solid fa-circle-xmark"></i>
+
+                    {% endif %}
+
+
+                    {{ property.property_status }}
+
+                </span>
+
+
+            </div>
+
+
+            <!-- ==================================
+                 PROPERTY INFORMATION
+            =================================== -->
+
+            <div class="admin-property-info">
+
+
+                <span>
+
+                    <i class="fa-solid fa-building"></i>
+
+                    {{ property.property_type }}
+
+                </span>
+
+
+                <span>
+
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                    ₹{{ property.monthly_rent }}/month
+
+                </span>
+
+
+                <span>
+
+                    <i class="fa-solid fa-door-open"></i>
+
+                    {{ property.available_rooms }}
+                    rooms available
+
+                </span>
+
+
+                <span>
+
+                    <i class="fa-solid fa-location-crosshairs"></i>
+
+                    {{ property.pincode }}
+
+                </span>
+
+
+            </div>
+
+
+            <!-- ==================================
+                 OWNER
+            =================================== -->
+
+            <div class="admin-property-owner">
+
+
+                <i class="fa-solid fa-user-tie"></i>
+
+
+                <div>
+
+                    <span>
+                        PROPERTY OWNER
+                    </span>
+
+
+                    {% set owner =
+                        property_owners.get(property.property_id)
+                    %}
+
+
+                    {% if owner %}
+
+                        <strong>
+                            {{ owner.name }}
+                        </strong>
+
+                    {% else %}
+
+                        <strong>
+                            Owner not found
+                        </strong>
+
+                    {% endif %}
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ==================================
+                 BOTTOM
+            =================================== -->
+
+            <div class="admin-property-bottom">
+
+
+                <small>
+
+                    Listed on
+                    {{ property.created_at.strftime('%d %b %Y') }}
+
+                </small>
+
+
+                <!-- ACTIONS -->
+
+                <div class="admin-property-actions">
+
+
+                    {% if property.property_status == "Pending" %}
+
+
+                        <!-- Approve -->
+
+                        <form
+                            method="POST"
+                            action="{{ url_for(
+                                'admin.approve_property',
+                                property_id=property.property_id
+                            ) }}"
+                        >
+
+                            <button
+                                type="submit"
+                                class="admin-approve-btn"
+                            >
+
+                                <i class="fa-solid fa-check"></i>
+
+                                Approve
+
+                            </button>
+
+                        </form>
+
+
+                        <!-- Reject -->
+
+                        <form
+                            method="POST"
+                            action="{{ url_for(
+                                'admin.reject_property',
+                                property_id=property.property_id
+                            ) }}"
+                        >
+
+                            <button
+                                type="submit"
+                                class="admin-reject-btn"
+                            >
+
+                                <i class="fa-solid fa-xmark"></i>
+
+                                Reject
+
+                            </button>
+
+                        </form>
+
+
+                    {% elif property.property_status == "Approved" %}
+
+
+                        <span class="admin-action-info">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            Property Approved
+
+                        </span>
+
+
+                    {% elif property.property_status == "Rejected" %}
+
+
+                        <span class="admin-action-info rejected-info">
+
+                            <i class="fa-solid fa-circle-xmark"></i>
+
+                            Property Rejected
+
+                        </span>
+
+
+                    {% endif %}
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    {% endfor %}
+
+
+</div>
+
+
+{% else %}
+
+
+<!-- ======================================
+     EMPTY STATE
+======================================= -->
+
+<div class="admin-empty-state">
+
+
+    <div class="admin-empty-icon">
+
+        <i class="fa-solid fa-building"></i>
+
+    </div>
+
+
+    <h2>
+        No Properties Found
+    </h2>
+
+
+    <p>
+        No properties match your current search or filter.
+    </p>
+
+
+    {% if search or status != "All" %}
+
+        <a
+            href="{{ url_for('admin.manage_properties') }}"
+            class="admin-clear-btn"
+        >
+
+            <i class="fa-solid fa-rotate-left"></i>
+
+            Clear Filters
+
+        </a>
+
+    {% endif %}
+
+
+</div>
+
+
+{% endif %}
+
+
+{% endblock %}

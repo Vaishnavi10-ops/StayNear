@@ -4,82 +4,112 @@
 
 {% block owner_content %}
 
-<!-- ================= HEADER ================= -->
+<div class="profile-page">
 
-<div class="properties-header">
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
 
-    <div>
+    <div class="profile-page-header">
 
-        <h2>👤 My Profile</h2>
+        <div>
+            <h2>
+                <i class="fa-solid fa-user-circle"></i>
+                My Profile
+            </h2>
 
-        <p>
-            Manage your owner account information.
-        </p>
+            <p>
+                Manage your owner account and security settings.
+            </p>
+        </div>
 
     </div>
 
-</div>
-
-
-<!-- ================= PROFILE ================= -->
-
-<div class="profile-page">
 
     <form
         method="POST"
         action="{{ url_for('owner.profile') }}"
     >
 
-        <!-- Personal Information -->
+        <!-- =================================================
+             PROFILE INTRO CARD
+        ================================================== -->
 
-        <div class="form-card">
+        <div class="profile-intro-card">
 
-            <div class="form-card-header">
+            <div class="profile-avatar">
 
-                <h5 class="mb-0">
-                    <i class="fa-solid fa-user"></i>
-                    Personal Information
-                </h5>
+                <i class="fa-solid fa-user"></i>
 
             </div>
 
+            <div class="profile-intro-info">
 
-            <div class="form-card-body">
+                <h3>
+                    {{ owner.full_name }}
+                </h3>
 
-                <div class="row g-4">
+                <p>
+                    Property Owner
+                </p>
+
+            </div>
+
+            <div class="profile-intro-label">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <div>
+                    <span>Account information</span>
+                    <small>Your owner account details</small>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             INFORMATION GRID
+        ================================================== -->
+
+        <div class="profile-information-grid">
+
+
+            <!-- =============================================
+                 PERSONAL INFORMATION
+            ============================================== -->
+
+            <div class="profile-info-card">
+
+                <div class="profile-card-title">
+
+                    <div class="profile-card-icon">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div>
+                        <h3>Personal Information</h3>
+                        <p>Your basic account details</p>
+                    </div>
+
+                </div>
+
+
+                <div class="profile-fields">
 
                     <!-- Full Name -->
 
-                    <div class="col-md-6">
+                    <div class="profile-field">
 
-                        <label class="form-label fw-semibold">
+                        <label>
                             Full Name
                         </label>
 
                         <input
                             type="text"
                             name="full_name"
-                            class="form-control"
                             value="{{ owner.full_name }}"
-                            required
-                        >
-
-                    </div>
-
-
-                    <!-- Email -->
-
-                    <div class="col-md-6">
-
-                        <label class="form-label fw-semibold">
-                            Email Address
-                        </label>
-
-                        <input
-                            type="email"
-                            name="email"
-                            class="form-control"
-                            value="{{ owner.email }}"
                             required
                         >
 
@@ -88,16 +118,15 @@
 
                     <!-- Phone -->
 
-                    <div class="col-md-6">
+                    <div class="profile-field">
 
-                        <label class="form-label fw-semibold">
+                        <label>
                             Phone Number
                         </label>
 
                         <input
                             type="tel"
                             name="phone"
-                            class="form-control"
                             value="{{ owner.phone }}"
                             required
                         >
@@ -108,44 +137,43 @@
 
             </div>
 
-        </div>
+
+            <!-- =============================================
+                 CONTACT INFORMATION
+            ============================================== -->
+
+            <div class="profile-info-card">
+
+                <div class="profile-card-title">
+
+                    <div class="profile-card-icon">
+                        <i class="fa-solid fa-address-book"></i>
+                    </div>
+
+                    <div>
+                        <h3>Contact Information</h3>
+                        <p>How tenants can reach you</p>
+                    </div>
+
+                </div>
 
 
-        <!-- ================= PASSWORD ================= -->
+                <div class="profile-fields">
 
-        <div class="form-card profile-password-card">
+                    <!-- Email -->
 
-            <div class="form-card-header">
+                    <div class="profile-field">
 
-                <h5 class="mb-0">
-                    <i class="fa-solid fa-lock"></i>
-                    Change Password
-                </h5>
-
-            </div>
-
-
-            <div class="form-card-body">
-
-                <div class="row">
-
-                    <div class="col-md-6">
-
-                        <label class="form-label fw-semibold">
-                            New Password
+                        <label>
+                            Email Address
                         </label>
 
                         <input
-                            type="password"
-                            name="password"
-                            class="form-control"
-                            placeholder="Leave blank to keep current password"
+                            type="email"
+                            name="email"
+                            value="{{ owner.email }}"
+                            required
                         >
-
-                        <small class="text-muted">
-                            Leave this field blank if you don't want to
-                            change your password.
-                        </small>
 
                     </div>
 
@@ -156,13 +184,65 @@
         </div>
 
 
-        <!-- ================= ACTION ================= -->
+        <!-- =================================================
+             ACCOUNT SECURITY
+        ================================================== -->
+
+        <div class="profile-security-card">
+
+            <div class="profile-security-header">
+
+                <div class="security-icon">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+
+                <div>
+                    <h3>Account Security</h3>
+
+                    <p>
+                        Keep your account secure by updating your password.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="profile-security-body">
+
+                <div class="profile-field">
+
+                    <label>
+                        Change Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Leave blank to keep current password"
+                    >
+
+                    <small>
+                        <i class="fa-solid fa-circle-info"></i>
+                        Leave blank if you don't want to change your password.
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SAVE BUTTON
+        ================================================== -->
 
         <div class="profile-actions">
 
             <button
                 type="submit"
-                class="save-profile-btn">
+                class="save-profile-btn"
+            >
 
                 <i class="fa-solid fa-floppy-disk"></i>
 

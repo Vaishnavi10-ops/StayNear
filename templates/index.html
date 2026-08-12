@@ -6,63 +6,121 @@ StayNear
 
 {% block content %}
 
+<!-- ==========================================
+     HERO SECTION
+========================================== -->
+
 <section class="hero">
 
     <div class="container">
 
         <div class="row align-items-center">
 
-            <!-- Left -->
+            <!-- LEFT CONTENT -->
+            <div class="col-lg-5">
 
-            <div class="col-lg-6">
+                <div class="hero-badge">
 
-                <h1>
-                    Find Your <br>
-                    <span>Perfect Stay</span>
-                </h1>
+                    <i class="bi bi-shield-check"></i>
 
-                <p>
-
-                    Discover verified PGs, Hostels and Rental Homes
-                    near your college or workplace.
-
-                </p>
-
-                <div class="hero-features">
-
-                    <span>
-                        <i class="bi bi-check-circle-fill"></i>
-                        Verified Listings
-                    </span>
-
-                    <span>
-                        <i class="bi bi-check-circle-fill"></i>
-                        Easy Booking
-                    </span>
-
-                    <span>
-                        <i class="bi bi-check-circle-fill"></i>
-                        Safe & Secure
-                    </span>
+                    Trusted Stays. Better Living.
 
                 </div>
 
-                <a href="#" class="btn hero-btn">
 
-                    Get Started
+                <h1>
+
+                    Find a place<br>
+
+                    that feels like <span>home.</span>
+
+                </h1>
+
+
+                <p>
+
+                    Discover verified accommodations near your
+                    college or workplace. Safe, simple and reliable.
+
+                </p>
+
+
+                <a href="{{ url_for('auth.login') }}" class="btn hero-btn">
+
+                    Explore Stays
 
                     <i class="bi bi-arrow-right"></i>
 
                 </a>
 
+
+                <div class="hero-features">
+
+                    <span>
+
+                        <i class="bi bi-shield-check"></i>
+
+                        Verified Properties
+
+                    </span>
+
+
+                    <span>
+
+                        <i class="bi bi-lock-fill"></i>
+
+                        Safe Booking
+
+                    </span>
+
+
+                    <span>
+
+                        <i class="bi bi-people-fill"></i>
+
+                        Trusted Owners
+
+                    </span>
+
+                </div>
+
             </div>
 
-            <!-- Right -->
 
-            <div class="col-lg-6 text-center">
+            <!-- RIGHT IMAGE -->
+            <div class="col-lg-7">
 
-                <img src="{{ url_for('static', filename='images/hero.png') }}"
-                     class="img-fluid hero-image">
+                <div class="hero-image-wrapper">
+
+                    <img
+                        src="{{ url_for('static', filename='images/hero.png') }}"
+                        class="img-fluid hero-image"
+                        alt="StayNear accommodation"
+                    >
+
+
+                    <div class="hero-verified-card">
+
+                        <div class="verified-icon">
+
+                            <i class="bi bi-house-heart-fill"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>500+</strong>
+
+                            <small>
+                                Verified Stays
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -72,146 +130,250 @@ StayNear
 
 </section>
 
-<!-- Why Choose StayNear -->
+
+
+<!-- ==========================================
+     WHAT ARE YOU LOOKING FOR?
+========================================== -->
+
+<section class="looking-section">
+
+    <div class="container">
+
+        <div class="looking-box">
+
+            <div class="looking-title">
+
+                <h2>
+                    What are you looking for?
+                </h2>
+
+            </div>
+
+
+            <div class="row g-3">
+
+
+                <!-- PG -->
+                <div class="col-md-6 col-lg-3">
+
+                    <div class="property-type-card">
+
+                        <div class="property-type-icon">
+
+                            <i class="bi bi-house-door-fill"></i>
+
+                        </div>
+
+
+                        <h4>
+                            PG
+                        </h4>
+
+
+                        <p>
+                            Comfortable PGs near your location.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- HOSTEL -->
+                <div class="col-md-6 col-lg-3">
+
+                    <div class="property-type-card">
+
+                        <div class="property-type-icon">
+
+                            <i class="bi bi-building"></i>
+
+                        </div>
+
+
+                        <h4>
+                            Hostel
+                        </h4>
+
+
+                        <p>
+                            Affordable hostels for students.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FLAT -->
+                <div class="col-md-6 col-lg-3">
+
+                    <div class="property-type-card">
+
+                        <div class="property-type-icon">
+
+                            <i class="bi bi-building"></i>
+
+                        </div>
+
+
+                        <h4>
+                            Flat
+                        </h4>
+
+
+                        <p>
+                            Entire flats for you and your family.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ROOM -->
+                <div class="col-md-6 col-lg-3">
+
+                    <div class="property-type-card">
+
+                        <div class="property-type-icon">
+
+                            <i class="bi bi-door-open"></i>
+
+                        </div>
+
+
+                        <h4>
+                            Room
+                        </h4>
+
+
+                        <p>
+                            Find the perfect room for your stay.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ==========================================
+     TRUST SECTION
+========================================== -->
 
 <section class="why-section">
 
     <div class="container">
 
-        <div class="section-title">
+        <div class="trust-wrapper">
 
-            <h2>Why Choose StayNear?</h2>
+            <div class="row align-items-center">
 
-            <p>
-                Finding your perfect accommodation has never been easier,
-                safer, and more convenient.
-            </p>
 
-        </div>
+                <!-- VERIFIED -->
+                <div class="col-lg-4">
 
-        <div class="row g-4">
+                    <div class="trust-card">
 
-            <div class="col-md-6 col-lg-4">
+                        <div class="trust-icon">
 
-                <div class="feature-card">
+                            <i class="bi bi-shield-check"></i>
 
-                    <div class="feature-icon">
+                        </div>
 
-                        <i class="bi bi-patch-check-fill"></i>
+
+                        <div>
+
+                            <h4>
+                                Verified Stays
+                            </h4>
+
+
+                            <p>
+                                All properties are verified
+                                for authenticity and safety.
+                            </p>
+
+                        </div>
 
                     </div>
-
-                    <h4>Verified Properties</h4>
-
-                    <p>
-                        Every property is reviewed before being listed,
-                        ensuring trustworthy accommodations.
-                    </p>
 
                 </div>
 
-            </div>
 
-            <div class="col-md-6 col-lg-4">
 
-                <div class="feature-card">
+                <!-- LOCATION -->
+                <div class="col-lg-4">
 
-                    <div class="feature-icon">
+                    <div class="trust-card trust-divider">
 
-                        <i class="bi bi-geo-alt-fill"></i>
+                        <div class="trust-icon">
+
+                            <i class="bi bi-geo-alt-fill"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h4>
+                                Right Location
+                            </h4>
+
+
+                            <p>
+                                Find stays near your college,
+                                workplace or preferred area.
+                            </p>
+
+                        </div>
 
                     </div>
-
-                    <h4>Prime Locations</h4>
-
-                    <p>
-                        Easily discover hostels, PGs, and rentals near
-                        colleges and workplaces.
-                    </p>
 
                 </div>
 
-            </div>
 
-            <div class="col-md-6 col-lg-4">
 
-                <div class="feature-card">
+                <!-- OWNERS -->
+                <div class="col-lg-4">
 
-                    <div class="feature-icon">
+                    <div class="trust-card trust-divider">
 
-                        <i class="bi bi-cash-coin"></i>
+                        <div class="trust-icon">
 
-                    </div>
+                            <i class="bi bi-people-fill"></i>
 
-                    <h4>Affordable Rent</h4>
+                        </div>
 
-                    <p>
-                        Compare rental options and choose the one that
-                        fits your budget.
-                    </p>
 
-                </div>
+                        <div>
 
-            </div>
+                            <h4>
+                                Trusted Owners
+                            </h4>
 
-            <div class="col-md-6 col-lg-4">
 
-                <div class="feature-card">
+                            <p>
+                                Connect directly with
+                                verified and responsive owners.
+                            </p>
 
-                    <div class="feature-icon">
-
-                        <i class="bi bi-calendar-check-fill"></i>
+                        </div>
 
                     </div>
-
-                    <h4>Easy Booking</h4>
-
-                    <p>
-                        Schedule visits quickly with a simple booking
-                        process.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-
-                        <i class="bi bi-lightning-charge-fill"></i>
-
-                    </div>
-
-                    <h4>Instant Contact</h4>
-
-                    <p>
-                        Connect directly with property owners without
-                        unnecessary delays.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-6 col-lg-4">
-
-                <div class="feature-card">
-
-                    <div class="feature-icon">
-
-                        <i class="bi bi-people-fill"></i>
-
-                    </div>
-
-                    <h4>Trusted Owners</h4>
-
-                    <p>
-                        StayNear promotes genuine owners to provide a
-                        reliable renting experience.
-                    </p>
 
                 </div>
 
@@ -222,243 +384,5 @@ StayNear
     </div>
 
 </section>
-<!-- ==============================
-     HOW STAYNEAR WORKS
-================================ -->
-
-<section class="how-section">
-
-    <div class="container">
-
-        <div class="section-title">
-
-            <h2>How StayNear Works</h2>
-
-            <p>
-                Find your perfect accommodation in just four simple steps.
-            </p>
-
-        </div>
-
-        <div class="row text-center">
-
-            <div class="col-md-3">
-
-                <div class="step-box">
-
-                    <div class="step-icon">
-
-                        <i class="bi bi-search"></i>
-
-                    </div>
-
-                    <h4>Search</h4>
-
-                    <p>
-                        Browse verified hostels,
-                        PGs and rental homes.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-3">
-
-                <div class="step-box">
-
-                    <div class="step-icon">
-
-                        <i class="bi bi-house-door-fill"></i>
-
-                    </div>
-
-                    <h4>View Details</h4>
-
-                    <p>
-                        Explore photos,
-                        rent, amenities and location.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-3">
-
-                <div class="step-box">
-
-                    <div class="step-icon">
-
-                        <i class="bi bi-calendar-check-fill"></i>
-
-                    </div>
-
-                    <h4>Book Visit</h4>
-
-                    <p>
-                        Schedule a visit
-                        with the property owner.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-3">
-
-                <div class="step-box">
-
-                    <div class="step-icon">
-
-                        <i class="bi bi-emoji-smile-fill"></i>
-
-                    </div>
-
-                    <h4>Move In</h4>
-
-                    <p>
-                        Finalize your choice
-                        and enjoy your new stay.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-<!-- ==========================================
-                FOOTER
-========================================== -->
-
-<footer class="footer">
-
-    <div class="container">
-
-        <div class="row gy-4">
-
-            <!-- Logo & About -->
-
-            <div class="col-lg-4">
-
-                <h3 class="footer-logo">
-
-                    <i class="bi bi-house-heart-fill"></i>
-
-                    StayNear
-
-                </h3>
-
-                <p>
-
-                    StayNear is your trusted accommodation discovery
-                    platform that helps students and working professionals
-                    find verified PGs, hostels, and rental homes with ease.
-
-                </p>
-
-            </div>
-
-            <!-- Quick Links -->
-
-            <div class="col-lg-2">
-
-                <h5>Quick Links</h5>
-
-                <ul class="footer-links">
-
-                    <li><a href="/">Home</a></li>
-
-                    <li><a href="#">About</a></li>
-
-                    <li><a href="#">Contact</a></li>
-
-                    <li><a href="#">Login</a></li>
-
-                </ul>
-
-            </div>
-
-            <!-- Services -->
-
-            <div class="col-lg-3">
-
-                <h5>Services</h5>
-
-                <ul class="footer-links">
-
-                    <li>Verified Properties</li>
-
-                    <li>Easy Booking</li>
-
-                    <li>Property Listings</li>
-
-                    <li>Secure Platform</li>
-
-                </ul>
-
-            </div>
-
-            <!-- Contact -->
-
-            <div class="col-lg-3">
-
-                <h5>Contact</h5>
-
-                <p>
-
-                    <i class="bi bi-envelope-fill"></i>
-
-                    support@staynear.com
-
-                </p>
-
-                <p>
-
-                    <i class="bi bi-telephone-fill"></i>
-
-                    +91 98765 43210
-
-                </p>
-
-                <p>
-
-                    <i class="bi bi-geo-alt-fill"></i>
-
-                    Nashik, Maharashtra
-
-                </p>
-
-                <div class="social-icons">
-
-                    <a href="#"><i class="bi bi-facebook"></i></a>
-
-                    <a href="#"><i class="bi bi-instagram"></i></a>
-
-                    <a href="#"><i class="bi bi-linkedin"></i></a>
-
-                    <a href="#"><i class="bi bi-github"></i></a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <hr>
-
-        <div class="footer-bottom">
-
-            © 2026 StayNear. All Rights Reserved.
-
-        </div>
-
-    </div>
-
-</footer>
 
 {% endblock %}

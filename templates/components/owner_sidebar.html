@@ -1,102 +1,151 @@
-<div class="sidebar">
+<!-- ==========================================
+     STAYNEAR OWNER SIDEBAR
+========================================== -->
 
-    <div class="logo">
+<aside class="owner-sidebar">
 
-        <div class="logo-icon">
+    <!-- ==========================================
+         LOGO
+    ========================================== -->
 
-            <i class="fa-solid fa-house"></i>
+    <div class="owner-logo">
 
-        </div>
-
-        <div>
-
-            <h2>StayNear</h2>
-
-            <span>Owner Panel</span>
-
-        </div>
-
+    <div class="owner-logo-icon">
+        <i class="fa-solid fa-house"></i>
     </div>
 
-    <ul class="menu">
-
-        <li class="{% if request.endpoint == 'owner.dashboard' %}active{% endif %}">
-
-            <a href="{{ url_for('owner.dashboard') }}">
-
-                <i class="fa-solid fa-chart-line"></i>
-
-                <span>Dashboard</span>
-
-            </a>
-
-        </li>
-
-        <li class="{% if request.endpoint == 'owner.add_property' %}active{% endif %}">
-            <a href="{{ url_for('owner.add_property') }}">
-                <i class="fa-solid fa-plus"></i>
-
-                <span>Add Property</span>
-
-            </a>
-
-        </li>
-
-        <li class="{% if request.endpoint == 'owner.my_properties' %}active{% endif %}">
-            <a href="{{ url_for('owner.my_properties') }}">
-                <i class="fa-solid fa-building"></i>
-            <span>My Properties</span>
-            </a>
-            </li>
-
-            <li class="{% if request.endpoint == 'owner.bookings' %}active{% endif %}">
-
-        <a href="{{ url_for('owner.bookings') }}">
-
-            <i class="fa-solid fa-calendar-check"></i>
-
-            <span>Bookings</span>
-
-        </a>
-
-    </li>
-
-    <li class="{% if request.endpoint == 'owner.reviews' %}active{% endif %}">
-
-    <a href="{{ url_for('owner.reviews') }}">
-
-        <i class="fa-solid fa-star"></i>
-
-        <span>Reviews & Ratings</span>
-
-    </a>
-
-</li>
-
-         <li class="{% if request.endpoint == 'owner.profile' %}active{% endif %}">
-
-        <a href="{{ url_for('owner.profile') }}">
-
-            <i class="fa-solid fa-user"></i>
-
-            <span>Profile</span>
-
-        </a>
-
-    </li>
-
-    </ul>
-
-    <div class="logout">
-
-        <a href="{{ url_for('auth.logout') }}">
-
-            <i class="fa-solid fa-right-from-bracket"></i>
-
-            Logout
-
-        </a>
-
+    <div class="owner-logo-text">
+        <h2>StayNear</h2>
+        <span>Owner Panel</span>
     </div>
 
 </div>
+
+    <!-- ==========================================
+         NAVIGATION
+    ========================================== -->
+
+    <nav class="owner-navigation">
+
+        <a href="{{ url_for('owner.dashboard') }}"
+           class="owner-nav-link {% if request.endpoint == 'owner.dashboard' %}active{% endif %}">
+
+            <span class="nav-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </span>
+
+            <span class="nav-text">
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('owner.add_property') }}"
+           class="owner-nav-link {% if request.endpoint == 'owner.add_property' %}active{% endif %}">
+
+            <span class="nav-icon">
+                <i class="fa-solid fa-plus"></i>
+            </span>
+
+            <span class="nav-text">
+                Add Property
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('owner.my_properties') }}"
+           class="owner-nav-link {% if request.endpoint == 'owner.my_properties' %}active{% endif %}">
+
+            <span class="nav-icon">
+                <i class="fa-solid fa-building"></i>
+            </span>
+
+            <span class="nav-text">
+                My Properties
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('owner.bookings') }}"
+           class="owner-nav-link {% if request.endpoint == 'owner.bookings' %}active{% endif %}">
+
+            <span class="nav-icon">
+                <i class="fa-solid fa-calendar-check"></i>
+            </span>
+
+            <span class="nav-text">
+                Bookings
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('owner.reviews') }}"
+           class="owner-nav-link {% if request.endpoint == 'owner.reviews' %}active{% endif %}">
+
+            <span class="nav-icon">
+                <i class="fa-solid fa-star"></i>
+            </span>
+
+            <span class="nav-text">
+                Reviews &amp; Ratings
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('owner.profile') }}"
+           class="owner-nav-link {% if request.endpoint == 'owner.profile' %}active{% endif %}">
+
+            <span class="nav-icon">
+                <i class="fa-solid fa-user"></i>
+            </span>
+
+            <span class="nav-text">
+                Profile
+            </span>
+
+        </a>
+
+    </nav>
+
+
+    <!-- ==========================================
+         SIDEBAR DECORATION
+    ========================================== -->
+
+    <div class="sidebar-decoration">
+
+        <div class="decoration-circle circle-one"></div>
+        <div class="decoration-circle circle-two"></div>
+        <div class="decoration-circle circle-three"></div>
+
+        <i class="fa-solid fa-house decoration-house"></i>
+
+    </div>
+
+
+    <!-- ==========================================
+         LOGOUT
+    ========================================== -->
+
+    <div class="owner-logout">
+
+        <a href="{{ url_for('auth.logout') }}">
+
+            <span class="logout-icon">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </span>
+
+            <span class="logout-text">
+                Logout
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>

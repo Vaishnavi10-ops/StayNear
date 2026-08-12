@@ -6,286 +6,851 @@ Edit Property | StayNear
 
 {% block owner_content %}
 
-<div class="properties-page">
+<div class="edit-property-page">
 
-    <div class="properties-header">
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
 
-        <div>
-            <h2>✏️ Edit Property</h2>
-            <p>Update your property information.</p>
+    <div class="edit-property-header">
+
+        <div class="edit-property-title">
+
+            <div class="edit-property-icon">
+                <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+
+            <div>
+                <span class="edit-property-eyebrow">
+                    PROPERTY MANAGEMENT
+                </span>
+
+                <h1>Edit Property</h1>
+
+                <p>
+                    Update your property information and keep your listing accurate.
+                </p>
+            </div>
+
         </div>
 
-        <a href="{{ url_for('owner.my_properties') }}"
-           class="add-property-btn">
-
-            ← Back to My Properties
-
+        <a
+            href="{{ url_for('owner.my_properties') }}"
+            class="edit-back-btn"
+        >
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to My Properties
         </a>
 
     </div>
 
 
-    <div class="form-card">
+    <!-- =====================================================
+         FORM
+    ====================================================== -->
 
-        <div class="form-card-header">
-            <h5>Edit Property Details</h5>
+    <form
+        method="POST"
+        action="{{ url_for('owner.edit_property',
+                           property_id=property.property_id) }}"
+        enctype="multipart/form-data"
+    >
+
+
+        <!-- =================================================
+             SECTION 01 : BASIC INFORMATION
+        ================================================== -->
+
+        <div class="edit-form-card">
+
+            <div class="edit-card-header">
+
+                <div class="edit-section-number">
+                    01
+                </div>
+
+                <div>
+                    <h3>Basic Information</h3>
+
+                    <p>
+                        Update the basic details of your property.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="edit-card-body">
+
+                <div class="edit-form-grid grid-2">
+
+
+                    <!-- Property Name -->
+
+                    <div class="edit-field">
+
+                        <label>
+                            Property Name
+                            <span>*</span>
+                        </label>
+
+                        <div class="edit-input-wrapper">
+
+                            <i class="fa-solid fa-building"></i>
+
+                            <input
+                                type="text"
+                                name="property_name"
+                                value="{{ property.property_name }}"
+                                placeholder="Enter property name"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Property Type -->
+
+                    <div class="edit-field">
+
+                        <label>
+                            Property Type
+                            <span>*</span>
+                        </label>
+
+                        <div class="edit-input-wrapper">
+
+                            <i class="fa-solid fa-house"></i>
+
+                            <select
+                                name="property_type"
+                                required
+                            >
+
+                                <option value="Hostel"
+                                    {% if property.property_type == 'Hostel' %}selected{% endif %}>
+                                    Hostel
+                                </option>
+
+                                <option value="PG"
+                                    {% if property.property_type == 'PG' %}selected{% endif %}>
+                                    PG
+                                </option>
+
+                                <option value="Flat"
+                                    {% if property.property_type == 'Flat' %}selected{% endif %}>
+                                    Flat
+                                </option>
+
+                                <option value="Room"
+                                    {% if property.property_type == 'Room' %}selected{% endif %}>
+                                    Room
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Gender Preference -->
+
+                    <div class="edit-field">
+
+                        <label>
+                            Gender Preference
+                            <span>*</span>
+                        </label>
+
+                        <div class="edit-input-wrapper">
+
+                            <i class="fa-solid fa-users"></i>
+
+                            <select
+                                name="gender_preference"
+                                required
+                            >
+
+                                <option value="Boys"
+                                    {% if property.gender_preference == 'Boys' %}selected{% endif %}>
+                                    Boys
+                                </option>
+
+                                <option value="Girls"
+                                    {% if property.gender_preference == 'Girls' %}selected{% endif %}>
+                                    Girls
+                                </option>
+
+                                <option value="Any"
+                                    {% if property.gender_preference == 'Any' %}selected{% endif %}>
+                                    Any
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Available Rooms -->
+
+                    <div class="edit-field">
+
+                        <label>
+                            Available Rooms
+                            <span>*</span>
+                        </label>
+
+                        <div class="edit-input-wrapper">
+
+                            <i class="fa-solid fa-bed"></i>
+
+                            <input
+                                type="number"
+                                name="available_rooms"
+                                value="{{ property.available_rooms }}"
+                                min="0"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
 
-        <div class="form-card-body">
+        <!-- =================================================
+             SECTION 02 : RENT & DEPOSIT
+        ================================================== -->
 
-            <form method="POST">
+        <div class="edit-form-card">
 
-                <!-- Property Name -->
+            <div class="edit-card-header">
 
-                <div class="mb-3">
+                <div class="edit-section-number">
+                    02
+                </div>
 
-                    <label class="form-label">
-                        Property Name
-                    </label>
+                <div>
+                    <h3>Pricing Details</h3>
 
-                    <input
-                        type="text"
-                        name="property_name"
-                        class="form-control"
-                        value="{{ property.property_name }}"
-                        required>
+                    <p>
+                        Keep your rental pricing up to date.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="edit-card-body">
+
+                <div class="edit-form-grid grid-2">
+
+
+                    <!-- Monthly Rent -->
+
+                    <div class="edit-field">
+
+                        <label>
+                            Monthly Rent
+                            <span>*</span>
+                        </label>
+
+                        <div class="edit-input-wrapper">
+
+                            <span class="edit-rupee-symbol">₹</span>
+
+                            <input
+                                type="number"
+                                name="monthly_rent"
+                                value="{{ property.monthly_rent }}"
+                                min="0"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Security Deposit -->
+
+                    <div class="edit-field">
+
+                        <label>
+                            Security Deposit
+                            <span>*</span>
+                        </label>
+
+                        <div class="edit-input-wrapper">
+
+                            <span class="edit-rupee-symbol">₹</span>
+
+                            <input
+                                type="number"
+                                name="security_deposit"
+                                value="{{ property.security_deposit }}"
+                                min="0"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SECTION 03 : LOCATION
+        ================================================== -->
+
+        <div class="edit-form-card">
+
+            <div class="edit-card-header">
+
+                <div class="edit-section-number">
+                    03
+                </div>
+
+                <div>
+                    <h3>Property Location</h3>
+
+                    <p>
+                        Update the location details of your property.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="edit-card-body">
+
+                <div class="edit-form-grid grid-2">
+
+
+                    <!-- Address -->
+
+                    <div class="edit-field edit-field-full">
+
+                        <label>
+                            Address
+                            <span>*</span>
+                        </label>
+
+                        <div class="edit-textarea-wrapper">
+
+                            <i class="fa-solid fa-location-dot"></i>
+
+                            <textarea
+                                name="address"
+                                placeholder="Enter complete property address"
+                                required
+                            >{{ property.address }}</textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Area -->
+
+                    <div class="edit-field">
+
+                        <label>
+                            Area / Locality
+                            <span>*</span>
+                        </label>
+
+                        <div class="edit-input-wrapper">
+
+                            <i class="fa-solid fa-map-location-dot"></i>
+
+                            <input
+                                type="text"
+                                name="area"
+                                value="{{ property.area }}"
+                                placeholder="Enter area"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- City -->
+
+                    <div class="edit-field">
+
+                        <label>
+                            City
+                            <span>*</span>
+                        </label>
+
+                        <div class="edit-input-wrapper">
+
+                            <i class="fa-solid fa-city"></i>
+
+                            <input
+                                type="text"
+                                name="city"
+                                value="{{ property.city }}"
+                                placeholder="Enter city"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Pincode -->
+
+                    <div class="edit-field">
+
+                        <label>
+                            Pincode
+                            <span>*</span>
+                        </label>
+
+                        <div class="edit-input-wrapper">
+
+                            <i class="fa-solid fa-location-crosshairs"></i>
+
+                            <input
+                                type="text"
+                                name="pincode"
+                                value="{{ property.pincode }}"
+                                placeholder="Enter pincode"
+                                maxlength="6"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
 
                 </div>
 
 
-                <!-- Property Type -->
+                <!-- Automatic Location -->
 
-                <div class="mb-3">
+                <div class="edit-location-info">
 
-                    <label class="form-label">
-                        Property Type
-                    </label>
+                    <div class="edit-location-icon">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
 
-                    <select
-                        name="property_type"
-                        class="form-select"
-                        required>
+                    <div>
 
-                        {% for type in ["Hostel", "PG", "Flat", "Room", "Apartment"] %}
+                        <strong>
+                            Location coordinates
+                        </strong>
 
-                        <option
-                            value="{{ type }}"
-                            {% if property.property_type == type %}
-                            selected
-                            {% endif %}>
+                        <p>
+                            Your property's saved map location will be
+                            retained automatically.
+                        </p>
 
-                            {{ type }}
-
-                        </option>
-
-                        {% endfor %}
-
-                    </select>
+                    </div>
 
                 </div>
 
+            </div>
 
-                <!-- Gender -->
+        </div>
 
-                <div class="mb-3">
 
-                    <label class="form-label">
-                        Gender Preference
-                    </label>
+        <!-- =================================================
+             SECTION 04 : DESCRIPTION
+        ================================================== -->
 
-                    <select
-                        name="gender_preference"
-                        class="form-select"
-                        required>
+        <div class="edit-form-card">
 
-                        {% for gender in ["Boys", "Girls", "Co-ed"] %}
+            <div class="edit-card-header">
 
-                        <option
-                            value="{{ gender }}"
-                            {% if property.gender_preference == gender %}
-                            selected
-                            {% endif %}>
-
-                            {{ gender }}
-
-                        </option>
-
-                        {% endfor %}
-
-                    </select>
-
+                <div class="edit-section-number">
+                    04
                 </div>
 
+                <div>
+                    <h3>Property Description</h3>
 
-                <!-- Rent -->
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        Monthly Rent
-                    </label>
-
-                    <input
-                        type="number"
-                        name="monthly_rent"
-                        class="form-control"
-                        value="{{ property.monthly_rent }}"
-                        required>
-
+                    <p>
+                        Tell potential tenants about your property.
+                    </p>
                 </div>
 
-
-                <!-- Security Deposit -->
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        Security Deposit
-                    </label>
-
-                    <input
-                        type="number"
-                        name="security_deposit"
-                        class="form-control"
-                        value="{{ property.security_deposit or 0 }}">
-
-                </div>
+            </div>
 
 
-                <!-- Available Rooms -->
+            <div class="edit-card-body">
 
-                <div class="mb-3">
+                <div class="edit-field">
 
-                    <label class="form-label">
-                        Available Rooms
-                    </label>
-
-                    <input
-                        type="number"
-                        name="available_rooms"
-                        class="form-control"
-                        value="{{ property.available_rooms }}">
-
-                </div>
-
-
-                <!-- City -->
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        City
-                    </label>
-
-                    <input
-                        type="text"
-                        name="city"
-                        class="form-control"
-                        value="{{ property.city }}"
-                        required>
-
-                </div>
-
-
-                <!-- Area -->
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        Area
-                    </label>
-
-                    <input
-                        type="text"
-                        name="area"
-                        class="form-control"
-                        value="{{ property.area }}"
-                        required>
-
-                </div>
-
-
-                <!-- Address -->
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        Full Address
-                    </label>
-
-                    <textarea
-                        name="address"
-                        class="form-control"
-                        rows="4"
-                        required>{{ property.address }}</textarea>
-
-                </div>
-
-
-                <!-- Pincode -->
-
-                <div class="mb-3">
-
-                    <label class="form-label">
-                        Pincode
-                    </label>
-
-                    <input
-                        type="text"
-                        name="pincode"
-                        class="form-control"
-                        value="{{ property.pincode }}"
-                        required>
-
-                </div>
-
-
-                <!-- Description -->
-
-                <div class="mb-3">
-
-                    <label class="form-label">
+                    <label>
                         Description
                     </label>
 
                     <textarea
                         name="description"
-                        class="form-control"
-                        rows="5">{{ property.description or "" }}</textarea>
+                        class="edit-description"
+                        placeholder="Describe your property..."
+                    >{{ property.description or '' }}</textarea>
 
                 </div>
 
-
-                <!-- Buttons -->
-
-                <div class="property-view-actions">
-
-                    <a
-                        href="{{ url_for('owner.my_properties') }}"
-                        class="view-btn">
-
-                        Cancel
-
-                    </a>
-
-                    <button
-                        type="submit"
-                        class="edit-btn">
-
-                        <i class="fa-solid fa-check"></i>
-
-                        Save Changes
-
-                    </button>
-
-                </div>
-
-            </form>
+            </div>
 
         </div>
 
-    </div>
+
+        <!-- =================================================
+             SECTION 05 : AMENITIES
+        ================================================== -->
+
+        <div class="edit-form-card">
+
+            <div class="edit-card-header">
+
+                <div class="edit-section-number">
+                    05
+                </div>
+
+                <div>
+                    <h3>Amenities</h3>
+
+                    <p>
+                        Select the facilities available at your property.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="edit-card-body">
+
+                <div class="edit-amenities-grid">
+
+
+                    <label class="edit-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="WiFi"
+                            {% if property.amenities and
+                                  property.amenities|selectattr('name', 'equalto', 'WiFi')|list %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="edit-amenity-icon">
+                            <i class="fa-solid fa-wifi"></i>
+                        </span>
+
+                        <span>Wi-Fi</span>
+
+                    </label>
+
+
+                    <label class="edit-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="Food"
+                            {% if property.amenities and
+                                  property.amenities|selectattr('name', 'equalto', 'Food')|list %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="edit-amenity-icon">
+                            <i class="fa-solid fa-utensils"></i>
+                        </span>
+
+                        <span>Food</span>
+
+                    </label>
+
+
+                    <label class="edit-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="CCTV"
+                            {% if property.amenities and
+                                  property.amenities|selectattr('name', 'equalto', 'CCTV')|list %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="edit-amenity-icon">
+                            <i class="fa-solid fa-video"></i>
+                        </span>
+
+                        <span>CCTV</span>
+
+                    </label>
+
+
+                    <label class="edit-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="Laundry"
+                            {% if property.amenities and
+                                  property.amenities|selectattr('name', 'equalto', 'Laundry')|list %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="edit-amenity-icon">
+                            <i class="fa-solid fa-shirt"></i>
+                        </span>
+
+                        <span>Laundry</span>
+
+                    </label>
+
+
+                    <label class="edit-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="Power Backup"
+                            {% if property.amenities and
+                                  property.amenities|selectattr('name', 'equalto', 'Power Backup')|list %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="edit-amenity-icon">
+                            <i class="fa-solid fa-bolt"></i>
+                        </span>
+
+                        <span>Power Backup</span>
+
+                    </label>
+
+
+                    <label class="edit-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="Water Supply"
+                            {% if property.amenities and
+                                  property.amenities|selectattr('name', 'equalto', 'Water Supply')|list %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="edit-amenity-icon">
+                            <i class="fa-solid fa-droplet"></i>
+                        </span>
+
+                        <span>Water Supply</span>
+
+                    </label>
+
+
+                    <label class="edit-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="Parking"
+                            {% if property.amenities and
+                                  property.amenities|selectattr('name', 'equalto', 'Parking')|list %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="edit-amenity-icon">
+                            <i class="fa-solid fa-square-parking"></i>
+                        </span>
+
+                        <span>Parking</span>
+
+                    </label>
+
+
+                    <label class="edit-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="Lift"
+                            {% if property.amenities and
+                                  property.amenities|selectattr('name', 'equalto', 'Lift')|list %}
+                                checked
+                            {% endif %}
+                        >
+
+                        <span class="edit-amenity-icon">
+                            <i class="fa-solid fa-elevator"></i>
+                        </span>
+
+                        <span>Lift</span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SECTION 06 : IMAGES
+        ================================================== -->
+
+        <div class="edit-form-card">
+
+            <div class="edit-card-header">
+
+                <div class="edit-section-number">
+                    06
+                </div>
+
+                <div>
+                    <h3>Property Images</h3>
+
+                    <p>
+                        Add new images to your property listing.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="edit-card-body">
+
+                {% if property.images %}
+
+                <div class="current-images">
+
+                    {% for image in property.images %}
+
+                    <div class="current-image">
+
+                        <img
+                            src="{{ url_for('static', filename=image.image_path) }}"
+                            alt="{{ property.property_name }}"
+                        >
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endif %}
+
+
+                <div class="edit-image-upload">
+
+                    <input
+                        type="file"
+                        name="images"
+                        multiple
+                        accept="image/*"
+                    >
+
+                    <div class="edit-upload-icon">
+
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                    </div>
+
+                    <h4>
+                        Add New Property Images
+                    </h4>
+
+                    <p>
+                        Drag and drop images here or
+                        <strong>browse</strong>
+                    </p>
+
+                    <span>
+                        JPG, JPEG or PNG
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ACTION AREA
+        ================================================== -->
+
+        <div class="edit-property-submit">
+
+            <div class="edit-submit-note">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <span>
+                    Your changes will be saved to this property.
+                </span>
+
+            </div>
+
+
+            <div class="edit-submit-actions">
+
+                <a
+                    href="{{ url_for('owner.view_property',
+                                     property_id=property.property_id) }}"
+                    class="edit-cancel-btn"
+                >
+                    Cancel
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="edit-update-btn"
+                >
+
+                    <i class="fa-solid fa-check"></i>
+
+                    Update Property
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </form>
 
 </div>
 

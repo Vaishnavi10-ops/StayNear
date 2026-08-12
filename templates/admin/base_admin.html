@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+        Admin | StayNear
+        {% endblock %}
+    </title>
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Admin CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/admin.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="admin-layout">
+
+
+    <!-- ======================================
+         SIDEBAR
+    ======================================= -->
+
+    <aside class="admin-sidebar">
+
+
+        <!-- Logo -->
+
+        <div class="admin-logo">
+
+            <div class="admin-logo-icon">
+
+                <i class="fa-solid fa-house"></i>
+
+            </div>
+
+            <div>
+
+                <h2>StayNear</h2>
+
+                <span>ADMIN PANEL</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Navigation -->
+
+        <nav class="admin-nav">
+
+
+            <!-- Dashboard -->
+
+            <a
+                href="{{ url_for('admin.admin_dashboard') }}"
+                class="admin-nav-item"
+            >
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <!-- Properties -->
+
+            <a
+                href="{{ url_for('admin.manage_properties') }}"
+                class="admin-nav-item"
+            >
+
+                <i class="fa-solid fa-building"></i>
+
+                <span>Properties</span>
+
+            </a>
+
+
+            <!-- Users -->
+
+            <a
+                href="#"
+                class="admin-nav-item"
+            >
+
+                <i class="fa-solid fa-users"></i>
+
+                <span>Users</span>
+
+            </a>
+
+
+            <!-- Owners -->
+
+            <a
+                href="#"
+                class="admin-nav-item"
+            >
+
+                <i class="fa-solid fa-user-tie"></i>
+
+                <span>Owners</span>
+
+            </a>
+
+
+            <!-- Bookings -->
+
+            <a
+                href="#"
+                class="admin-nav-item"
+            >
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+                <span>Bookings</span>
+
+            </a>
+
+
+            <!-- Ratings -->
+
+            <a
+                href="#"
+                class="admin-nav-item"
+            >
+
+                <i class="fa-solid fa-star"></i>
+
+                <span>Ratings</span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- ==================================
+             LOGOUT
+        =================================== -->
+
+        <div class="admin-sidebar-bottom">
+
+            <a
+                href="{{ url_for('auth.logout') }}"
+                class="admin-nav-item logout"
+            >
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                <span>Logout</span>
+
+            </a>
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- ======================================
+         MAIN CONTENT
+    ======================================= -->
+
+    <main class="admin-main">
+
+        {% block admin_content %}
+        {% endblock %}
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

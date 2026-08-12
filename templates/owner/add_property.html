@@ -4,299 +4,433 @@
 
 {% block owner_content %}
 
-<div class="container-fluid py-4">
+<div class="add-property-page">
 
-    <!-- Page Heading -->
-    <div class="page-header">
+    <!-- =========================================
+         PAGE HEADER
+    ========================================== -->
 
-    <h2>🏡 Add New Property</h2>
+    <div class="add-property-header">
 
-    <p>
-        Fill in the details below to list your property on StayNear.
-    </p>
+        <div class="add-property-title">
 
-</div>
-
-    <form action="{{ url_for('owner.add_property') }}"
-      method="POST"
-      enctype="multipart/form-data">
-
-        <!-- ================= BASIC INFORMATION ================= -->
-
-        <div class="form-card">
-
-            <div class="form-card-header">
-                <h5 class="mb-0">Basic Information</h5>
+            <div class="add-property-icon">
+                <i class="fa-solid fa-house-circle-check"></i>
             </div>
 
-            <div class="form-card-body">
+            <div>
+                <span class="add-property-eyebrow">
+                    PROPERTY LISTING
+                </span>
 
-                <div class="row">
+                <h1>Add New Property</h1>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label fw-semibold">
-                            Property Name *
+                <p>
+                    Add your property details and make it visible to potential tenants.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="listing-step">
+            <span class="step-dot active"></span>
+            <span class="step-line"></span>
+            <span class="step-dot"></span>
+            <span class="step-line"></span>
+            <span class="step-dot"></span>
+        </div>
+
+    </div>
+
+
+    <form action="{{ url_for('owner.add_property') }}"
+          method="POST"
+          enctype="multipart/form-data">
+
+          <!-- AUTOMATIC GPS LOCATION -->
+<input type="hidden" name="latitude" id="latitude">
+<input type="hidden" name="longitude" id="longitude">
+
+
+        <!-- =========================================
+             BASIC INFORMATION
+        ========================================== -->
+
+        <div class="property-form-card">
+
+            <div class="property-card-header">
+
+                <div class="section-number">
+                    01
+                </div>
+
+                <div>
+                    <h3>Basic Information</h3>
+                    <p>Tell us about your property</p>
+                </div>
+
+            </div>
+
+
+            <div class="property-card-body">
+
+                <div class="property-form-grid grid-2">
+
+                    <div class="property-field">
+
+                        <label>
+                            Property Name
+                            <span>*</span>
                         </label>
 
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="property_name"
-                            placeholder="e.g. Green Residency PG"
-                            required>
+                        <div class="property-input-wrapper">
+
+                            <i class="fa-solid fa-house"></i>
+
+                            <input
+                                type="text"
+                                name="property_name"
+                                placeholder="e.g. Green Residency PG"
+                                required>
+
+                        </div>
+
                     </div>
 
-                    <div class="col-md-3 mb-3">
 
-                        <label class="form-label fw-semibold">
-                            Property Type *
+                    <div class="property-field">
+
+                        <label>
+                            Property Type
+                            <span>*</span>
                         </label>
 
-                        <select class="form-select" name="property_type" required>
+                        <div class="property-input-wrapper">
 
-                            <option value="">Select</option>
-                            <option>Apartment</option>
-                            <option>Flat</option>
-                            <option>PG</option>
-                            <option>Hostel</option>
-                            <option>Room</option>
+                            <i class="fa-solid fa-building"></i>
 
-                        </select>
+                            <select name="property_type" required>
+
+                                <option value="">Select property type</option>
+                                <option>Apartment</option>
+                                <option>Flat</option>
+                                <option>PG</option>
+                                <option>Hostel</option>
+                                <option>Room</option>
+
+                            </select>
+
+                        </div>
 
                     </div>
 
-                    <div class="col-md-3 mb-3">
+                </div>
 
-                        <label class="form-label fw-semibold">
-                            Gender Preference *
+
+                <div class="property-form-grid grid-2">
+
+                    <div class="property-field">
+
+                        <label>
+                            Gender Preference
+                            <span>*</span>
                         </label>
 
-                        <select class="form-select"
+                        <div class="property-input-wrapper">
+
+                            <i class="fa-solid fa-users"></i>
+
+                            <select
                                 name="gender_preference"
                                 required>
 
-                            <option>Boys</option>
-                            <option>Girls</option>
-                            <option>Co-ed</option>
+                                <option>Boys</option>
+                                <option>Girls</option>
+                                <option>Co-ed</option>
 
-                        </select>
+                            </select>
 
-                    </div>
-
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-6 mb-3">
-
-                        <label class="form-label fw-semibold">
-                            Monthly Rent (₹) *
-                        </label>
-
-                        <input
-                            type="number"
-                            class="form-control"
-                            name="monthly_rent"
-                            placeholder="e.g. 8000"
-                            required>
+                        </div>
 
                     </div>
 
-                    <div class="col-md-6 mb-3">
 
-                        <label class="form-label fw-semibold">
-                            Security Deposit (₹)
-                        </label>
+                    <div class="property-field">
 
-                        <input
-                            type="number"
-                            class="form-control"
-                            name="security_deposit"
-                            placeholder="e.g. 5000">
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ================= LOCATION ================= -->
-
-        <div class="form-card">
-
-            <div class="form-card-header">
-                <h5 class="mb-0">Location</h5>
-            </div>
-
-            <div class="form-card-body">
-
-                <div class="row">
-
-                    <div class="col-md-4 mb-3">
-
-                        <label class="form-label fw-semibold">
-                            City *
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="city"
-                            placeholder="Nashik"
-                            required>
-
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-
-                        <label class="form-label fw-semibold">
-                            Area *
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="area"
-                            placeholder="College Road"
-                            required>
-
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-
-                        <label class="form-label fw-semibold">
-                            Pincode *
-                        </label>
-
-                        <input
-                            type="text"
-                            class="form-control"
-                            name="pincode"
-                            placeholder="422005"
-                            required>
-
-                    </div>
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label class="form-label fw-semibold">
-                        Full Address *
-                    </label>
-
-                    <textarea
-                        class="form-control"
-                        rows="3"
-                        name="address"
-                        placeholder="Enter complete address"
-                        required></textarea>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ================= PROPERTY DETAILS ================= -->
-
-        <div class="form-card">
-
-            <div class="form-card-header">
-                <h5 class="mb-0">Property Details</h5>
-            </div>
-
-            <div class="form-card-body">
-
-                <div class="row">
-
-                    <div class="col-md-4 mb-3">
-
-                        <label class="form-label fw-semibold">
+                        <label>
                             Available Rooms
                         </label>
 
-                        <input
-                            type="number"
-                            class="form-control"
-                            name="available_rooms"
-                            value="1"
-                            min="1">
+                        <div class="property-input-wrapper">
+
+                            <i class="fa-solid fa-door-open"></i>
+
+                            <input
+                                type="number"
+                                name="available_rooms"
+                                value="1"
+                                min="1">
+
+                        </div>
 
                     </div>
 
                 </div>
 
-                <div class="mb-3">
 
-                    <label class="form-label fw-semibold">
-                        Description
+                <div class="property-form-grid grid-2">
+
+                    <div class="property-field">
+
+                        <label>
+                            Monthly Rent
+                            <span>*</span>
+                        </label>
+
+                        <div class="property-input-wrapper">
+
+                            <span class="rupee-symbol">₹</span>
+
+                            <input
+                                type="number"
+                                name="monthly_rent"
+                                placeholder="8000"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="property-field">
+
+                        <label>
+                            Security Deposit
+                        </label>
+
+                        <div class="property-input-wrapper">
+
+                            <span class="rupee-symbol">₹</span>
+
+                            <input
+                                type="number"
+                                name="security_deposit"
+                                placeholder="5000">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             LOCATION
+        ========================================== -->
+
+        <!-- =====================================================
+     LOCATION DETAILS
+===================================================== -->
+
+<div class="property-form-card">
+
+    <div class="property-card-header">
+
+        <div class="section-number">
+            02
+        </div>
+
+        <div>
+            <h3>Property Location</h3>
+
+            <p>
+                Enter the property address and we'll detect its map location automatically.
+            </p>
+        </div>
+
+    </div>
+
+
+    <div class="property-card-body">
+
+        <div class="property-form-grid grid-2">
+
+            <!-- ADDRESS -->
+
+            <div class="property-field">
+
+                <label>
+                    Property Address
+                    <span>*</span>
+                </label>
+
+                <div class="property-input-wrapper">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    <input
+                        type="text"
+                        name="address"
+                        placeholder="Enter building / street address"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- AREA -->
+
+            <div class="property-field">
+
+                <label>
+                    Area
+                    <span>*</span>
+                </label>
+
+                <div class="property-input-wrapper">
+
+                    <i class="fa-solid fa-map-pin"></i>
+
+                    <input
+                        type="text"
+                        name="area"
+                        placeholder="e.g. College Road"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="property-form-grid grid-2">
+
+            <!-- CITY -->
+
+            <div class="property-field">
+
+                <label>
+                    City
+                    <span>*</span>
+                </label>
+
+                <div class="property-input-wrapper">
+
+                    <i class="fa-solid fa-city"></i>
+
+                    <input
+                        type="text"
+                        name="city"
+                        placeholder="e.g. Nashik"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- PINCODE -->
+
+            <div class="property-field">
+
+                <label>
+                    Pincode
+                    <span>*</span>
+                </label>
+
+                <div class="property-input-wrapper">
+
+                    <i class="fa-solid fa-location-crosshairs"></i>
+
+                    <input
+                        type="text"
+                        name="pincode"
+                        placeholder="e.g. 422005"
+                        maxlength="6"
+                        pattern="[0-9]{6}"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- AUTOMATIC LOCATION INFORMATION -->
+
+        <div class="location-auto-info">
+
+            <div class="location-auto-icon">
+                <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+
+            <div>
+
+                <strong>
+                    Location will be detected automatically
+                </strong>
+
+                <p>
+                    StayNear will use the live location to find the property's map location.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+        <!-- =========================================
+             PROPERTY DETAILS
+        ========================================== -->
+
+        <div class="property-form-card">
+
+            <div class="property-card-header">
+
+                <div class="section-number">
+                    03
+                </div>
+
+                <div>
+                    <h3>Property Details</h3>
+                    <p>Give tenants more information</p>
+                </div>
+
+            </div>
+
+
+            <div class="property-card-body">
+
+                <div class="property-field">
+
+                    <label>
+                        Property Description
                     </label>
 
                     <textarea
-                        class="form-control"
-                        rows="5"
+                        class="property-description"
                         name="description"
-                        placeholder="Describe your property..."></textarea>
+                        rows="5"
+                        placeholder="Describe your property, nearby facilities, surroundings, rules and other useful information..."></textarea>
 
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ================= AMENITIES ================= -->
-
-        <div class="form-card">
-
-            <div class="form-card-header">
-                <h5 class="mb-0">Amenities</h5>
-            </div>
-
-            <div class="form-card-body">
-
-                <div class="amenities-grid">
-
-                    <div class="amenity-item">
-                        <input type="checkbox" name="amenities" value="Wi-Fi">
-                        Wi-Fi
-                    </div>
-
-                    <div class="amenity-item">
-                        <input type="checkbox" name="amenities" value="Parking">
-                        Parking
-                    </div>
-
-                    <div class="amenity-item">
-                        <input type="checkbox" name="amenities" value="CCTV">
-                        CCTV
-                    </div>
-
-                    <div class="amenity-item">
-                        <input type="checkbox" name="amenities" value="Laundry">
-                        Laundry
-                    </div>
-
-                    <div class="amenity-item">
-                        <input type="checkbox" name="amenities" value="Lift">
-                        Lift
-                    </div>
-
-                    <div class="amenity-item">
-                        <input type="checkbox" name="amenities" value="Food">
-                        Food
-                    </div>
-
-                    <div class="amenity-item">
-                        <input type="checkbox" name="amenities" value="Power Backup">
-                        Power Backup
-                    </div>
-
-                    <div class="amenity-item">
-                        <input type="checkbox" name="amenities" value="Water Supply">
-                        Water Supply
+                    <div class="field-helper">
+                        <i class="fa-solid fa-lightbulb"></i>
+                        A detailed description helps tenants understand your property better.
                     </div>
 
                 </div>
@@ -305,50 +439,290 @@
 
         </div>
 
-        <!-- ================= IMAGES ================= -->
 
-        <div class="form-card">
+        <!-- =========================================
+             AMENITIES
+        ========================================== -->
 
-            <div class="form-card-header">
-                <h5 class="mb-0">Property Images</h5>
+        <div class="property-form-card">
+
+            <div class="property-card-header">
+
+                <div class="section-number">
+                    04
+                </div>
+
+                <div>
+                    <h3>Amenities</h3>
+                    <p>Select everything available at your property</p>
+                </div>
+
             </div>
 
-            <div class="form-card-body">
 
-                <label class="form-label fw-semibold">
+            <div class="property-card-body">
 
-                    Upload Images
-                    <small class="text-muted">(Maximum 5)</small>
+                <div class="modern-amenities-grid">
+
+                    <label class="modern-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="Wi-Fi">
+
+                        <span class="amenity-check">
+                            <i class="fa-solid fa-wifi"></i>
+                        </span>
+
+                        <span>Wi-Fi</span>
+
+                    </label>
+
+
+                    <label class="modern-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="Parking">
+
+                        <span class="amenity-check">
+                            <i class="fa-solid fa-square-parking"></i>
+                        </span>
+
+                        <span>Parking</span>
+
+                    </label>
+
+
+                    <label class="modern-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="CCTV">
+
+                        <span class="amenity-check">
+                            <i class="fa-solid fa-camera"></i>
+                        </span>
+
+                        <span>CCTV</span>
+
+                    </label>
+
+
+                    <label class="modern-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="Laundry">
+
+                        <span class="amenity-check">
+                            <i class="fa-solid fa-shirt"></i>
+                        </span>
+
+                        <span>Laundry</span>
+
+                    </label>
+
+
+                    <label class="modern-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="Lift">
+
+                        <span class="amenity-check">
+                            <i class="fa-solid fa-elevator"></i>
+                        </span>
+
+                        <span>Lift</span>
+
+                    </label>
+
+
+                    <label class="modern-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="Food">
+
+                        <span class="amenity-check">
+                            <i class="fa-solid fa-utensils"></i>
+                        </span>
+
+                        <span>Food</span>
+
+                    </label>
+
+
+                    <label class="modern-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="Power Backup">
+
+                        <span class="amenity-check">
+                            <i class="fa-solid fa-bolt"></i>
+                        </span>
+
+                        <span>Power Backup</span>
+
+                    </label>
+
+
+                    <label class="modern-amenity">
+
+                        <input
+                            type="checkbox"
+                            name="amenities"
+                            value="Water Supply">
+
+                        <span class="amenity-check">
+                            <i class="fa-solid fa-droplet"></i>
+                        </span>
+
+                        <span>Water Supply</span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             IMAGES
+        ========================================== -->
+
+        <div class="property-form-card">
+
+            <div class="property-card-header">
+
+                <div class="section-number">
+                    05
+                </div>
+
+                <div>
+                    <h3>Property Images</h3>
+                    <p>Add attractive photos of your property</p>
+                </div>
+
+            </div>
+
+
+            <div class="property-card-body">
+
+                <label class="image-upload-area">
+
+                    <input
+                        type="file"
+                        name="images"
+                        multiple
+                        accept="image/*">
+
+                    <div class="upload-icon">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+
+                    <h4>Upload property images</h4>
+
+                    <p>
+                        Drag & drop your images here or
+                        <strong>browse files</strong>
+                    </p>
+
+                    <span>
+                        PNG, JPG or JPEG · Maximum 5 images
+                    </span>
 
                 </label>
 
-                <input
-                    class="form-control"
-                    type="file"
-                    name="images"
-                    multiple
-                    accept="image/*">
-
             </div>
 
         </div>
 
-        <!-- ================= SUBMIT ================= -->
 
-        <div class="text-center mb-5">
+        <!-- =========================================
+             SUBMIT
+        ========================================== -->
+
+        <div class="property-submit-area">
+
+            <div class="submit-note">
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                <span>
+                    Your property will be reviewed before it becomes visible to tenants.
+                </span>
+
+            </div>
+
 
             <button
-    type="submit"
-    class="save-btn">
+                type="submit"
+                class="property-save-btn">
 
-                💾 Save Property
+                <i class="fa-solid fa-check"></i>
+
+                Save Property
 
             </button>
 
         </div>
 
+
     </form>
 
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const latitudeInput = document.getElementById("latitude");
+    const longitudeInput = document.getElementById("longitude");
+
+    if (!navigator.geolocation) {
+        console.log("Geolocation is not supported by this browser.");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function (position) {
+
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            latitudeInput.value = latitude;
+            longitudeInput.value = longitude;
+
+            console.log("GPS Location Captured");
+            console.log("Latitude:", latitude);
+            console.log("Longitude:", longitude);
+        },
+
+        function (error) {
+
+            console.error("GPS Error:", error.message);
+
+        },
+
+        {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0
+        }
+    );
+
+});
+</script>
 
 {% endblock %}

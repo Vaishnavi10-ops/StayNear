@@ -1,3 +1,853 @@
-<h1>Welcome {{ session['name'] }} 👋</h1>
+{% extends "admin/base_admin.html" %}
 
-<h3>Admin Dashboard</h3>
+
+{% block title %}
+Admin Dashboard | StayNear
+{% endblock %}
+
+
+{% block admin_content %}
+
+
+<!-- ======================================
+     TOP HEADER
+======================================= -->
+
+<div class="admin-dashboard-header">
+
+
+    <div class="admin-welcome">
+
+
+        <span class="admin-dashboard-label">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            ADMIN DASHBOARD
+
+        </span>
+
+
+        <h1>
+            Welcome {{ session['name'] }} 👋
+        </h1>
+
+
+        <p>
+            Monitor and manage StayNear activity.
+        </p>
+
+
+    </div>
+
+
+    <!-- ==================================
+         MONTH FILTER
+    =================================== -->
+
+    <form
+        method="GET"
+        action="{{ url_for('admin.admin_dashboard') }}"
+        class="month-filter"
+    >
+
+        <label for="month">
+
+            <i class="fa-solid fa-calendar"></i>
+
+            Analysis Month
+
+        </label>
+
+
+        <input
+            type="month"
+            id="month"
+            name="month"
+            value="{{ selected_month }}"
+            onchange="this.form.submit()"
+        >
+
+    </form>
+
+
+</div>
+
+
+
+<!-- ======================================
+     STATISTICS
+======================================= -->
+
+<section class="admin-stats">
+
+
+    <!-- Total Users -->
+
+    <div class="admin-stat-card">
+
+        <div class="admin-stat-icon users-icon">
+
+            <i class="fa-solid fa-users"></i>
+
+        </div>
+
+
+        <div class="admin-stat-content">
+
+            <span>
+                Total Users
+            </span>
+
+            <h2>
+                {{ total_users }}
+            </h2>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Total Owners -->
+
+    <div class="admin-stat-card">
+
+        <div class="admin-stat-icon owners-icon">
+
+            <i class="fa-solid fa-user-tie"></i>
+
+        </div>
+
+
+        <div class="admin-stat-content">
+
+            <span>
+                Total Owners
+            </span>
+
+            <h2>
+                {{ total_owners }}
+            </h2>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Total Properties -->
+
+    <div class="admin-stat-card">
+
+        <div class="admin-stat-icon properties-icon">
+
+            <i class="fa-solid fa-building"></i>
+
+        </div>
+
+
+        <div class="admin-stat-content">
+
+            <span>
+                Total Properties
+            </span>
+
+            <h2>
+                {{ total_properties }}
+            </h2>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Pending Properties -->
+
+    <div class="admin-stat-card">
+
+        <div class="admin-stat-icon pending-icon">
+
+            <i class="fa-solid fa-clock"></i>
+
+        </div>
+
+
+        <div class="admin-stat-content">
+
+            <span>
+                Pending Properties
+            </span>
+
+            <h2>
+                {{ pending_properties }}
+            </h2>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Total Bookings -->
+
+    <div class="admin-stat-card">
+
+        <div class="admin-stat-icon bookings-icon">
+
+            <i class="fa-solid fa-calendar-check"></i>
+
+        </div>
+
+
+        <div class="admin-stat-content">
+
+            <span>
+                Total Bookings
+            </span>
+
+            <h2>
+                {{ total_bookings }}
+            </h2>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ======================================
+     ANALYSIS SECTION
+======================================= -->
+
+<div class="admin-analysis">
+
+
+    <!-- ==================================
+         PROPERTY TYPE ANALYSIS
+    =================================== -->
+
+    <div class="analysis-card">
+
+
+        <div class="analysis-header">
+
+            <div>
+
+                <span class="analysis-label">
+                    PROPERTIES
+                </span>
+
+                <h2>
+                    Property Type Distribution
+                </h2>
+
+            </div>
+
+
+            <div class="analysis-header-icon">
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+            </div>
+
+        </div>
+
+
+        {% set property_type_total =
+            hostel_properties
+            + pg_properties
+            + flat_properties
+            + room_properties
+        %}
+
+
+        <div class="property-type-chart">
+
+
+            <!-- DONUT -->
+
+            <div
+                class="donut-chart"
+
+                {% if property_type_total > 0 %}
+
+                style="
+                    --hostel:
+                    {{ (hostel_properties / property_type_total * 100)|round(1) }}%;
+
+                    --pg:
+                    {{ (pg_properties / property_type_total * 100)|round(1) }}%;
+
+                    --flat:
+                    {{ (flat_properties / property_type_total * 100)|round(1) }}%;
+
+                    --room:
+                    {{ (room_properties / property_type_total * 100)|round(1) }}%;
+                "
+
+                {% else %}
+
+                style="
+                    --hostel: 0%;
+                    --pg: 0%;
+                    --flat: 0%;
+                    --room: 0%;
+                "
+
+                {% endif %}
+            >
+
+
+                <div class="donut-center">
+
+                    <strong>
+                        {{ property_type_total }}
+                    </strong>
+
+                    <span>
+                        Properties
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- LEGEND -->
+
+            <div class="property-type-legend">
+
+
+                <div class="legend-item">
+
+                    <span class="legend-color hostel-color"></span>
+
+                    <div>
+
+                        <strong>
+                            Hostel
+                        </strong>
+
+                        <small>
+                            {{ hostel_properties }}
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span class="legend-color pg-color"></span>
+
+                    <div>
+
+                        <strong>
+                            PG
+                        </strong>
+
+                        <small>
+                            {{ pg_properties }}
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span class="legend-color flat-color"></span>
+
+                    <div>
+
+                        <strong>
+                            Flat
+                        </strong>
+
+                        <small>
+                            {{ flat_properties }}
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="legend-item">
+
+                    <span class="legend-color room-color"></span>
+
+                    <div>
+
+                        <strong>
+                            Room
+                        </strong>
+
+                        <small>
+                            {{ room_properties }}
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ==================================
+         PROPERTY STATUS
+    =================================== -->
+
+    <div class="analysis-card">
+
+
+        <div class="analysis-header">
+
+            <div>
+
+                <span class="analysis-label">
+                    PROPERTIES
+                </span>
+
+                <h2>
+                    Property Status
+                </h2>
+
+            </div>
+
+
+            <div class="analysis-header-icon">
+
+                <i class="fa-solid fa-building"></i>
+
+            </div>
+
+        </div>
+
+
+        <div class="property-analysis-grid">
+
+
+            <!-- Approved -->
+
+            <div class="property-analysis-item">
+
+                <div class="property-analysis-icon approved-property">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                </div>
+
+                <span>
+                    Approved
+                </span>
+
+                <strong>
+                    {{ approved_properties }}
+                </strong>
+
+            </div>
+
+
+            <!-- Pending -->
+
+            <div class="property-analysis-item">
+
+                <div class="property-analysis-icon pending-property">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                </div>
+
+                <span>
+                    Pending
+                </span>
+
+                <strong>
+                    {{ pending_properties }}
+                </strong>
+
+            </div>
+
+
+            <!-- Rejected -->
+
+            <div class="property-analysis-item">
+
+                <div class="property-analysis-icon rejected-property">
+
+                    <i class="fa-solid fa-circle-xmark"></i>
+
+                </div>
+
+                <span>
+                    Rejected
+                </span>
+
+                <strong>
+                    {{ rejected_properties }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ==================================
+         REGISTRATION ANALYSIS
+    =================================== -->
+
+    <div class="analysis-card">
+
+
+        <div class="analysis-header">
+
+            <div>
+
+                <span class="analysis-label">
+                    REGISTRATIONS
+                </span>
+
+                <h2>
+                    New Accounts
+                </h2>
+
+            </div>
+
+
+            <div class="analysis-header-icon">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+            </div>
+
+        </div>
+
+
+        <div class="registration-analysis">
+
+
+            <!-- New Users -->
+
+            <div class="registration-item">
+
+                <div class="registration-icon user-registration">
+
+                    <i class="fa-solid fa-user"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        New Users
+                    </span>
+
+                    <strong>
+                        {{ total_users }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- New Owners -->
+
+            <div class="registration-item">
+
+                <div class="registration-icon owner-registration">
+
+                    <i class="fa-solid fa-user-tie"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        New Owners
+                    </span>
+
+                    <strong>
+                        {{ total_owners }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ==================================
+         RATING ANALYSIS
+    =================================== -->
+
+    <div class="analysis-card rating-analysis-card">
+
+
+        <div class="analysis-header">
+
+            <div>
+
+                <span class="analysis-label">
+                    RATINGS
+                </span>
+
+                <h2>
+                    Property Ratings
+                </h2>
+
+            </div>
+
+
+            <div class="analysis-header-icon rating-icon">
+
+                <i class="fa-solid fa-star"></i>
+
+            </div>
+
+        </div>
+
+
+        <div class="rating-analysis">
+
+
+            <div class="rating-number">
+
+                {{ average_rating }}
+
+                <span>
+                    / 5
+                </span>
+
+            </div>
+
+
+            <div class="rating-stars-display">
+
+
+                {% for star in range(1, 6) %}
+
+
+                    {% if average_rating >= star %}
+
+                        <i class="fa-solid fa-star"></i>
+
+
+                    {% elif average_rating >= star - 0.5 %}
+
+                        <i class="fa-solid fa-star-half-stroke"></i>
+
+
+                    {% else %}
+
+                        <i class="fa-regular fa-star"></i>
+
+                    {% endif %}
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+            <p>
+
+                Based on
+
+                <strong>
+                    {{ total_ratings }}
+                </strong>
+
+                rating{{ 's' if total_ratings != 1 else '' }}
+
+                this month.
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ======================================
+     QUICK ACTIONS
+======================================= -->
+
+<section class="admin-quick-section">
+
+
+    <div class="section-heading">
+
+        <div>
+
+            <span class="section-small-label">
+                ADMIN TOOLS
+            </span>
+
+            <h2>
+                Quick Actions
+            </h2>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="admin-quick-actions">
+
+
+        <!-- Manage Properties -->
+
+        <a
+            href="{{ url_for('admin.manage_properties') }}"
+            class="admin-action-card"
+        >
+
+            <div class="admin-action-icon">
+
+                <i class="fa-solid fa-building-circle-check"></i>
+
+            </div>
+
+
+            <div class="admin-action-content">
+
+                <h3>
+                    Manage Properties
+                </h3>
+
+                <p>
+                    Approve and manage property listings.
+                </p>
+
+            </div>
+
+
+            <div class="action-arrow">
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- Manage Users -->
+
+        <a
+            href="#"
+            class="admin-action-card"
+        >
+
+            <div class="admin-action-icon">
+
+                <i class="fa-solid fa-users"></i>
+
+            </div>
+
+
+            <div class="admin-action-content">
+
+                <h3>
+                    Manage Users
+                </h3>
+
+                <p>
+                    View and manage registered users.
+                </p>
+
+            </div>
+
+
+            <div class="action-arrow">
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </div>
+
+        </a>
+
+
+
+        <!-- Manage Owners -->
+
+        <a
+            href="#"
+            class="admin-action-card"
+        >
+
+            <div class="admin-action-icon">
+
+                <i class="fa-solid fa-user-tie"></i>
+
+            </div>
+
+
+            <div class="admin-action-content">
+
+                <h3>
+                    Manage Owners
+                </h3>
+
+                <p>
+                    View and manage property owners.
+                </p>
+
+            </div>
+
+
+            <div class="action-arrow">
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </div>
+
+        </a>
+
+
+    </div>
+
+
+</section>
+
+
+{% endblock %}
