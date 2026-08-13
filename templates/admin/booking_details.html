@@ -1,0 +1,628 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Booking Details | StayNear
+{% endblock %}
+
+{% block admin_content %}
+
+<!-- =====================================================
+     PAGE HEADER
+===================================================== -->
+
+<div class="admin-details-header">
+
+    <div>
+
+        <span class="admin-page-label">
+
+            <i class="fa-solid fa-calendar-check"></i>
+
+            BOOKING DETAILS
+
+        </span>
+
+        <h1>
+            Booking #{{ booking.booking_id }}
+        </h1>
+
+        <p>
+            Complete information about this property visit booking.
+        </p>
+
+    </div>
+
+
+    <!-- BACK -->
+
+    <a
+        href="{{ url_for('admin.manage_bookings') }}"
+        class="admin-back-btn"
+    >
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back to Bookings
+
+    </a>
+
+</div>
+
+
+<!-- =====================================================
+     BOOKING STATUS BAR
+===================================================== -->
+
+<div class="admin-booking-status-card">
+
+    <div class="admin-booking-status-left">
+
+        <div class="admin-booking-large-icon">
+
+            {% if booking.booking_status == "Pending" %}
+
+                <i class="fa-solid fa-clock"></i>
+
+            {% elif booking.booking_status == "Approved" %}
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            {% elif booking.booking_status == "Rejected" %}
+
+                <i class="fa-solid fa-circle-xmark"></i>
+
+            {% elif booking.booking_status == "Completed" %}
+
+                <i class="fa-solid fa-check-double"></i>
+
+            {% else %}
+
+                <i class="fa-solid fa-ban"></i>
+
+            {% endif %}
+
+        </div>
+
+
+        <div>
+
+            <span>
+                BOOKING STATUS
+            </span>
+
+            <strong>
+                {{ booking.booking_status }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="admin-booking-created">
+
+        <span>
+            BOOKED ON
+        </span>
+
+        <strong>
+            {{ booking.created_at.strftime('%d %b %Y') }}
+        </strong>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN DETAILS GRID
+===================================================== -->
+
+<div class="admin-booking-details-grid">
+
+
+    <!-- =================================================
+         USER DETAILS
+    ================================================== -->
+
+    <div class="admin-details-card">
+
+        <div class="admin-details-card-header">
+
+            <div class="admin-details-card-icon user-detail-icon">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    BOOKED BY
+                </span>
+
+                <h2>
+                    User Details
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-details-list">
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-user"></i>
+                    Full Name
+                </span>
+
+                <strong>
+                    {{ booking.user.full_name }}
+                </strong>
+
+            </div>
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-envelope"></i>
+                    Email
+                </span>
+
+                <strong>
+                    {{ booking.user.email }}
+                </strong>
+
+            </div>
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-phone"></i>
+                    Phone
+                </span>
+
+                <strong>
+                    {{ booking.user.phone }}
+                </strong>
+
+            </div>
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-id-card"></i>
+                    User ID
+                </span>
+
+                <strong>
+                    #{{ booking.user.user_id }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         PROPERTY DETAILS
+    ================================================== -->
+
+    <div class="admin-details-card">
+
+        <div class="admin-details-card-header">
+
+            <div class="admin-details-card-icon property-detail-icon">
+
+                <i class="fa-solid fa-building"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    VISITING PROPERTY
+                </span>
+
+                <h2>
+                    Property Details
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-details-list">
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-building"></i>
+                    Property
+                </span>
+
+                <strong>
+                    {{ booking.property.property_name }}
+                </strong>
+
+            </div>
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-house"></i>
+                    Type
+                </span>
+
+                <strong>
+                    {{ booking.property.property_type }}
+                </strong>
+
+            </div>
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    Location
+                </span>
+
+                <strong>
+                    {{ booking.property.city }}
+                </strong>
+
+            </div>
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                    Monthly Rent
+                </span>
+
+                <strong>
+                    ₹{{ booking.property.monthly_rent }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- PROPERTY LINK -->
+
+        <div class="admin-details-card-footer">
+
+            <a
+                href="{{ url_for(
+                    'admin.view_property',
+                    property_id=booking.property.property_id
+                ) }}"
+                class="admin-details-link"
+            >
+
+                View Property
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================================
+         OWNER DETAILS
+    ================================================== -->
+
+    <div class="admin-details-card">
+
+        <div class="admin-details-card-header">
+
+            <div class="admin-details-card-icon owner-detail-icon">
+
+                <i class="fa-solid fa-user-tie"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    PROPERTY OWNER
+                </span>
+
+                <h2>
+                    Owner Details
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        {% if owner %}
+
+        <div class="admin-details-list">
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-user-tie"></i>
+                    Full Name
+                </span>
+
+                <strong>
+                    {{ owner.full_name }}
+                </strong>
+
+            </div>
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-envelope"></i>
+                    Email
+                </span>
+
+                <strong>
+                    {{ owner.email }}
+                </strong>
+
+            </div>
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-phone"></i>
+                    Phone
+                </span>
+
+                <strong>
+                    {{ owner.phone }}
+                </strong>
+
+            </div>
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-id-card"></i>
+                    Owner ID
+                </span>
+
+                <strong>
+                    #{{ owner.owner_id }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+        {% else %}
+
+        <div class="admin-detail-empty">
+
+            <i class="fa-solid fa-user-slash"></i>
+
+            <p>
+                Owner information is not available.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =================================================
+         VISIT DETAILS
+    ================================================== -->
+
+    <div class="admin-details-card">
+
+        <div class="admin-details-card-header">
+
+            <div class="admin-details-card-icon visit-detail-icon">
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    APPOINTMENT
+                </span>
+
+                <h2>
+                    Visit Details
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-details-list">
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-calendar"></i>
+                    Visit Date
+                </span>
+
+                <strong>
+                    {{ booking.visit_date.strftime('%d %B %Y') }}
+                </strong>
+
+            </div>
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-clock"></i>
+                    Visit Time
+                </span>
+
+                <strong>
+                    {{ booking.visit_time.strftime('%I:%M %p') }}
+                </strong>
+
+            </div>
+
+
+            <div class="admin-detail-row">
+
+                <span>
+                    <i class="fa-solid fa-hashtag"></i>
+                    Booking ID
+                </span>
+
+                <strong>
+                    #{{ booking.booking_id }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     MESSAGE
+===================================================== -->
+
+{% if booking.message %}
+
+<div class="admin-booking-message-card">
+
+    <div class="admin-message-header">
+
+        <div class="admin-details-card-icon message-detail-icon">
+
+            <i class="fa-solid fa-message"></i>
+
+        </div>
+
+        <div>
+
+            <span>
+                USER MESSAGE
+            </span>
+
+            <h2>
+                Booking Message
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="admin-booking-message">
+
+        <i class="fa-solid fa-quote-left"></i>
+
+        <p>
+            {{ booking.message }}
+        </p>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+<!-- =====================================================
+     BOOKING SUMMARY
+===================================================== -->
+
+<div class="admin-booking-summary">
+
+    <div>
+
+        <span>
+            BOOKING ID
+        </span>
+
+        <strong>
+            #{{ booking.booking_id }}
+        </strong>
+
+    </div>
+
+
+    <div>
+
+        <span>
+            STATUS
+        </span>
+
+        <strong>
+            {{ booking.booking_status }}
+        </strong>
+
+    </div>
+
+
+    <div>
+
+        <span>
+            VISIT DATE
+        </span>
+
+        <strong>
+            {{ booking.visit_date.strftime('%d %b %Y') }}
+        </strong>
+
+    </div>
+
+
+    <div>
+
+        <span>
+            PROPERTY
+        </span>
+
+        <strong>
+            {{ booking.property.property_name }}
+        </strong>
+
+    </div>
+
+</div>
+
+
+{% endblock %}

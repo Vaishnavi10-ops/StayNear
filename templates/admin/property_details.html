@@ -1,0 +1,599 @@
+{% extends "admin/base_admin.html" %}
+
+
+{% block title %}
+{{ property.property_name }} | StayNear Admin
+{% endblock %}
+
+
+{% block admin_content %}
+
+<div class="admin-property-details-page">
+
+
+    <!-- ==========================================
+         BACK
+    =========================================== -->
+
+    <a
+        href="{{ url_for('admin.manage_properties') }}"
+        class="admin-details-back"
+    >
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back to Properties
+
+    </a>
+
+
+    <!-- ==========================================
+         HEADER
+    =========================================== -->
+
+    <div class="admin-details-header">
+
+        <div>
+
+            <span class="admin-page-label">
+
+                <i class="fa-solid fa-building"></i>
+
+                PROPERTY DETAILS
+
+            </span>
+
+            <h1>
+                {{ property.property_name }}
+            </h1>
+
+            <p>
+                Review complete property and owner information.
+            </p>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <span
+            class="admin-property-status
+            {{ property.property_status|lower }}"
+        >
+
+            {% if property.property_status == "Approved" %}
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            {% elif property.property_status == "Pending" %}
+
+                <i class="fa-solid fa-clock"></i>
+
+            {% else %}
+
+                <i class="fa-solid fa-circle-xmark"></i>
+
+            {% endif %}
+
+            {{ property.property_status }}
+
+        </span>
+
+    </div>
+
+
+    <!-- ==========================================
+         MAIN DETAILS GRID
+    =========================================== -->
+
+    <div class="admin-details-grid">
+
+
+        <!-- ======================================
+             LEFT
+        ======================================= -->
+
+        <div>
+
+
+            <!-- PROPERTY IMAGE -->
+
+            <!-- =========================================
+     PROPERTY GALLERY
+========================================= -->
+
+<div class="admin-property-gallery">
+
+    {% if property.images and property.images|length > 0 %}
+
+        <!-- Main Image -->
+
+        <div class="admin-gallery-main">
+
+            <img
+                id="adminMainPropertyImage"
+                src="{{ url_for(
+                    'static',
+                    filename=property.images[0].image_path
+                ) }}"
+                alt="{{ property.property_name }}"
+            >
+
+        </div>
+
+
+        <!-- Thumbnail Gallery -->
+
+        {% if property.images|length > 1 %}
+
+            <div class="admin-gallery-thumbnails">
+
+                {% for image in property.images %}
+
+                    <button
+                        type="button"
+                        class="admin-gallery-thumb
+                        {% if loop.first %}active{% endif %}"
+                        onclick="changeAdminPropertyImage(
+                            '{{ url_for(
+                                'static',
+                                filename=image.image_path
+                            ) }}',
+                            this
+                        )"
+                    >
+
+                        <img
+                            src="{{ url_for(
+                                'static',
+                                filename=image.image_path
+                            ) }}"
+                            alt="{{ property.property_name }} image {{ loop.index }}"
+                        >
+
+                    </button>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    {% else %}
+
+        <!-- No Image -->
+
+        <div class="admin-gallery-empty">
+
+            <i class="fa-solid fa-image"></i>
+
+            <span>
+                No images available for this property
+            </span>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+            <!-- PROPERTY INFORMATION -->
+
+            <div class="admin-details-card">
+
+                <div class="admin-details-card-header">
+
+                    <div>
+
+                        <span>
+                            PROPERTY INFORMATION
+                        </span>
+
+                        <h2>
+                            About this property
+                        </h2>
+
+                    </div>
+
+                    <i class="fa-solid fa-building"></i>
+
+                </div>
+
+
+                <div class="admin-details-info-grid">
+
+
+                    <div class="admin-detail-item">
+
+                        <span>
+                            Property Type
+                        </span>
+
+                        <strong>
+                            {{ property.property_type }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="admin-detail-item">
+
+                        <span>
+                            Monthly Rent
+                        </span>
+
+                        <strong>
+                            ₹{{ property.monthly_rent }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="admin-detail-item">
+
+                        <span>
+                            Security Deposit
+                        </span>
+
+                        <strong>
+                            ₹{{ property.security_deposit }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="admin-detail-item">
+
+                        <span>
+                            Available Rooms
+                        </span>
+
+                        <strong>
+                            {{ property.available_rooms }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="admin-detail-item">
+
+                        <span>
+                            City
+                        </span>
+
+                        <strong>
+                            {{ property.city }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="admin-detail-item">
+
+                        <span>
+                            Pincode
+                        </span>
+
+                        <strong>
+                            {{ property.pincode }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ADDRESS -->
+
+                <div class="admin-detail-description">
+
+                    <span>
+                        Address
+                    </span>
+
+                    <p>
+                        {{ property.address }}
+                    </p>
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="admin-detail-description">
+
+                    <span>
+                        Description
+                    </span>
+
+                    <p>
+                        {{ property.description or
+                        "No description provided." }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ======================================
+             RIGHT
+        ======================================= -->
+
+        <div>
+
+
+            <!-- OWNER -->
+
+            <div class="admin-details-card admin-owner-details">
+
+                <div class="admin-details-card-header">
+
+                    <div>
+
+                        <span>
+                            PROPERTY OWNER
+                        </span>
+
+                        <h2>
+                            Owner Information
+                        </h2>
+
+                    </div>
+
+                    <i class="fa-solid fa-user-tie"></i>
+
+                </div>
+
+
+                {% if owner %}
+
+                    <div class="admin-owner-profile">
+
+                        <div class="admin-owner-avatar">
+
+                            <i class="fa-solid fa-user"></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                {{ owner.name }}
+                            </strong>
+
+                            <span>
+                                Property Owner
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="admin-owner-info">
+
+                        <div>
+
+                            <span>
+                                Owner ID
+                            </span>
+
+                            <strong>
+                                #{{ owner.owner_id }}
+                            </strong>
+
+                        </div>
+
+
+                        {% if owner.email %}
+
+                        <div>
+
+                            <span>
+                                Email
+                            </span>
+
+                            <strong>
+                                {{ owner.email }}
+                            </strong>
+
+                        </div>
+
+                        {% endif %}
+
+
+                        {% if owner.phone %}
+
+                        <div>
+
+                            <span>
+                                Phone
+                            </span>
+
+                            <strong>
+                                {{ owner.phone }}
+                            </strong>
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="admin-owner-not-found">
+
+                        <i class="fa-solid fa-user-slash"></i>
+
+                        <p>
+                            Owner information not found.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- LISTING INFORMATION -->
+
+            <div class="admin-details-card">
+
+                <div class="admin-details-card-header">
+
+                    <div>
+
+                        <span>
+                            LISTING INFORMATION
+                        </span>
+
+                        <h2>
+                            Property Status
+                        </h2>
+
+                    </div>
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                </div>
+
+
+                <div class="admin-listing-info">
+
+                    <div>
+
+                        <span>
+                            Listed On
+                        </span>
+
+                        <strong>
+                            {{ property.created_at.strftime(
+                                '%d %b %Y'
+                            ) }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Availability
+                        </span>
+
+                        {% if property.available %}
+
+                            <strong class="available-text">
+                                Available
+                            </strong>
+
+                        {% else %}
+
+                            <strong class="unavailable-text">
+                                Not Available
+                            </strong>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            {% if property.property_status == "Pending" %}
+
+            <div class="admin-details-actions">
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'admin.approve_property',
+                        property_id=property.property_id
+                    ) }}"
+                >
+
+                    <button
+                        type="submit"
+                        class="admin-approve-btn"
+                    >
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Approve Property
+
+                    </button>
+
+                </form>
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'admin.reject_property',
+                        property_id=property.property_id
+                    ) }}"
+                >
+
+                    <button
+                        type="submit"
+                        class="admin-reject-btn"
+                    >
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                        Reject Property
+
+                    </button>
+
+                </form>
+
+            </div>
+
+            {% endif %}
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function changeAdminPropertyImage(imagePath, thumbnail) {
+
+    const mainImage =
+        document.getElementById("adminMainPropertyImage");
+
+    if (mainImage) {
+        mainImage.src = imagePath;
+    }
+
+
+    document
+        .querySelectorAll(".admin-gallery-thumb")
+        .forEach(function(item) {
+
+            item.classList.remove("active");
+
+        });
+
+
+    thumbnail.classList.add("active");
+
+}
+
+</script>
+
+{% endblock %}

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,22 +6,32 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>
         {% block title %}
-        Admin | StayNear
+        StayNear Admin
         {% endblock %}
     </title>
 
-    <!-- Font Awesome -->
+
+    <!-- ==========================================
+         FONT AWESOME
+    =========================================== -->
+
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
 
-    <!-- Admin CSS -->
+
+    <!-- ==========================================
+         ADMIN CSS
+    =========================================== -->
+
     <link
         rel="stylesheet"
         href="{{ url_for('static', filename='css/admin.css') }}"
@@ -32,52 +43,88 @@
 <body>
 
 
-<div class="admin-layout">
+<!-- ==============================================
+     ADMIN SHELL
+================================================ -->
+
+<div class="admin-shell">
 
 
-    <!-- ======================================
+    <!-- ==========================================
          SIDEBAR
-    ======================================= -->
+    =========================================== -->
 
     <aside class="admin-sidebar">
 
 
-        <!-- Logo -->
+        <!-- ======================================
+             BRAND
+        ======================================= -->
 
-        <div class="admin-logo">
+        <div class="admin-brand">
 
-            <div class="admin-logo-icon">
+            <a
+                href="{{ url_for('admin.admin_dashboard') }}"
+                class="admin-brand-link"
+            >
 
-                <i class="fa-solid fa-house"></i>
+                <div class="admin-brand-mark">
 
-            </div>
+                    <i class="fa-solid fa-house"></i>
 
-            <div>
+                </div>
 
-                <h2>StayNear</h2>
 
-                <span>ADMIN PANEL</span>
+                <div class="admin-brand-text">
 
-            </div>
+                    <h2>
+                        StayNear
+                    </h2>
+
+                    <span>
+                        ADMIN
+                    </span>
+
+                </div>
+
+            </a>
 
         </div>
 
 
-        <!-- Navigation -->
+        <!-- ======================================
+             NAVIGATION
+        ======================================= -->
 
-        <nav class="admin-nav">
+        <nav class="admin-navigation">
+
+
+            <!-- Section Label -->
+
+            <div class="admin-nav-label">
+                MAIN MENU
+            </div>
 
 
             <!-- Dashboard -->
 
             <a
-                href="{{ url_for('admin.admin_dashboard') }}"
-                class="admin-nav-item"
-            >
+    href="{{ url_for('admin.admin_dashboard') }}"
+    class="admin-nav-link
+    {% if request.endpoint == 'admin.admin_dashboard' %}
+        active
+    {% endif %}"
+>
 
-                <i class="fa-solid fa-chart-line"></i>
+                <span class="admin-nav-icon">
 
-                <span>Dashboard</span>
+                    <i class="fa-solid fa-grid-2"></i>
+
+                </span>
+
+                <span class="admin-nav-text">
+                    Dashboard
+                </span>
 
             </a>
 
@@ -86,12 +133,21 @@
 
             <a
                 href="{{ url_for('admin.manage_properties') }}"
-                class="admin-nav-item"
+                class="admin-nav-link
+                {% if request.endpoint == 'admin.manage_properties' %}
+                    active
+                {% endif %}"
             >
 
-                <i class="fa-solid fa-building"></i>
+                <span class="admin-nav-icon">
 
-                <span>Properties</span>
+                    <i class="fa-solid fa-building"></i>
+
+                </span>
+
+                <span class="admin-nav-text">
+                    Properties
+                </span>
 
             </a>
 
@@ -99,13 +155,19 @@
             <!-- Users -->
 
             <a
-                href="#"
-                class="admin-nav-item"
+                href="{{ url_for('admin.manage_users') }}"
+                class="admin-nav-link"
             >
 
-                <i class="fa-solid fa-users"></i>
+                <span class="admin-nav-icon">
 
-                <span>Users</span>
+                    <i class="fa-solid fa-users"></i>
+
+                </span>
+
+                <span class="admin-nav-text">
+                    Users
+                </span>
 
             </a>
 
@@ -113,13 +175,19 @@
             <!-- Owners -->
 
             <a
-                href="#"
-                class="admin-nav-item"
+                href="{{ url_for('admin.manage_owners') }}"
+                class="admin-nav-link"
             >
 
-                <i class="fa-solid fa-user-tie"></i>
+                <span class="admin-nav-icon">
 
-                <span>Owners</span>
+                    <i class="fa-solid fa-user-tie"></i>
+
+                </span>
+
+                <span class="admin-nav-text">
+                    Owners
+                </span>
 
             </a>
 
@@ -127,13 +195,19 @@
             <!-- Bookings -->
 
             <a
-                href="#"
-                class="admin-nav-item"
+                href="{{ url_for('admin.manage_bookings') }}"
+                class="admin-nav-link"
             >
 
-                <i class="fa-solid fa-calendar-check"></i>
+                <span class="admin-nav-icon">
 
-                <span>Bookings</span>
+                    <i class="fa-solid fa-calendar-check"></i>
+
+                </span>
+
+                <span class="admin-nav-text">
+                    Bookings
+                </span>
 
             </a>
 
@@ -141,13 +215,19 @@
             <!-- Ratings -->
 
             <a
-                href="#"
-                class="admin-nav-item"
+                href="{{ url_for('admin.manage_reviews') }}"
+                class="admin-nav-link"
             >
 
-                <i class="fa-solid fa-star"></i>
+                <span class="admin-nav-icon">
 
-                <span>Ratings</span>
+                    <i class="fa-solid fa-star"></i>
+
+                </span>
+
+                <span class="admin-nav-text">
+                    Ratings
+                </span>
 
             </a>
 
@@ -155,22 +235,54 @@
         </nav>
 
 
-        <!-- ==================================
-             LOGOUT
-        =================================== -->
+        <!-- ======================================
+             SIDEBAR FOOTER
+        ======================================= -->
 
-        <div class="admin-sidebar-bottom">
+        <div class="admin-sidebar-footer">
+
+
+            <!-- Admin Profile -->
+
+            <div class="admin-profile">
+
+                <div class="admin-profile-avatar">
+
+                    <i class="fa-solid fa-user-shield"></i>
+
+                </div>
+
+
+                <div class="admin-profile-info">
+
+                    <strong>
+                        {{ session.get('name', 'Admin') }}
+                    </strong>
+
+                    <span>
+                        Administrator
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Logout -->
 
             <a
                 href="{{ url_for('auth.logout') }}"
-                class="admin-nav-item logout"
+                class="admin-logout"
             >
 
                 <i class="fa-solid fa-right-from-bracket"></i>
 
-                <span>Logout</span>
+                <span>
+                    Logout
+                </span>
 
             </a>
+
 
         </div>
 
@@ -178,14 +290,25 @@
     </aside>
 
 
-    <!-- ======================================
-         MAIN CONTENT
-    ======================================= -->
+
+    <!-- ==========================================
+         MAIN AREA
+    =========================================== -->
 
     <main class="admin-main">
 
-        {% block admin_content %}
-        {% endblock %}
+
+        <!-- ======================================
+             PAGE CONTENT
+        ======================================= -->
+
+        <div class="admin-content">
+
+            {% block admin_content %}
+            {% endblock %}
+
+        </div>
+
 
     </main>
 

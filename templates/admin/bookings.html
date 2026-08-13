@@ -1,0 +1,400 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Manage Bookings | StayNear
+{% endblock %}
+
+{% block admin_content %}
+
+<!-- ======================================
+     PAGE HEADER
+======================================= -->
+
+<div class="admin-page-header">
+
+    <span class="admin-page-label">
+
+        <i class="fa-solid fa-calendar-check"></i>
+
+        BOOKING MANAGEMENT
+
+    </span>
+
+    <h1>
+        Manage Bookings
+    </h1>
+
+    <p>
+        Review and manage property visit bookings.
+    </p>
+
+</div>
+
+
+<!-- ======================================
+     SEARCH & FILTERS
+======================================= -->
+
+<form
+    method="GET"
+    action="{{ url_for('admin.manage_bookings') }}"
+    class="admin-property-filters"
+>
+
+
+    <!-- SEARCH -->
+
+    <div class="admin-search-box">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            name="search"
+            value="{{ search }}"
+            placeholder="Search user, property or city..."
+        >
+
+    </div>
+
+
+    <!-- STATUS -->
+
+    <select
+        name="status"
+        class="admin-status-filter"
+    >
+
+        <option
+            value="All"
+            {% if status == "All" %}selected{% endif %}
+        >
+            All Status
+        </option>
+
+        <option
+            value="Pending"
+            {% if status == "Pending" %}selected{% endif %}
+        >
+            Pending
+        </option>
+
+        <option
+            value="Approved"
+            {% if status == "Approved" %}selected{% endif %}
+        >
+            Approved
+        </option>
+
+        <option
+            value="Rejected"
+            {% if status == "Rejected" %}selected{% endif %}
+        >
+            Rejected
+        </option>
+
+        <option
+            value="Completed"
+            {% if status == "Completed" %}selected{% endif %}
+        >
+            Completed
+        </option>
+
+        <option
+            value="Cancelled"
+            {% if status == "Cancelled" %}selected{% endif %}
+        >
+            Cancelled
+        </option>
+
+    </select>
+
+
+    <!-- SEARCH BUTTON -->
+
+    <button
+        type="submit"
+        class="admin-search-btn"
+    >
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        Search
+
+    </button>
+
+
+    <!-- CLEAR -->
+
+    {% if search or status != "All" %}
+
+        <a
+            href="{{ url_for('admin.manage_bookings') }}"
+            class="admin-clear-btn"
+        >
+
+            <i class="fa-solid fa-xmark"></i>
+
+            Clear
+
+        </a>
+
+    {% endif %}
+
+
+</form>
+
+
+<!-- ======================================
+     BOOKING LIST
+======================================= -->
+
+{% if bookings %}
+
+<div class="admin-bookings-list">
+
+
+    {% for booking in bookings %}
+
+    <div class="admin-booking-card">
+
+
+        <!-- ==================================
+             TOP
+        =================================== -->
+
+        <div class="admin-booking-top">
+
+
+            <div class="admin-booking-id">
+
+                <span>
+                    BOOKING
+                </span>
+
+                <strong>
+                    #{{ booking.booking_id }}
+                </strong>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <span
+                class="admin-booking-status
+                {{ booking.booking_status|lower }}"
+            >
+
+                {% if booking.booking_status == "Pending" %}
+
+                    <i class="fa-solid fa-clock"></i>
+
+                {% elif booking.booking_status == "Approved" %}
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                {% elif booking.booking_status == "Rejected" %}
+
+                    <i class="fa-solid fa-circle-xmark"></i>
+
+                {% elif booking.booking_status == "Completed" %}
+
+                    <i class="fa-solid fa-check-double"></i>
+
+                {% else %}
+
+                    <i class="fa-solid fa-ban"></i>
+
+                {% endif %}
+
+                {{ booking.booking_status }}
+
+            </span>
+
+        </div>
+
+
+        <!-- ==================================
+             BOOKING CONTENT
+        =================================== -->
+
+        <div class="admin-booking-content">
+
+
+            <!-- USER -->
+
+            <div class="admin-booking-section">
+
+                <div class="admin-booking-icon">
+
+                    <i class="fa-solid fa-user"></i>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        USER
+                    </span>
+
+                    <strong>
+                        {{ booking.user.full_name }}
+                    </strong>
+
+                    <small>
+                        {{ booking.user.email }}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- PROPERTY -->
+
+            <div class="admin-booking-section">
+
+                <div class="admin-booking-icon">
+
+                    <i class="fa-solid fa-building"></i>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        PROPERTY
+                    </span>
+
+                    <strong>
+                        {{ booking.property.property_name }}
+                    </strong>
+
+                    <small>
+                        {{ booking.property.city }}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- VISIT -->
+
+            <div class="admin-booking-section">
+
+                <div class="admin-booking-icon">
+
+                    <i class="fa-solid fa-calendar-days"></i>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        VISIT DATE
+                    </span>
+
+                    <strong>
+                        {{ booking.visit_date.strftime('%d %b %Y') }}
+                    </strong>
+
+                    <small>
+                        {{ booking.visit_time.strftime('%I:%M %p') }}
+                    </small>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ==================================
+             BOTTOM
+        =================================== -->
+
+        <div class="admin-booking-bottom">
+
+
+            <small>
+
+                Booked on
+                {{ booking.created_at.strftime('%d %b %Y') }}
+
+            </small>
+
+
+            <a
+                href="{{ url_for(
+                    'admin.view_booking',
+                    booking_id=booking.booking_id
+                ) }}"
+                class="admin-view-details-btn"
+            >
+
+                <i class="fa-solid fa-eye"></i>
+
+                View Details
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+    {% endfor %}
+
+
+</div>
+
+
+{% else %}
+
+
+<!-- ======================================
+     EMPTY STATE
+======================================= -->
+
+<div class="admin-empty-state">
+
+    <div class="admin-empty-icon">
+
+        <i class="fa-solid fa-calendar-xmark"></i>
+
+    </div>
+
+    <h2>
+        No Bookings Found
+    </h2>
+
+    <p>
+        No bookings match your current search or filter.
+    </p>
+
+
+    {% if search or status != "All" %}
+
+        <a
+            href="{{ url_for('admin.manage_bookings') }}"
+            class="admin-clear-btn"
+        >
+
+            <i class="fa-solid fa-rotate-left"></i>
+
+            Clear Filters
+
+        </a>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+
+{% endblock %}

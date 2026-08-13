@@ -1,0 +1,312 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Manage Users | StayNear
+{% endblock %}
+
+{% block admin_content %}
+
+<!-- ======================================
+     PAGE HEADER
+======================================= -->
+
+<div class="admin-page-header">
+
+    <span class="admin-page-label">
+
+        <i class="fa-solid fa-users"></i>
+
+        USER MANAGEMENT
+
+    </span>
+
+    <h1>
+        Manage Users
+    </h1>
+
+    <p>
+        View and manage registered StayNear users.
+    </p>
+
+</div>
+
+
+<!-- ======================================
+     USER SUMMARY
+======================================= -->
+
+<div class="admin-user-summary">
+
+    <div class="admin-user-summary-card">
+
+        <div class="admin-user-summary-icon">
+
+            <i class="fa-solid fa-users"></i>
+
+        </div>
+
+        <div>
+
+            <span>
+                TOTAL USERS
+            </span>
+
+            <strong>
+                {{ total_users }}
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ======================================
+     SEARCH
+======================================= -->
+
+<form
+    method="GET"
+    action="{{ url_for('admin.manage_users') }}"
+    class="admin-user-filters"
+>
+
+    <div class="admin-user-search">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            name="search"
+            value="{{ search }}"
+            placeholder="Search by name, email or phone..."
+        >
+
+    </div>
+
+
+    <button
+        type="submit"
+        class="admin-search-btn"
+    >
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        Search
+
+    </button>
+
+
+    {% if search %}
+
+        <a
+            href="{{ url_for('admin.manage_users') }}"
+            class="admin-clear-btn"
+        >
+
+            <i class="fa-solid fa-xmark"></i>
+
+            Clear
+
+        </a>
+
+    {% endif %}
+
+</form>
+
+
+<!-- ======================================
+     USERS
+======================================= -->
+
+{% if users %}
+
+<div class="admin-users-container">
+
+
+    <!-- ==================================
+         TABLE HEADER
+    =================================== -->
+
+    <div class="admin-users-header">
+
+        <div>
+            USER
+        </div>
+
+        <div>
+            CONTACT
+        </div>
+
+        <div>
+            REGISTERED
+        </div>
+
+        <div>
+            ACTION
+        </div>
+
+    </div>
+
+
+    <!-- ==================================
+         USERS LIST
+    =================================== -->
+
+    {% for user in users %}
+
+    <div class="admin-user-row">
+
+
+        <!-- USER -->
+
+        <div class="admin-user-main">
+
+            <div class="admin-user-avatar">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+
+            <div>
+
+                <strong>
+                    {{ user.full_name }}
+                </strong>
+
+                <span>
+                    User ID #{{ user.user_id }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONTACT -->
+
+        <div class="admin-user-contact">
+
+            <span>
+
+                <i class="fa-solid fa-envelope"></i>
+
+                {{ user.email }}
+
+            </span>
+
+
+            <span>
+
+                <i class="fa-solid fa-phone"></i>
+
+                {{ user.phone }}
+
+            </span>
+
+        </div>
+
+
+        <!-- REGISTERED -->
+
+        <div class="admin-user-date">
+
+            {% if user.created_at %}
+
+                <strong>
+                    {{ user.created_at.strftime('%d %b %Y') }}
+                </strong>
+
+                <span>
+                    {{ user.created_at.strftime('%I:%M %p') }}
+                </span>
+
+            {% else %}
+
+                <span>
+                    Not available
+                </span>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- ACTION -->
+
+        <div class="admin-user-action">
+
+            <a
+                href="{{ url_for(
+                    'admin.view_user',
+                    user_id=user.user_id
+                ) }}"
+                class="admin-view-user-btn"
+            >
+
+                <i class="fa-solid fa-eye"></i>
+
+                View Details
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+    {% endfor %}
+
+
+</div>
+
+
+{% else %}
+
+
+<!-- ======================================
+     EMPTY STATE
+======================================= -->
+
+<div class="admin-empty-state">
+
+    <div class="admin-empty-icon">
+
+        <i class="fa-solid fa-users"></i>
+
+    </div>
+
+
+    <h2>
+        No Users Found
+    </h2>
+
+
+    <p>
+        No users match your current search.
+    </p>
+
+
+    {% if search %}
+
+        <a
+            href="{{ url_for('admin.manage_users') }}"
+            class="admin-clear-btn"
+        >
+
+            <i class="fa-solid fa-rotate-left"></i>
+
+            Clear Search
+
+        </a>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+
+{% endblock %}

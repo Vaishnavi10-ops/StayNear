@@ -1,0 +1,303 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Manage Owners | StayNear
+{% endblock %}
+
+{% block admin_content %}
+
+<!-- ======================================
+     PAGE HEADER
+======================================= -->
+
+<div class="admin-page-header">
+
+    <span class="admin-page-label">
+
+        <i class="fa-solid fa-user-tie"></i>
+
+        OWNER MANAGEMENT
+
+    </span>
+
+    <h1>
+        Manage Owners
+    </h1>
+
+    <p>
+        View and manage property owners registered on StayNear.
+    </p>
+
+</div>
+
+
+<!-- ======================================
+     SEARCH
+======================================= -->
+
+<form
+    method="GET"
+    action="{{ url_for('admin.manage_owners') }}"
+    class="admin-property-filters"
+>
+
+
+    <!-- Search -->
+
+    <div class="admin-search-box">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            name="search"
+            value="{{ search }}"
+            placeholder="Search owner, email or phone..."
+        >
+
+    </div>
+
+
+    <!-- Search Button -->
+
+    <button
+        type="submit"
+        class="admin-search-btn"
+    >
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        Search
+
+    </button>
+
+
+    <!-- Clear -->
+
+    {% if search %}
+
+        <a
+            href="{{ url_for('admin.manage_owners') }}"
+            class="admin-clear-btn"
+        >
+
+            <i class="fa-solid fa-xmark"></i>
+
+            Clear
+
+        </a>
+
+    {% endif %}
+
+
+</form>
+
+
+<!-- ======================================
+     OWNER LIST
+======================================= -->
+
+{% if owners %}
+
+<div class="admin-properties-list">
+
+
+    {% for owner in owners %}
+
+    <!-- ==================================
+         OWNER CARD
+    =================================== -->
+
+    <div class="admin-property-card">
+
+
+        <!-- OWNER HEADER -->
+
+        <div class="admin-owner-card-header">
+
+            <div class="admin-owner-avatar">
+
+                <i class="fa-solid fa-user-tie"></i>
+
+            </div>
+
+
+            <div class="admin-owner-card-title">
+
+                <h2>
+                    {{ owner.full_name }}
+                </h2>
+
+                <span>
+                    Owner ID #{{ owner.owner_id }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- OWNER DETAILS -->
+
+        <div class="admin-property-details">
+
+
+            <!-- Contact Information -->
+
+            <div class="admin-property-info">
+
+
+                <span>
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                    {{ owner.email }}
+
+                </span>
+
+
+                <span>
+
+                    <i class="fa-solid fa-phone"></i>
+
+                    {{ owner.phone }}
+
+                </span>
+
+
+                <span>
+
+                    <i class="fa-solid fa-calendar"></i>
+
+                    {{ owner.created_at.strftime('%d %b %Y') }}
+
+                </span>
+
+
+                <span>
+
+                    <i class="fa-solid fa-building"></i>
+
+                    {{ owner_property_counts.get(owner.owner_id, 0) }}
+                    properties
+
+                </span>
+
+
+            </div>
+
+
+            <!-- OWNER TYPE -->
+
+            <div class="admin-property-owner">
+
+                <i class="fa-solid fa-user-tie"></i>
+
+                <div>
+
+                    <span>
+                        ACCOUNT TYPE
+                    </span>
+
+                    <strong>
+                        Property Owner
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTTOM -->
+
+            <div class="admin-property-bottom">
+
+                <small>
+
+                    Registered on
+                    {{ owner.created_at.strftime('%d %b %Y') }}
+
+                </small>
+
+
+                <div class="admin-property-actions">
+
+                    <a
+                        href="{{ url_for(
+                            'admin.view_owner',
+                            owner_id=owner.owner_id
+                        ) }}"
+                        class="admin-view-btn"
+                    >
+
+                        <i class="fa-solid fa-eye"></i>
+
+                        View Details
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    {% endfor %}
+
+
+</div>
+
+
+{% else %}
+
+
+<!-- ======================================
+     EMPTY STATE
+======================================= -->
+
+<div class="admin-empty-state">
+
+    <div class="admin-empty-icon">
+
+        <i class="fa-solid fa-user-tie"></i>
+
+    </div>
+
+
+    <h2>
+        No Owners Found
+    </h2>
+
+
+    <p>
+        No owners match your current search.
+    </p>
+
+
+    {% if search %}
+
+        <a
+            href="{{ url_for('admin.manage_owners') }}"
+            class="admin-clear-btn"
+        >
+
+            <i class="fa-solid fa-rotate-left"></i>
+
+            Clear Search
+
+        </a>
+
+    {% endif %}
+
+</div>
+
+
+{% endif %}
+
+
+{% endblock %}

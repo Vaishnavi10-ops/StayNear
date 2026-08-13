@@ -34,7 +34,7 @@ def login():
             session["name"] = result["name"]
 
             if result["role"] == "Admin":
-                return redirect(url_for("admin.dashboard"))
+                return redirect(url_for("admin.admin_dashboard"))
 
             elif result["role"] == "Owner":
                 return redirect(url_for("owner.dashboard"))

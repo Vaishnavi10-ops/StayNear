@@ -1,0 +1,351 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Manage Reviews | StayNear
+{% endblock %}
+
+{% block admin_content %}
+
+<!-- ======================================
+     PAGE HEADER
+======================================= -->
+
+<div class="admin-page-header">
+
+    <span class="admin-page-label">
+        <i class="fa-solid fa-star"></i>
+        REVIEW MANAGEMENT
+    </span>
+
+    <h1>
+        Manage Reviews
+    </h1>
+
+    <p>
+        Review and monitor ratings and feedback submitted by users.
+    </p>
+
+</div>
+
+
+<!-- ======================================
+     SEARCH & FILTERS
+======================================= -->
+
+<form
+    method="GET"
+    action="{{ url_for('admin.manage_reviews') }}"
+    class="admin-review-filters"
+>
+
+    <!-- Search -->
+
+    <div class="admin-search-box">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            name="search"
+            value="{{ search }}"
+            placeholder="Search user, property or review..."
+        >
+
+    </div>
+
+
+    <!-- Rating -->
+
+    <select
+        name="rating"
+        class="admin-rating-filter"
+    >
+
+        <option
+            value="All"
+            {% if rating == "All" %}selected{% endif %}
+        >
+            All Ratings
+        </option>
+
+        <option
+            value="5"
+            {% if rating == "5" %}selected{% endif %}
+        >
+            ★★★★★ 5 Stars
+        </option>
+
+        <option
+            value="4"
+            {% if rating == "4" %}selected{% endif %}
+        >
+            ★★★★ 4 Stars
+        </option>
+
+        <option
+            value="3"
+            {% if rating == "3" %}selected{% endif %}
+        >
+            ★★★ 3 Stars
+        </option>
+
+        <option
+            value="2"
+            {% if rating == "2" %}selected{% endif %}
+        >
+            ★★ 2 Stars
+        </option>
+
+        <option
+            value="1"
+            {% if rating == "1" %}selected{% endif %}
+        >
+            ★ 1 Star
+        </option>
+
+    </select>
+
+
+    <!-- Search -->
+
+    <button
+        type="submit"
+        class="admin-search-btn"
+    >
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        Search
+
+    </button>
+
+
+    <!-- Clear -->
+
+    {% if search or rating != "All" %}
+
+        <a
+            href="{{ url_for('admin.manage_reviews') }}"
+            class="admin-clear-btn"
+        >
+
+            <i class="fa-solid fa-xmark"></i>
+
+            Clear
+
+        </a>
+
+    {% endif %}
+
+</form>
+
+
+<!-- ======================================
+     REVIEWS LIST
+======================================= -->
+
+{% if reviews %}
+
+<div class="admin-reviews-list">
+
+    {% for review in reviews %}
+
+    <div class="admin-review-card">
+
+
+        <!-- ==================================
+             REVIEW HEADER
+        =================================== -->
+
+        <div class="admin-review-top">
+
+            <div class="admin-review-user">
+
+                <div class="admin-review-avatar">
+
+                    <i class="fa-solid fa-user"></i>
+
+                </div>
+
+                <div>
+
+                    <span class="admin-review-label">
+                        REVIEW BY
+                    </span>
+
+                    <h2>
+                        {{ review.user.full_name }}
+                    </h2>
+
+                    <p>
+                        {{ review.user.email }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Rating -->
+
+            <div class="admin-review-rating">
+
+                <div class="admin-stars">
+
+                    {% for i in range(1, 6) %}
+
+                        {% if i <= review.rating %}
+
+                            <i class="fa-solid fa-star"></i>
+
+                        {% else %}
+
+                            <i class="fa-regular fa-star"></i>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+                <strong>
+                    {{ review.rating }}/5
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================
+             PROPERTY
+        =================================== -->
+
+        <div class="admin-review-property">
+
+            <i class="fa-solid fa-building"></i>
+
+            <div>
+
+                <span>
+                    PROPERTY
+                </span>
+
+                <strong>
+                    {{ review.property.property_name }}
+                </strong>
+
+                <small>
+                    <i class="fa-solid fa-location-dot"></i>
+                    {{ review.property.city }}
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================
+             REVIEW DATE
+        =================================== -->
+
+        <div class="admin-review-date">
+
+            <i class="fa-solid fa-calendar"></i>
+
+            Reviewed on
+
+            {% if review.review_date %}
+
+                {{ review.review_date.strftime('%d %b %Y') }}
+
+            {% else %}
+
+                Date unavailable
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- ==================================
+             ACTIONS
+        =================================== -->
+
+        <div class="admin-review-bottom">
+
+            <span class="admin-review-id">
+
+                Review #{{ review.review_id }}
+
+            </span>
+
+
+            <a
+                href="{{ url_for(
+                    'admin.view_review',
+                    review_id=review.review_id
+                ) }}"
+                class="admin-view-btn"
+            >
+
+                <i class="fa-solid fa-eye"></i>
+
+                View Details
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+
+{% else %}
+
+<!-- ======================================
+     EMPTY STATE
+======================================= -->
+
+<div class="admin-empty-state">
+
+    <div class="admin-empty-icon">
+
+        <i class="fa-solid fa-star"></i>
+
+    </div>
+
+    <h2>
+        No Reviews Found
+    </h2>
+
+    <p>
+        No reviews match your current search or rating filter.
+    </p>
+
+
+    {% if search or rating != "All" %}
+
+        <a
+            href="{{ url_for('admin.manage_reviews') }}"
+            class="admin-clear-btn"
+        >
+
+            <i class="fa-solid fa-rotate-left"></i>
+
+            Clear Filters
+
+        </a>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+
+{% endblock %}

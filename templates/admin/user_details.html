@@ -1,0 +1,263 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+User Details | StayNear
+{% endblock %}
+
+{% block admin_content %}
+
+<div class="admin-user-details-page">
+
+
+    <!-- ======================================
+         BACK
+    ======================================= -->
+
+    <a
+        href="{{ url_for('admin.manage_users') }}"
+        class="admin-details-back"
+    >
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back to Users
+
+    </a>
+
+
+    <!-- ======================================
+         HEADER
+    ======================================= -->
+
+    <div class="admin-user-details-header">
+
+        <div>
+
+            <span class="admin-page-label">
+
+                <i class="fa-solid fa-user"></i>
+
+                USER DETAILS
+
+            </span>
+
+            <h1>
+                {{ user.full_name }}
+            </h1>
+
+            <p>
+                Registered StayNear user
+            </p>
+
+        </div>
+
+
+        <span class="admin-user-id-badge">
+
+            <i class="fa-solid fa-hashtag"></i>
+
+            User ID {{ user.user_id }}
+
+        </span>
+
+    </div>
+
+
+    <!-- ======================================
+         USER DETAILS GRID
+    ======================================= -->
+
+    <div class="admin-user-details-grid">
+
+
+        <!-- ==================================
+             PROFILE CARD
+        =================================== -->
+
+        <div class="admin-user-profile-card">
+
+            <div class="admin-large-avatar">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+
+            <h2>
+                {{ user.full_name }}
+            </h2>
+
+
+            <span>
+                StayNear User
+            </span>
+
+
+            <div class="admin-user-profile-line"></div>
+
+
+            <div class="admin-user-profile-date">
+
+                <i class="fa-solid fa-calendar"></i>
+
+                Joined
+
+                {% if user.created_at %}
+
+                    {{ user.created_at.strftime('%d %B %Y') }}
+
+                {% else %}
+
+                    Date unavailable
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================
+             INFORMATION CARD
+        =================================== -->
+
+        <div class="admin-user-information-card">
+
+
+            <div class="admin-user-card-heading">
+
+                <div>
+
+                    <span>
+                        ACCOUNT INFORMATION
+                    </span>
+
+                    <h2>
+                        User Information
+                    </h2>
+
+                </div>
+
+                <i class="fa-solid fa-address-card"></i>
+
+            </div>
+
+
+            <!-- Email -->
+
+            <div class="admin-user-detail-row">
+
+                <div class="admin-user-detail-icon">
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        EMAIL ADDRESS
+                    </span>
+
+                    <strong>
+                        {{ user.email }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Phone -->
+
+            <div class="admin-user-detail-row">
+
+                <div class="admin-user-detail-icon">
+
+                    <i class="fa-solid fa-phone"></i>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        PHONE NUMBER
+                    </span>
+
+                    <strong>
+                        {{ user.phone }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- User ID -->
+
+            <div class="admin-user-detail-row">
+
+                <div class="admin-user-detail-icon">
+
+                    <i class="fa-solid fa-fingerprint"></i>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        USER ID
+                    </span>
+
+                    <strong>
+                        #{{ user.user_id }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Registration -->
+
+            <div class="admin-user-detail-row">
+
+                <div class="admin-user-detail-icon">
+
+                    <i class="fa-solid fa-calendar-plus"></i>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        REGISTERED ON
+                    </span>
+
+                    <strong>
+
+                        {% if user.created_at %}
+
+                            {{ user.created_at.strftime('%d %b %Y, %I:%M %p') }}
+
+                        {% else %}
+
+                            Not available
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

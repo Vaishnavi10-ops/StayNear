@@ -1,0 +1,261 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Review Details | StayNear
+{% endblock %}
+
+{% block admin_content %}
+
+<!-- ======================================
+     BACK
+======================================= -->
+
+<a
+    href="{{ url_for('admin.manage_reviews') }}"
+    class="admin-details-back"
+>
+    <i class="fa-solid fa-arrow-left"></i>
+    Back to Reviews
+</a>
+
+
+<!-- ======================================
+     PAGE HEADER
+======================================= -->
+
+<div class="admin-page-header review-details-header">
+
+    <span class="admin-page-label">
+        <i class="fa-solid fa-star"></i>
+        REVIEW DETAILS
+    </span>
+
+    <h1>
+        Review #{{ review.review_id }}
+    </h1>
+
+    <p>
+        View the complete review information and associated user and property.
+    </p>
+
+</div>
+
+
+<!-- ======================================
+     REVIEW DETAILS
+======================================= -->
+
+<div class="admin-review-details-grid">
+
+
+    <!-- ==================================
+         MAIN REVIEW CARD
+    =================================== -->
+
+    <div class="admin-review-details-card">
+
+
+        <!-- Rating -->
+
+        <div class="review-details-rating">
+
+            <span>
+                RATING
+            </span>
+
+            <div class="review-details-stars">
+
+                {% for i in range(1, 6) %}
+
+                    {% if i <= review.rating %}
+
+                        <i class="fa-solid fa-star"></i>
+
+                    {% else %}
+
+                        <i class="fa-regular fa-star"></i>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+            <strong>
+                {{ review.rating }} / 5
+            </strong>
+
+        </div>
+
+
+        <!-- Divider -->
+
+        <div class="review-details-divider"></div>
+
+
+        <!-- Review Information -->
+
+        <div class="review-detail-row">
+
+            <div class="review-detail-icon">
+
+                <i class="fa-solid fa-hashtag"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    REVIEW ID
+                </span>
+
+                <strong>
+                    #{{ review.review_id }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="review-detail-row">
+
+            <div class="review-detail-icon">
+
+                <i class="fa-solid fa-calendar"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    REVIEW DATE
+                </span>
+
+                <strong>
+
+                    {% if review.review_date %}
+
+                        {{ review.review_date.strftime('%d %B %Y, %I:%M %p') }}
+
+                    {% else %}
+
+                        Date unavailable
+
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ==================================
+         USER CARD
+    =================================== -->
+
+    <div class="admin-review-details-card">
+
+        <div class="review-details-card-heading">
+
+            <div class="review-details-heading-icon">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    REVIEWER
+                </span>
+
+                <h2>
+                    User Information
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="review-person-details">
+
+            <strong>
+                {{ review.user.full_name }}
+            </strong>
+
+            <p>
+                <i class="fa-solid fa-envelope"></i>
+                {{ review.user.email }}
+            </p>
+
+            <p>
+                <i class="fa-solid fa-phone"></i>
+                {{ review.user.phone }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================
+         PROPERTY CARD
+    =================================== -->
+
+    <div class="admin-review-details-card">
+
+        <div class="review-details-card-heading">
+
+            <div class="review-details-heading-icon">
+
+                <i class="fa-solid fa-building"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    PROPERTY
+                </span>
+
+                <h2>
+                    Property Information
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="review-person-details">
+
+            <strong>
+                {{ review.property.property_name }}
+            </strong>
+
+            <p>
+                <i class="fa-solid fa-building"></i>
+                {{ review.property.property_type }}
+            </p>
+
+            <p>
+                <i class="fa-solid fa-location-dot"></i>
+                {{ review.property.address }},
+                {{ review.property.city }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

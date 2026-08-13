@@ -1,0 +1,423 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}
+Owner Details | StayNear
+{% endblock %}
+
+{% block admin_content %}
+
+<!-- ======================================
+     PAGE HEADER
+======================================= -->
+
+<div class="admin-page-header">
+
+    <span class="admin-page-label">
+
+        <i class="fa-solid fa-user-tie"></i>
+
+        OWNER DETAILS
+
+    </span>
+
+    <h1>
+        {{ owner.full_name }}
+    </h1>
+
+    <p>
+        View owner information and their registered properties.
+    </p>
+
+</div>
+
+
+<!-- ======================================
+     BACK BUTTON
+======================================= -->
+
+<div style="margin-bottom: 22px;">
+
+    <a
+        href="{{ url_for('admin.manage_owners') }}"
+        class="admin-clear-btn"
+    >
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back to Owners
+
+    </a>
+
+</div>
+
+
+<!-- ======================================
+     OWNER PROFILE
+======================================= -->
+
+<div class="owner-details-card">
+
+
+    <!-- PROFILE HEADER -->
+
+    <div class="owner-details-header">
+
+        <div class="owner-details-avatar">
+
+            <i class="fa-solid fa-user-tie"></i>
+
+        </div>
+
+
+        <div>
+
+            <span class="owner-details-label">
+                PROPERTY OWNER
+            </span>
+
+            <h2>
+                {{ owner.full_name }}
+            </h2>
+
+            <p>
+                Owner ID #{{ owner.owner_id }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- OWNER INFORMATION -->
+
+    <div class="owner-details-info">
+
+
+        <div class="owner-info-item">
+
+            <div class="owner-info-icon">
+
+                <i class="fa-solid fa-envelope"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    EMAIL
+                </span>
+
+                <strong>
+                    {{ owner.email }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="owner-info-item">
+
+            <div class="owner-info-icon">
+
+                <i class="fa-solid fa-phone"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    PHONE
+                </span>
+
+                <strong>
+                    {{ owner.phone }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="owner-info-item">
+
+            <div class="owner-info-icon">
+
+                <i class="fa-solid fa-calendar"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    REGISTERED ON
+                </span>
+
+                <strong>
+                    {{ owner.created_at.strftime('%d %b %Y') }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="owner-info-item">
+
+            <div class="owner-info-icon">
+
+                <i class="fa-solid fa-building"></i>
+
+            </div>
+
+            <div>
+
+                <span>
+                    TOTAL PROPERTIES
+                </span>
+
+                <strong>
+                    {{ properties|length }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- ======================================
+     PROPERTIES SECTION
+======================================= -->
+
+<div class="owner-properties-section">
+
+
+    <div class="section-heading">
+
+        <span class="section-small-label">
+            PROPERTY LISTINGS
+        </span>
+
+        <h2>
+            Properties by {{ owner.full_name }}
+        </h2>
+
+    </div>
+
+
+    {% if properties %}
+
+
+        <div class="admin-properties-list">
+
+
+            {% for property in properties %}
+
+
+                <div class="admin-property-card">
+
+
+                    <!-- PROPERTY IMAGE -->
+
+                    <div class="admin-property-image">
+
+                        {% if property.images and property.images|length > 0 %}
+
+                            <img
+                                src="{{ url_for(
+                                    'static',
+                                    filename=property.images[0].image_path
+                                ) }}"
+                                alt="{{ property.property_name }}"
+                            >
+
+                        {% else %}
+
+                            <div class="admin-no-image">
+
+                                <i class="fa-solid fa-building"></i>
+
+                                <span>
+                                    No image available
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- PROPERTY DETAILS -->
+
+                    <div class="admin-property-details">
+
+
+                        <div class="admin-property-top">
+
+                            <div>
+
+                                <h2>
+                                    {{ property.property_name }}
+                                </h2>
+
+                                <p class="admin-property-location">
+
+                                    <i class="fa-solid fa-location-dot"></i>
+
+                                    {{ property.address }},
+                                    {{ property.city }}
+
+                                </p>
+
+                            </div>
+
+
+                            <!-- STATUS -->
+
+                            <span
+                                class="admin-property-status
+                                {{ property.property_status|lower }}"
+                            >
+
+                                {% if property.property_status == "Approved" %}
+
+                                    <i class="fa-solid fa-circle-check"></i>
+
+                                {% elif property.property_status == "Pending" %}
+
+                                    <i class="fa-solid fa-clock"></i>
+
+                                {% else %}
+
+                                    <i class="fa-solid fa-circle-xmark"></i>
+
+                                {% endif %}
+
+                                {{ property.property_status }}
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- PROPERTY INFO -->
+
+                        <div class="admin-property-info">
+
+                            <span>
+
+                                <i class="fa-solid fa-building"></i>
+
+                                {{ property.property_type }}
+
+                            </span>
+
+
+                            <span>
+
+                                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+                                ₹{{ property.monthly_rent }}/month
+
+                            </span>
+
+
+                            <span>
+
+                                <i class="fa-solid fa-door-open"></i>
+
+                                {{ property.available_rooms }}
+                                rooms
+
+                            </span>
+
+
+                            <span>
+
+                                <i class="fa-solid fa-location-crosshairs"></i>
+
+                                {{ property.pincode }}
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- PROPERTY BOTTOM -->
+
+                        <div class="admin-property-bottom">
+
+                            <small>
+
+                                Listed on
+                                {{ property.created_at.strftime('%d %b %Y') }}
+
+                            </small>
+
+
+                            <a
+                                href="{{ url_for(
+                                    'admin.view_property',
+                                    property_id=property.property_id
+                                ) }}"
+                                class="admin-view-btn"
+                            >
+
+                                <i class="fa-solid fa-eye"></i>
+
+                                View Property
+
+                            </a>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- EMPTY STATE -->
+
+        <div class="admin-empty-state">
+
+            <div class="admin-empty-icon">
+
+                <i class="fa-solid fa-building"></i>
+
+            </div>
+
+            <h2>
+                No Properties Listed
+            </h2>
+
+            <p>
+                This owner has not listed any properties yet.
+            </p>
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+{% endblock %}

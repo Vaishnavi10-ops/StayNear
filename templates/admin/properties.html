@@ -370,6 +370,17 @@ Manage Properties | StayNear
 
                 <div class="admin-property-actions">
 
+                    <a
+                        href="{{ url_for(
+                            'admin.view_property',
+                            property_id=property.property_id
+                        ) }}"
+                        class="admin-view-btn"
+                    >
+                        <i class="fa-solid fa-eye"></i>
+                        View Details
+                    </a>
+
 
                     {% if property.property_status == "Pending" %}
 
