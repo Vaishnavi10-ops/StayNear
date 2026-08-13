@@ -153,6 +153,105 @@
             </div>
 
 
+<!-- ==========================================
+     AMENITIES
+========================================== -->
+
+<div class="search-field">
+
+    <i class="fa-solid fa-list-check"></i>
+
+    <div>
+        <label>Amenities</label>
+
+        <div class="amenities-select" id="amenitiesSelect">
+
+            <div class="amenities-trigger">
+
+                <span id="amenitiesText">
+                    Any amenities
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </div>
+
+
+            <div class="amenities-options">
+
+                <label class="amenity-option">
+
+                    <input
+                        type="checkbox"
+                        name="amenities"
+                        value="WiFi"
+                    >
+
+                    <span>WiFi</span>
+
+                </label>
+
+
+                <label class="amenity-option">
+
+                    <input
+                        type="checkbox"
+                        name="amenities"
+                        value="Parking"
+                    >
+
+                    <span>Parking</span>
+
+                </label>
+
+
+                <label class="amenity-option">
+
+                    <input
+                        type="checkbox"
+                        name="amenities"
+                        value="Laundry"
+                    >
+
+                    <span>Laundry</span>
+
+                </label>
+
+
+                <label class="amenity-option">
+
+                    <input
+                        type="checkbox"
+                        name="amenities"
+                        value="Food"
+                    >
+
+                    <span>Food</span>
+
+                </label>
+
+
+                <label class="amenity-option">
+
+                    <input
+                        type="checkbox"
+                        name="amenities"
+                        value="Canteen"
+                    >
+
+                    <span>Canteen</span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
                 <div class="search-field">
 
                     <i class="fa-solid fa-indian-rupee-sign"></i>
@@ -422,5 +521,102 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
+
+```html
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const amenitiesSelect =
+        document.getElementById("amenitiesSelect");
+
+    if (!amenitiesSelect) return;
+
+
+    const trigger =
+        amenitiesSelect.querySelector(".amenities-trigger");
+
+    const text =
+        document.getElementById("amenitiesText");
+
+    const checkboxes =
+        amenitiesSelect.querySelectorAll(
+            'input[type="checkbox"]'
+        );
+
+
+    /* ==========================================
+       OPEN / CLOSE
+    ========================================== */
+
+    trigger.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        amenitiesSelect.classList.toggle("open");
+
+    });
+
+
+    /* ==========================================
+       UPDATE SELECTED AMENITIES
+    ========================================== */
+
+    checkboxes.forEach(function (checkbox) {
+
+        checkbox.addEventListener("change", function () {
+
+            const selected = [];
+
+            checkboxes.forEach(function (item) {
+
+                if (item.checked) {
+
+                    selected.push(item.value);
+
+                }
+
+            });
+
+
+            if (selected.length === 0) {
+
+                text.textContent = "Any amenities";
+
+            }
+
+            else if (selected.length === 1) {
+
+                text.textContent = selected[0];
+
+            }
+
+            else {
+
+                text.textContent =
+                    selected.length + " amenities selected";
+
+            }
+
+        });
+
+    });
+
+
+    /* ==========================================
+       CLOSE WHEN CLICKING OUTSIDE
+    ========================================== */
+
+    document.addEventListener("click", function () {
+
+        amenitiesSelect.classList.remove("open");
+
+    });
+
+});
+
+</script>
+```
+
 
 {% endblock %}

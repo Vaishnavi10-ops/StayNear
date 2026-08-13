@@ -10,8 +10,9 @@ from models.review import Review
 import os
 from werkzeug.utils import secure_filename
 from models.property_image import PropertyImage
-from sqlalchemy import extract, or_, func
+from sqlalchemy import extract, or_, func, text
 from utils.geocoder import get_coordinates
+from models.amenity import Amenity
 
 
 
@@ -188,6 +189,10 @@ def dashboard():
 @owner.route("/owner/add-property", methods=["GET", "POST"])
 def add_property():
 
+    # -----------------------------------------
+    # CHECK OWNER LOGIN
+    # -----------------------------------------
+
     if "user_id" not in session or session["role"] != "Owner":
         return redirect(url_for("auth.login"))
 
@@ -210,7 +215,31 @@ def add_property():
         security_deposit = request.form["security_deposit"] or 0
         available_rooms = request.form["available_rooms"]
 
-        description = request.form["description"]
+        description = request.form.get("description", "")
+
+        # -----------------------------------------
+        # GET SELECTED AMENITIES
+        # -----------------------------------------
+
+        selected_amenities = request.form.getlist("amenities")
+
+        # Only allow these 8 amenities
+        allowed_amenities = [
+            "WiFi",
+            "Food",
+            "CCTV",
+            "Laundry",
+            "Power Backup",
+            "Water Supply",
+            "Parking",
+            "Lift"
+        ]
+
+        selected_amenities = [
+            amenity
+            for amenity in selected_amenities
+            if amenity in allowed_amenities
+        ]
 
         # -----------------------------------------
         # GET AUTOMATIC GPS LOCATION
@@ -249,8 +278,7 @@ def add_property():
             )
 
             print(
-                "GPS unavailable. "
-                "Trying address:",
+                "GPS unavailable. Trying address:",
                 full_address
             )
 
@@ -291,9 +319,7 @@ def add_property():
 
                     else:
 
-                        print(
-                            "No location found for address."
-                        )
+                        print("No location found for address.")
 
                 else:
 
@@ -335,8 +361,37 @@ def add_property():
 
         try:
 
+            # -----------------------------------------
+            # SAVE PROPERTY
+            # -----------------------------------------
+
             db.session.add(property)
+
             db.session.commit()
+
+            # -----------------------------------------
+            # SAVE AMENITIES
+            # -----------------------------------------
+
+            if selected_amenities:
+
+                amenities = Amenity.query.filter(
+                    Amenity.amenity_name.in_(selected_amenities)
+                ).all()
+
+                for amenity in amenities:
+
+                    db.session.execute(
+                        text("""
+                            INSERT INTO property_amenities
+                            (property_id, amenity_id)
+                            VALUES (:property_id, :amenity_id)
+                        """),
+                        {
+                            "property_id": property.property_id,
+                            "amenity_id": amenity.amenity_id
+                        }
+                    )
 
             # -----------------------------------------
             # SAVE PROPERTY IMAGES
@@ -370,6 +425,10 @@ def add_property():
 
                     db.session.add(property_image)
 
+            # -----------------------------------------
+            # FINAL COMMIT
+            # -----------------------------------------
+
             db.session.commit()
 
             # -----------------------------------------
@@ -402,6 +461,8 @@ def add_property():
         except Exception as e:
 
             db.session.rollback()
+
+            print("ADD PROPERTY ERROR:", e)
 
             flash(
                 f"Error: {e}",
@@ -612,47 +673,240 @@ def view_property(property_id):
         property=property
     )
 
-@owner.route("/owner/property/<int:property_id>/edit", methods=["GET", "POST"])
+@owner.route(
+    "/owner/property/<int:property_id>/edit",
+    methods=["GET", "POST"]
+)
 def edit_property(property_id):
 
-    # Check owner login
+    # -----------------------------------------
+    # CHECK OWNER LOGIN
+    # -----------------------------------------
+
     if "user_id" not in session or session["role"] != "Owner":
         return redirect(url_for("auth.login"))
 
-    # Find only this owner's property
+    # -----------------------------------------
+    # FIND OWNER'S PROPERTY
+    # -----------------------------------------
+
     property = Property.query.filter_by(
         property_id=property_id,
         owner_id=session["user_id"]
     ).first_or_404()
 
-    # When form is submitted
+    # -----------------------------------------
+    # FORM SUBMITTED
+    # -----------------------------------------
+
     if request.method == "POST":
 
-        property.property_name = request.form["property_name"]
-        property.property_type = request.form["property_type"]
-        property.gender_preference = request.form["gender_preference"]
+        try:
 
-        property.monthly_rent = request.form["monthly_rent"]
-        property.security_deposit = request.form["security_deposit"] or 0
+            # -----------------------------------------
+            # BASIC INFORMATION
+            # -----------------------------------------
 
-        property.available_rooms = request.form["available_rooms"]
+            property.property_name = request.form["property_name"]
 
-        property.city = request.form["city"]
-        property.area = request.form["area"]
-        property.address = request.form["address"]
-        property.pincode = request.form["pincode"]
+            property.property_type = request.form["property_type"]
 
-        property.description = request.form["description"]
+            property.gender_preference = request.form[
+                "gender_preference"
+            ]
 
-        db.session.commit()
+            property.available_rooms = request.form[
+                "available_rooms"
+            ]
 
-        flash("Property updated successfully!", "success")
+            # -----------------------------------------
+            # PRICING
+            # -----------------------------------------
 
-        return redirect(url_for(
-            "owner.my_properties"
-        ))
+            property.monthly_rent = request.form[
+                "monthly_rent"
+            ]
 
-    # Display edit page
+            property.security_deposit = (
+                request.form["security_deposit"] or 0
+            )
+
+            # -----------------------------------------
+            # LOCATION
+            # -----------------------------------------
+
+            property.address = request.form["address"]
+
+            property.area = request.form["area"]
+
+            property.city = request.form["city"]
+
+            property.pincode = request.form["pincode"]
+
+            # -----------------------------------------
+            # DESCRIPTION
+            # -----------------------------------------
+
+            property.description = request.form.get(
+                "description",
+                ""
+            )
+
+            # -----------------------------------------
+            # UPDATE AMENITIES
+            # -----------------------------------------
+
+            selected_amenities = request.form.getlist(
+                "amenities"
+            )
+
+            # Only these 8 are allowed
+            allowed_amenities = [
+                "WiFi",
+                "Food",
+                "CCTV",
+                "Laundry",
+                "Power Backup",
+                "Water Supply",
+                "Parking",
+                "Lift"
+            ]
+
+            selected_amenities = [
+                amenity
+                for amenity in selected_amenities
+                if amenity in allowed_amenities
+            ]
+
+            # -----------------------------------------
+            # REMOVE OLD AMENITIES
+            # -----------------------------------------
+
+            db.session.execute(
+                text("""
+                    DELETE FROM property_amenities
+                    WHERE property_id = :property_id
+                """),
+                {
+                    "property_id": property.property_id
+                }
+            )
+
+            # -----------------------------------------
+            # ADD NEW AMENITIES
+            # -----------------------------------------
+
+            if selected_amenities:
+
+                amenities = Amenity.query.filter(
+                    Amenity.amenity_name.in_(selected_amenities)
+                ).all()
+
+                for amenity in amenities:
+
+                    db.session.execute(
+                        text("""
+                            INSERT INTO property_amenities
+                            (property_id, amenity_id)
+                            VALUES (:property_id, :amenity_id)
+                        """),
+                        {
+                            "property_id": property.property_id,
+                            "amenity_id": amenity.amenity_id
+                        }
+                    )
+
+            # -----------------------------------------
+            # ADD NEW IMAGES
+            # -----------------------------------------
+
+            images = request.files.getlist("images")
+
+            for image in images:
+
+                if image and image.filename != "":
+
+                    filename = secure_filename(
+                        image.filename
+                    )
+
+                    save_path = os.path.join(
+                        current_app.config["UPLOAD_FOLDER"],
+                        filename
+                    )
+
+                    image.save(save_path)
+
+                    property_image = PropertyImage(
+
+                        property_id=property.property_id,
+
+                        image_path=(
+                            f"uploads/properties/{filename}"
+                        )
+                    )
+
+                    db.session.add(property_image)
+
+            # -----------------------------------------
+            # SAVE EVERYTHING
+            # -----------------------------------------
+
+            db.session.commit()
+
+            flash(
+                "Property updated successfully!",
+                "success"
+            )
+
+            return redirect(
+                url_for(
+                    "owner.view_property",
+                    property_id=property.property_id
+                )
+            )
+
+        except Exception as e:
+
+            db.session.rollback()
+
+            print("EDIT PROPERTY ERROR:", e)
+
+            flash(
+                f"Error updating property: {e}",
+                "error"
+            )
+
+    # -----------------------------------------
+    # GET CURRENT AMENITIES
+    # -----------------------------------------
+
+    current_amenity_ids = db.session.execute(
+        text("""
+            SELECT amenity_id
+            FROM property_amenities
+            WHERE property_id = :property_id
+        """),
+        {
+            "property_id": property.property_id
+        }
+    ).scalars().all()
+
+    current_amenities = []
+
+    if current_amenity_ids:
+
+        current_amenities = Amenity.query.filter(
+            Amenity.amenity_id.in_(current_amenity_ids)
+        ).all()
+
+    # Attach amenities temporarily to property
+    property.amenities = current_amenities
+
+    # -----------------------------------------
+    # DISPLAY EDIT PAGE
+    # -----------------------------------------
+
     return render_template(
         "owner/edit_property.html",
         property=property

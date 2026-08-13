@@ -7,24 +7,88 @@ from werkzeug.security import check_password_hash
 from sqlalchemy import text
 
 
-def register_account(full_name, email, phone, password, confirm_password, role):
+def register_account(
+    full_name,
+    email,
+    phone,
+    password,
+    confirm_password,
+    role
+):
 
-    # Check password confirmation
+    email = email.strip().lower()
+    phone = phone.strip()
+
+    # =========================
+    # CLEAN INPUT
+    # =========================
+
+    full_name = full_name.strip()
+    email = email.strip().lower()
+    phone = phone.strip()
+
+    # =========================
+    # PASSWORD CONFIRMATION
+    # =========================
+
     if password != confirm_password:
         return False, "Passwords do not match."
 
-    # Check duplicate email
-    if User.query.filter_by(email=email).first() or Owner.query.filter_by(email=email).first():
-        return False, "Email already exists."
+    # =========================
+    # DUPLICATE EMAIL
+    # =========================
 
-    # Check duplicate phone
-    if User.query.filter_by(phone=phone).first() or Owner.query.filter_by(phone=phone).first():
-        return False, "Phone number already exists."
+    existing_user_email = User.query.filter_by(
+        email=email
+    ).first()
 
-    # Hash password
+    existing_owner_email = Owner.query.filter_by(
+        email=email
+    ).first()
+
+    
+
+    if role == "User":
+
+        if User.query.filter_by(email=email).first():
+            return False, "Email already exists."
+
+    elif role == "Owner":
+
+        if Owner.query.filter_by(email=email).first():
+            return False, "Email already exists."
+    # =========================
+    # DUPLICATE PHONE
+    # =========================
+
+    existing_user_phone = User.query.filter_by(
+        phone=phone
+    ).first()
+
+    existing_owner_phone = Owner.query.filter_by(
+        phone=phone
+    ).first()
+
+    if role == "User":
+
+        if User.query.filter_by(phone=phone).first():
+            return False, "Phone number already exists."
+
+    elif role == "Owner":
+
+        if Owner.query.filter_by(phone=phone).first():
+            return False, "Phone number already exists."
+
+    # =========================
+    # HASH PASSWORD
+    # =========================
+
     hashed_password = generate_password_hash(password)
 
-    # Create account
+    # =========================
+    # CREATE ACCOUNT
+    # =========================
+
     if role == "User":
 
         account = User(
@@ -34,7 +98,7 @@ def register_account(full_name, email, phone, password, confirm_password, role):
             password=hashed_password
         )
 
-    else:
+    elif role == "Owner":
 
         account = Owner(
             full_name=full_name,
@@ -43,10 +107,28 @@ def register_account(full_name, email, phone, password, confirm_password, role):
             password=hashed_password
         )
 
-    db.session.add(account)
-    db.session.commit()
+    else:
 
-    return True, "Registration Successful!"
+        return False, "Invalid role."
+
+    # =========================
+    # SAVE
+    # =========================
+
+    try:
+
+        db.session.add(account)
+        db.session.commit()
+
+        return True, "Registration Successful!"
+
+    except Exception as e:
+
+        db.session.rollback()
+
+        print("Registration error:", e)
+
+        return False, "Registration failed. Please try again."
 
 def login_account(email, password, role):
 
